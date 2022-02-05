@@ -1,7 +1,21 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:barinsatu/authentication/models/user.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'ad.freezed.dart';
 part 'ad.g.dart';
+
+@freezed
+class AdResponse with _$AdResponse {
+  const factory AdResponse(
+      {required int count,
+      String? next,
+      String? previous,
+      required List<Ad> results}) = _AdResponse;
+
+  factory AdResponse.fromJson(Map<String, dynamic> json) =>
+      _$AdResponseFromJson(json);
+}
 
 @freezed
 class Ad with _$Ad {
@@ -10,27 +24,70 @@ class Ad with _$Ad {
       required String title,
       required String description,
       required int price,
-      String? locationText,
-      int? area,
-      int? lat,
-      int? lng,
+      String? location_text,
+      double? lat,
+      double? lng,
       AdDetailType? ad_detail_type,
       AdType? ad_type,
-      int? numbers_room,
-      int? total_area,
-      int? year_construction,
-      int? floor,
+      Details? details,
       City? city,
       User? author,
+      required List<Like> likes,
       required List<Images> images}) = _Ad;
 
   factory Ad.fromJson(Map<String, dynamic> json) => _$AdFromJson(json);
 }
 
 @freezed
+class Communications with _$Communications {
+  const factory Communications({required int id, required String name}) =
+      _Communications;
+
+  factory Communications.fromJson(Map<String, dynamic> json) =>
+      _$CommunicationsFromJson(json);
+}
+
+@freezed
+class RepairType with _$RepairType {
+  const factory RepairType({required int id, required String name}) =
+      _RepairType;
+
+  factory RepairType.fromJson(Map<String, dynamic> json) =>
+      _$RepairTypeFromJson(json);
+}
+
+@freezed
+class BuildingType with _$BuildingType {
+  const factory BuildingType({required int id, required String name}) =
+      _BuildingType;
+
+  factory BuildingType.fromJson(Map<String, dynamic> json) =>
+      _$BuildingTypeFromJson(json);
+}
+
+@freezed
+class Details with _$Details {
+  const factory Details(
+      {required int id,
+      int? numbers_room,
+      required int total_area,
+      int? year_construction,
+      List<Communications>? communications,
+      BuildingType? building_type,
+      RepairType? repair_type,
+      int? floor,
+      int? total_floor}) = _Details;
+
+  factory Details.fromJson(Map<String, dynamic> json) =>
+      _$DetailsFromJson(json);
+}
+
+@freezed
 class AdDetailType with _$AdDetailType {
-  const factory AdDetailType({required int id, required String name}) =
-      _AdDetailType;
+  const factory AdDetailType(
+      {required int id,
+      required String name,
+      required String title}) = _AdDetailType;
 
   factory AdDetailType.fromJson(Map<String, dynamic> json) =>
       _$AdDetailTypeFromJson(json);
@@ -48,6 +105,18 @@ class City with _$City {
   const factory City({required int id, required String name}) = _City;
 
   factory City.fromJson(Map<String, dynamic> json) => _$CityFromJson(json);
+}
+
+@freezed
+class Like with _$Like {
+  const factory Like(
+      {required int id,
+      required int user,
+      required int ad,
+      required bool isLiked,
+      required DateTime created_at}) = _Like;
+
+  factory Like.fromJson(Map<String, dynamic> json) => _$LikeFromJson(json);
 }
 
 @freezed

@@ -16,7 +16,8 @@ class AdBloc extends Bloc<AdEvent, AdState> {
     on<AdEventFetch>((event, emit) async {
       emit(const AdState.loading());
       try {
-        List<Ad> _adLoaded = await adRepo.getAds(event.offset);
+        AdResponse _adLoaded =
+            await adRepo.getAds(event.offset, adType: event.adType);
         emit(AdState.loaded(adLoaded: _adLoaded));
       } catch (_) {
         emit(const AdState.error());
@@ -27,9 +28,38 @@ class AdBloc extends Bloc<AdEvent, AdState> {
       state.when(
           loading: () {},
           loaded: (adLoaded) {
-            final List<Ad> updated = [...adLoaded, event.adUpdate];
-            print(updated);
-            emit(AdState.loaded(adLoaded: updated));
+            print(event.adsUpdate);
+
+            emit(AdState.loaded(
+                adLoaded: adLoaded.copyWith(
+                    results: [...adLoaded.results, ...event.adsUpdate])));
+          },
+          error: () {});
+    });
+
+    on<AdEventLikeAd>((event, emit) async {
+      Like like = await adRepo.likeAd(event.ad);
+
+      state.when(
+          loading: () {},
+          loaded: (adLoaded) {
+            final newAdloaded = adLoaded.copyWith();
+            Ad currentAd = newAdloaded.results
+                .firstWhere((dropdown) => dropdown.id == event.ad);
+
+            int index = newAdloaded.results.indexOf(currentAd);
+
+            if (like.isLiked) {
+              currentAd.likes.add(like);
+            } else {
+              currentAd.likes.removeWhere((element) =>
+                  element.ad == like.ad && element.user == like.user);
+            }
+
+            newAdloaded.results[index] = currentAd;
+            print(newAdloaded);
+
+            emit(AdState.loaded(adLoaded: newAdloaded));
           },
           error: () {});
     });

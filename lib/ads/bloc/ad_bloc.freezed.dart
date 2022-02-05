@@ -17,15 +17,22 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$AdEventTearOff {
   const _$AdEventTearOff();
 
-  AdEventFetch fetch({required int offset}) {
+  AdEventFetch fetch({required int offset, required int adType}) {
     return AdEventFetch(
       offset: offset,
+      adType: adType,
     );
   }
 
-  AdEventUpdate update({required Ad adUpdate}) {
+  AdEventUpdate update({required List<Ad> adsUpdate}) {
     return AdEventUpdate(
-      adUpdate: adUpdate,
+      adsUpdate: adsUpdate,
+    );
+  }
+
+  AdEventLikeAd likeAd({required int ad}) {
+    return AdEventLikeAd(
+      ad: ad,
     );
   }
 }
@@ -37,20 +44,23 @@ const $AdEvent = _$AdEventTearOff();
 mixin _$AdEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(int offset) fetch,
-    required TResult Function(Ad adUpdate) update,
+    required TResult Function(int offset, int adType) fetch,
+    required TResult Function(List<Ad> adsUpdate) update,
+    required TResult Function(int ad) likeAd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(int offset)? fetch,
-    TResult Function(Ad adUpdate)? update,
+    TResult Function(int offset, int adType)? fetch,
+    TResult Function(List<Ad> adsUpdate)? update,
+    TResult Function(int ad)? likeAd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int offset)? fetch,
-    TResult Function(Ad adUpdate)? update,
+    TResult Function(int offset, int adType)? fetch,
+    TResult Function(List<Ad> adsUpdate)? update,
+    TResult Function(int ad)? likeAd,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -58,18 +68,21 @@ mixin _$AdEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(AdEventFetch value) fetch,
     required TResult Function(AdEventUpdate value) update,
+    required TResult Function(AdEventLikeAd value) likeAd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
+    TResult Function(AdEventLikeAd value)? likeAd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
+    TResult Function(AdEventLikeAd value)? likeAd,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -95,7 +108,7 @@ abstract class $AdEventFetchCopyWith<$Res> {
   factory $AdEventFetchCopyWith(
           AdEventFetch value, $Res Function(AdEventFetch) then) =
       _$AdEventFetchCopyWithImpl<$Res>;
-  $Res call({int offset});
+  $Res call({int offset, int adType});
 }
 
 /// @nodoc
@@ -111,11 +124,16 @@ class _$AdEventFetchCopyWithImpl<$Res> extends _$AdEventCopyWithImpl<$Res>
   @override
   $Res call({
     Object? offset = freezed,
+    Object? adType = freezed,
   }) {
     return _then(AdEventFetch(
       offset: offset == freezed
           ? _value.offset
           : offset // ignore: cast_nullable_to_non_nullable
+              as int,
+      adType: adType == freezed
+          ? _value.adType
+          : adType // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -124,14 +142,16 @@ class _$AdEventFetchCopyWithImpl<$Res> extends _$AdEventCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
-  const _$AdEventFetch({required this.offset});
+  const _$AdEventFetch({required this.offset, required this.adType});
 
   @override
   final int offset;
+  @override
+  final int adType;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AdEvent.fetch(offset: $offset)';
+    return 'AdEvent.fetch(offset: $offset, adType: $adType)';
   }
 
   @override
@@ -139,7 +159,8 @@ class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'AdEvent.fetch'))
-      ..add(DiagnosticsProperty('offset', offset));
+      ..add(DiagnosticsProperty('offset', offset))
+      ..add(DiagnosticsProperty('adType', adType));
   }
 
   @override
@@ -147,12 +168,15 @@ class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is AdEventFetch &&
-            const DeepCollectionEquality().equals(other.offset, offset));
+            const DeepCollectionEquality().equals(other.offset, offset) &&
+            const DeepCollectionEquality().equals(other.adType, adType));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(offset));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(offset),
+      const DeepCollectionEquality().hash(adType));
 
   @JsonKey(ignore: true)
   @override
@@ -162,30 +186,33 @@ class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(int offset) fetch,
-    required TResult Function(Ad adUpdate) update,
+    required TResult Function(int offset, int adType) fetch,
+    required TResult Function(List<Ad> adsUpdate) update,
+    required TResult Function(int ad) likeAd,
   }) {
-    return fetch(offset);
+    return fetch(offset, adType);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(int offset)? fetch,
-    TResult Function(Ad adUpdate)? update,
+    TResult Function(int offset, int adType)? fetch,
+    TResult Function(List<Ad> adsUpdate)? update,
+    TResult Function(int ad)? likeAd,
   }) {
-    return fetch?.call(offset);
+    return fetch?.call(offset, adType);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int offset)? fetch,
-    TResult Function(Ad adUpdate)? update,
+    TResult Function(int offset, int adType)? fetch,
+    TResult Function(List<Ad> adsUpdate)? update,
+    TResult Function(int ad)? likeAd,
     required TResult orElse(),
   }) {
     if (fetch != null) {
-      return fetch(offset);
+      return fetch(offset, adType);
     }
     return orElse();
   }
@@ -195,6 +222,7 @@ class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
   TResult map<TResult extends Object?>({
     required TResult Function(AdEventFetch value) fetch,
     required TResult Function(AdEventUpdate value) update,
+    required TResult Function(AdEventLikeAd value) likeAd,
   }) {
     return fetch(this);
   }
@@ -204,6 +232,7 @@ class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
+    TResult Function(AdEventLikeAd value)? likeAd,
   }) {
     return fetch?.call(this);
   }
@@ -213,6 +242,7 @@ class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
+    TResult Function(AdEventLikeAd value)? likeAd,
     required TResult orElse(),
   }) {
     if (fetch != null) {
@@ -223,9 +253,11 @@ class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
 }
 
 abstract class AdEventFetch implements AdEvent {
-  const factory AdEventFetch({required int offset}) = _$AdEventFetch;
+  const factory AdEventFetch({required int offset, required int adType}) =
+      _$AdEventFetch;
 
   int get offset;
+  int get adType;
   @JsonKey(ignore: true)
   $AdEventFetchCopyWith<AdEventFetch> get copyWith =>
       throw _privateConstructorUsedError;
@@ -236,9 +268,7 @@ abstract class $AdEventUpdateCopyWith<$Res> {
   factory $AdEventUpdateCopyWith(
           AdEventUpdate value, $Res Function(AdEventUpdate) then) =
       _$AdEventUpdateCopyWithImpl<$Res>;
-  $Res call({Ad adUpdate});
-
-  $AdCopyWith<$Res> get adUpdate;
+  $Res call({List<Ad> adsUpdate});
 }
 
 /// @nodoc
@@ -253,35 +283,28 @@ class _$AdEventUpdateCopyWithImpl<$Res> extends _$AdEventCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? adUpdate = freezed,
+    Object? adsUpdate = freezed,
   }) {
     return _then(AdEventUpdate(
-      adUpdate: adUpdate == freezed
-          ? _value.adUpdate
-          : adUpdate // ignore: cast_nullable_to_non_nullable
-              as Ad,
+      adsUpdate: adsUpdate == freezed
+          ? _value.adsUpdate
+          : adsUpdate // ignore: cast_nullable_to_non_nullable
+              as List<Ad>,
     ));
-  }
-
-  @override
-  $AdCopyWith<$Res> get adUpdate {
-    return $AdCopyWith<$Res>(_value.adUpdate, (value) {
-      return _then(_value.copyWith(adUpdate: value));
-    });
   }
 }
 
 /// @nodoc
 
 class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
-  const _$AdEventUpdate({required this.adUpdate});
+  const _$AdEventUpdate({required this.adsUpdate});
 
   @override
-  final Ad adUpdate;
+  final List<Ad> adsUpdate;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AdEvent.update(adUpdate: $adUpdate)';
+    return 'AdEvent.update(adsUpdate: $adsUpdate)';
   }
 
   @override
@@ -289,7 +312,7 @@ class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'AdEvent.update'))
-      ..add(DiagnosticsProperty('adUpdate', adUpdate));
+      ..add(DiagnosticsProperty('adsUpdate', adsUpdate));
   }
 
   @override
@@ -297,12 +320,12 @@ class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is AdEventUpdate &&
-            const DeepCollectionEquality().equals(other.adUpdate, adUpdate));
+            const DeepCollectionEquality().equals(other.adsUpdate, adsUpdate));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(adUpdate));
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(adsUpdate));
 
   @JsonKey(ignore: true)
   @override
@@ -312,30 +335,33 @@ class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(int offset) fetch,
-    required TResult Function(Ad adUpdate) update,
+    required TResult Function(int offset, int adType) fetch,
+    required TResult Function(List<Ad> adsUpdate) update,
+    required TResult Function(int ad) likeAd,
   }) {
-    return update(adUpdate);
+    return update(adsUpdate);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(int offset)? fetch,
-    TResult Function(Ad adUpdate)? update,
+    TResult Function(int offset, int adType)? fetch,
+    TResult Function(List<Ad> adsUpdate)? update,
+    TResult Function(int ad)? likeAd,
   }) {
-    return update?.call(adUpdate);
+    return update?.call(adsUpdate);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int offset)? fetch,
-    TResult Function(Ad adUpdate)? update,
+    TResult Function(int offset, int adType)? fetch,
+    TResult Function(List<Ad> adsUpdate)? update,
+    TResult Function(int ad)? likeAd,
     required TResult orElse(),
   }) {
     if (update != null) {
-      return update(adUpdate);
+      return update(adsUpdate);
     }
     return orElse();
   }
@@ -345,6 +371,7 @@ class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
   TResult map<TResult extends Object?>({
     required TResult Function(AdEventFetch value) fetch,
     required TResult Function(AdEventUpdate value) update,
+    required TResult Function(AdEventLikeAd value) likeAd,
   }) {
     return update(this);
   }
@@ -354,6 +381,7 @@ class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
+    TResult Function(AdEventLikeAd value)? likeAd,
   }) {
     return update?.call(this);
   }
@@ -363,6 +391,7 @@ class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
+    TResult Function(AdEventLikeAd value)? likeAd,
     required TResult orElse(),
   }) {
     if (update != null) {
@@ -373,11 +402,158 @@ class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
 }
 
 abstract class AdEventUpdate implements AdEvent {
-  const factory AdEventUpdate({required Ad adUpdate}) = _$AdEventUpdate;
+  const factory AdEventUpdate({required List<Ad> adsUpdate}) = _$AdEventUpdate;
 
-  Ad get adUpdate;
+  List<Ad> get adsUpdate;
   @JsonKey(ignore: true)
   $AdEventUpdateCopyWith<AdEventUpdate> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AdEventLikeAdCopyWith<$Res> {
+  factory $AdEventLikeAdCopyWith(
+          AdEventLikeAd value, $Res Function(AdEventLikeAd) then) =
+      _$AdEventLikeAdCopyWithImpl<$Res>;
+  $Res call({int ad});
+}
+
+/// @nodoc
+class _$AdEventLikeAdCopyWithImpl<$Res> extends _$AdEventCopyWithImpl<$Res>
+    implements $AdEventLikeAdCopyWith<$Res> {
+  _$AdEventLikeAdCopyWithImpl(
+      AdEventLikeAd _value, $Res Function(AdEventLikeAd) _then)
+      : super(_value, (v) => _then(v as AdEventLikeAd));
+
+  @override
+  AdEventLikeAd get _value => super._value as AdEventLikeAd;
+
+  @override
+  $Res call({
+    Object? ad = freezed,
+  }) {
+    return _then(AdEventLikeAd(
+      ad: ad == freezed
+          ? _value.ad
+          : ad // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AdEventLikeAd with DiagnosticableTreeMixin implements AdEventLikeAd {
+  const _$AdEventLikeAd({required this.ad});
+
+  @override
+  final int ad;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'AdEvent.likeAd(ad: $ad)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'AdEvent.likeAd'))
+      ..add(DiagnosticsProperty('ad', ad));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is AdEventLikeAd &&
+            const DeepCollectionEquality().equals(other.ad, ad));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(ad));
+
+  @JsonKey(ignore: true)
+  @override
+  $AdEventLikeAdCopyWith<AdEventLikeAd> get copyWith =>
+      _$AdEventLikeAdCopyWithImpl<AdEventLikeAd>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int offset, int adType) fetch,
+    required TResult Function(List<Ad> adsUpdate) update,
+    required TResult Function(int ad) likeAd,
+  }) {
+    return likeAd(ad);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(int offset, int adType)? fetch,
+    TResult Function(List<Ad> adsUpdate)? update,
+    TResult Function(int ad)? likeAd,
+  }) {
+    return likeAd?.call(ad);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int offset, int adType)? fetch,
+    TResult Function(List<Ad> adsUpdate)? update,
+    TResult Function(int ad)? likeAd,
+    required TResult orElse(),
+  }) {
+    if (likeAd != null) {
+      return likeAd(ad);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(AdEventFetch value) fetch,
+    required TResult Function(AdEventUpdate value) update,
+    required TResult Function(AdEventLikeAd value) likeAd,
+  }) {
+    return likeAd(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(AdEventFetch value)? fetch,
+    TResult Function(AdEventUpdate value)? update,
+    TResult Function(AdEventLikeAd value)? likeAd,
+  }) {
+    return likeAd?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(AdEventFetch value)? fetch,
+    TResult Function(AdEventUpdate value)? update,
+    TResult Function(AdEventLikeAd value)? likeAd,
+    required TResult orElse(),
+  }) {
+    if (likeAd != null) {
+      return likeAd(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AdEventLikeAd implements AdEvent {
+  const factory AdEventLikeAd({required int ad}) = _$AdEventLikeAd;
+
+  int get ad;
+  @JsonKey(ignore: true)
+  $AdEventLikeAdCopyWith<AdEventLikeAd> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -389,7 +565,7 @@ class _$AdStateTearOff {
     return const AdStateLoading();
   }
 
-  AdStateLoaded loaded({required List<Ad> adLoaded}) {
+  AdStateLoaded loaded({required AdResponse adLoaded}) {
     return AdStateLoaded(
       adLoaded: adLoaded,
     );
@@ -408,21 +584,21 @@ mixin _$AdState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Ad> adLoaded) loaded,
+    required TResult Function(AdResponse adLoaded) loaded,
     required TResult Function() error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Ad> adLoaded)? loaded,
+    TResult Function(AdResponse adLoaded)? loaded,
     TResult Function()? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Ad> adLoaded)? loaded,
+    TResult Function(AdResponse adLoaded)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) =>
@@ -513,7 +689,7 @@ class _$AdStateLoading with DiagnosticableTreeMixin implements AdStateLoading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Ad> adLoaded) loaded,
+    required TResult Function(AdResponse adLoaded) loaded,
     required TResult Function() error,
   }) {
     return loading();
@@ -523,7 +699,7 @@ class _$AdStateLoading with DiagnosticableTreeMixin implements AdStateLoading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Ad> adLoaded)? loaded,
+    TResult Function(AdResponse adLoaded)? loaded,
     TResult Function()? error,
   }) {
     return loading?.call();
@@ -533,7 +709,7 @@ class _$AdStateLoading with DiagnosticableTreeMixin implements AdStateLoading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Ad> adLoaded)? loaded,
+    TResult Function(AdResponse adLoaded)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -587,7 +763,9 @@ abstract class $AdStateLoadedCopyWith<$Res> {
   factory $AdStateLoadedCopyWith(
           AdStateLoaded value, $Res Function(AdStateLoaded) then) =
       _$AdStateLoadedCopyWithImpl<$Res>;
-  $Res call({List<Ad> adLoaded});
+  $Res call({AdResponse adLoaded});
+
+  $AdResponseCopyWith<$Res> get adLoaded;
 }
 
 /// @nodoc
@@ -608,8 +786,15 @@ class _$AdStateLoadedCopyWithImpl<$Res> extends _$AdStateCopyWithImpl<$Res>
       adLoaded: adLoaded == freezed
           ? _value.adLoaded
           : adLoaded // ignore: cast_nullable_to_non_nullable
-              as List<Ad>,
+              as AdResponse,
     ));
+  }
+
+  @override
+  $AdResponseCopyWith<$Res> get adLoaded {
+    return $AdResponseCopyWith<$Res>(_value.adLoaded, (value) {
+      return _then(_value.copyWith(adLoaded: value));
+    });
   }
 }
 
@@ -619,7 +804,7 @@ class _$AdStateLoaded with DiagnosticableTreeMixin implements AdStateLoaded {
   const _$AdStateLoaded({required this.adLoaded});
 
   @override
-  final List<Ad> adLoaded;
+  final AdResponse adLoaded;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -655,7 +840,7 @@ class _$AdStateLoaded with DiagnosticableTreeMixin implements AdStateLoaded {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Ad> adLoaded) loaded,
+    required TResult Function(AdResponse adLoaded) loaded,
     required TResult Function() error,
   }) {
     return loaded(adLoaded);
@@ -665,7 +850,7 @@ class _$AdStateLoaded with DiagnosticableTreeMixin implements AdStateLoaded {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Ad> adLoaded)? loaded,
+    TResult Function(AdResponse adLoaded)? loaded,
     TResult Function()? error,
   }) {
     return loaded?.call(adLoaded);
@@ -675,7 +860,7 @@ class _$AdStateLoaded with DiagnosticableTreeMixin implements AdStateLoaded {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Ad> adLoaded)? loaded,
+    TResult Function(AdResponse adLoaded)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -721,9 +906,9 @@ class _$AdStateLoaded with DiagnosticableTreeMixin implements AdStateLoaded {
 }
 
 abstract class AdStateLoaded implements AdState {
-  const factory AdStateLoaded({required List<Ad> adLoaded}) = _$AdStateLoaded;
+  const factory AdStateLoaded({required AdResponse adLoaded}) = _$AdStateLoaded;
 
-  List<Ad> get adLoaded;
+  AdResponse get adLoaded;
   @JsonKey(ignore: true)
   $AdStateLoadedCopyWith<AdStateLoaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -776,7 +961,7 @@ class _$AdStateError with DiagnosticableTreeMixin implements AdStateError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Ad> adLoaded) loaded,
+    required TResult Function(AdResponse adLoaded) loaded,
     required TResult Function() error,
   }) {
     return error();
@@ -786,7 +971,7 @@ class _$AdStateError with DiagnosticableTreeMixin implements AdStateError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Ad> adLoaded)? loaded,
+    TResult Function(AdResponse adLoaded)? loaded,
     TResult Function()? error,
   }) {
     return error?.call();
@@ -796,7 +981,7 @@ class _$AdStateError with DiagnosticableTreeMixin implements AdStateError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Ad> adLoaded)? loaded,
+    TResult Function(AdResponse adLoaded)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {

@@ -1,9 +1,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bakdaulet.barinsatu">
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="barinsatu"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:largeHeap="true"
+        android:hardwareAccelerated="true"
+        android:requestLegacyExternalStorage="true"
+        >
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyCgNxK-GoiGov61CFM-f9DoF4giqtDsA08"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
