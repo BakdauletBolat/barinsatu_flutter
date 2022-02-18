@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class PriceTextField extends StatelessWidget {
   const PriceTextField(
       {Key? key,
+      this.keyBoardType,
       required this.placeHolder,
       this.controller,
       required this.onEditingComplete,
@@ -15,6 +15,7 @@ class PriceTextField extends StatelessWidget {
       : super(key: key);
 
   final void Function(String?)? onSaved;
+  final TextInputType? keyBoardType;
   final void Function()? onEditingComplete;
   final TextEditingController? controller;
   final TextInputFormatter inputFormatter;
@@ -35,6 +36,7 @@ class PriceTextField extends StatelessWidget {
           }
           return null;
         },
+        keyboardType: keyBoardType ?? TextInputType.text,
         onSaved: onSaved,
         // maxLines: maxLines,
         inputFormatters: [inputFormatter],

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:barinsatu/ads/models/ad.dart';
 import 'package:barinsatu/ads/repositories/ad_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +14,7 @@ part 'ad_state.dart';
 
 class AdBloc extends Bloc<AdEvent, AdState> {
   final AdRepo adRepo;
+
   AdBloc({required this.adRepo}) : super(const AdState.loading()) {
     on<AdEventFetch>((event, emit) async {
       emit(const AdState.loading());
@@ -25,22 +28,46 @@ class AdBloc extends Bloc<AdEvent, AdState> {
     });
 
     on<AdEventUpdate>((event, emit) async {
-      state.when(
+      state.maybeWhen(
           loading: () {},
           loaded: (adLoaded) {
-            print(event.adsUpdate);
-
             emit(AdState.loaded(
                 adLoaded: adLoaded.copyWith(
                     results: [...adLoaded.results, ...event.adsUpdate])));
           },
-          error: () {});
+          error: () {},
+          orElse: () {});
+    });
+
+    on<AdEventCommentAdd>((event, emit) async {
+      late AdResponse newList;
+      Comment comment = await adRepo.createComments(event.ad, event.text);
+      state.maybeWhen(
+          loading: () {},
+          loaded: (adLoaded) {
+            newList = adLoaded.copyWith();
+            Ad currentAd = newList.results
+                .firstWhere((dropdown) => dropdown.id == event.ad);
+
+            int index = newList.results.indexOf(currentAd);
+            Ad newAd = newList.results[index].copyWith(
+                comments: [...newList.results[index].comments, comment]);
+
+            emit(AdState.loaded(
+                adLoaded: adLoaded.copyWith(results: [
+              ...adLoaded.results.slice(0, index),
+              newAd,
+              ...adLoaded.results.slice(index + 1)
+            ])));
+          },
+          error: () {},
+          orElse: () {});
     });
 
     on<AdEventLikeAd>((event, emit) async {
       Like like = await adRepo.likeAd(event.ad);
 
-      state.when(
+      state.maybeWhen(
           loading: () {},
           loaded: (adLoaded) {
             final newAdloaded = adLoaded.copyWith();
@@ -61,7 +88,8 @@ class AdBloc extends Bloc<AdEvent, AdState> {
 
             emit(AdState.loaded(adLoaded: newAdloaded));
           },
-          error: () {});
+          error: () {},
+          orElse: () {});
     });
   }
 }

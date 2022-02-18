@@ -1,14 +1,12 @@
 import 'dart:io';
-import 'package:barinsatu/ads/widgets/CreateStepAd.dart';
 import 'package:barinsatu/ads/widgets/PriceTextField.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-
 import '../CustomTextField.dart';
-
-import '../Picker.dart';
 import 'package:barinsatu/ads/models/myData.dart';
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 
 class Step4 extends StatefulWidget {
   const Step4({Key? key, required this.data, required this.formKey})
@@ -22,8 +20,9 @@ class Step4 extends StatefulWidget {
 }
 
 class _Step4State extends State<Step4> {
-  var maskFormatter = MaskTextInputFormatter(mask: '### ### ### ### ###');
-
+  var maskFormatter = MaskTextInputFormatter(mask: '### ###');
+  final CurrencyTextInputFormatter _formatter =
+      CurrencyTextInputFormatter(locale: 'Ru', decimalDigits: 0, symbol: 'т ');
   List<File> imagesList = [];
   @override
   void initState() {
@@ -32,16 +31,18 @@ class _Step4State extends State<Step4> {
 
   void pickImage() async {
     final ImagePicker _picker = ImagePicker();
+    List<File> imagesRaw = [];
 
     final List<XFile>? images = await _picker.pickMultiImage(
         maxHeight: 720, maxWidth: 1280, imageQuality: 50);
-    widget.data.imagesPath = images![0].path;
 
-    List<File> imagesRaw = [];
+    if (images != null && images.isNotEmpty) {
+      images.map((image) {
+        imagesRaw.add(File(image.path));
+      }).toList();
+    }
 
-    images.map((image) {
-      imagesRaw.add(File(image.path));
-    }).toList();
+    widget.data.images = imagesRaw;
 
     setState(() {
       imagesList = imagesRaw;
@@ -54,15 +55,16 @@ class _Step4State extends State<Step4> {
       child: Form(
         key: widget.formKey,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
             PriceTextField(
+              keyBoardType: TextInputType.number,
               placeHolder: 'Цена',
               validation: true,
               onSaved: (String? value) {
-                widget.data.price = int.parse(maskFormatter.getUnmaskedText());
+                widget.data.price =
+                    int.parse(_formatter.getUnformattedValue().toString());
               },
-              inputFormatter: maskFormatter,
+              inputFormatter: _formatter,
               onEditingComplete: () => widget.formKey.currentState!.validate(),
             ),
             CustomTextField(
@@ -82,18 +84,77 @@ class _Step4State extends State<Step4> {
               },
               onEditingComplete: () => widget.formKey.currentState!.validate(),
             ),
-            ElevatedButton(onPressed: pickImage, child: Text('Picker')),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: TextButton(
+                  onPressed: pickImage,
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Icon(Icons.add_a_photo),
+                        Text('Выбрать фотографий')
+                      ],
+                    ),
+                  )),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 100,
+                    child: Text(
+                      'Чтобы выбрать несколько фотографий удерживайте палец при выборе выбранного фотографий',
+                      style: TextStyle(color: Colors.black.withOpacity(0.5)),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.collections,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 100,
+                    child: Text(
+                      'Выбрано ' + imagesList.length.toString() + ' фотографий',
+                      style: TextStyle(color: Colors.black.withOpacity(0.5)),
+                    ),
+                  )
+                ],
+              ),
+            ),
             if (imagesList.isNotEmpty)
-              Row(
-                children: imagesList.map((image) {
-                  return Expanded(
-                      child: Image.file(
-                    image,
-                    width: 100,
-                    height: 100,
-                  ));
-                }).toList(),
-              )
+              GridView.builder(
+                  padding: const EdgeInsets.all(0),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 5.0,
+                    mainAxisSpacing: 5,
+                  ),
+                  itemCount: imagesList.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) => Image.file(
+                        imagesList[index],
+                        fit: BoxFit.cover,
+                      ))
           ],
         ),
       ),

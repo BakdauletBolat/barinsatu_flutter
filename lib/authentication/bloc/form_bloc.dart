@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:barinsatu/authentication/models/login.dart';
 import 'package:barinsatu/authentication/models/user.dart';
 import 'package:barinsatu/authentication/repositories/auth_repo.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,10 +33,6 @@ class LoginFormBloc extends FormBloc<String, String> {
 
   @override
   void onSubmitting() async {
-    // print(email.value);
-    // print(password.value);
-    // print(showSuccessResponse.value);
-
     Login login = Login(email: email.value, password: password.value);
     dynamic loginBody = login.toJson();
     try {

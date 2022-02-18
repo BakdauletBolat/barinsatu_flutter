@@ -1,0 +1,56 @@
+Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  child: buildTop(),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  child: buildAbout(),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  child: TabBar(
+                    labelPadding: const EdgeInsets.all(15),
+                    indicatorColor: primaryColor,
+                    tabs: const [
+                      Text(
+                        'Посты',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Text(
+                        'Историй',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Text(
+                        'Рейтинги',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      // Text('Helo'),
+                      AdMiniView(
+                        user: widget.user,
+                      ),
+                      const Icon(Icons.directions_transit, size: 350),
+                      const Icon(Icons.directions_car, size: 350),
+                    ],
+                  ),
+                ),
+              ],
+            ),

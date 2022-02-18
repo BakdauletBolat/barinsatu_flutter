@@ -6,14 +6,14 @@ class Picker extends StatelessWidget {
       {Key? key,
       required this.onSelectedItemChanged,
       required this.items,
-      required this.title,
+      this.title,
       required this.selectedValue})
       : super(key: key);
 
   final void Function(int)? onSelectedItemChanged;
   final int selectedValue;
   final List items;
-  final String title;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +21,37 @@ class Picker extends StatelessWidget {
       showModalBottomSheet(
           context: context,
           builder: (BuildContext context) {
-            return CupertinoPicker(
-              scrollController:
-                  FixedExtentScrollController(initialItem: selectedValue),
-              backgroundColor: Colors.white,
-              onSelectedItemChanged: onSelectedItemChanged,
-              itemExtent: 64,
-              selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
-                background: Theme.of(context).primaryColor.withOpacity(0.2),
-              ),
-              children: items
-                  .map(
-                    (item) => Center(child: Text(item.name.toString())),
-                  )
-                  .toList(),
+            return Stack(
+              children: [
+                CupertinoPicker(
+                  scrollController:
+                      FixedExtentScrollController(initialItem: selectedValue),
+                  backgroundColor: Colors.white,
+                  onSelectedItemChanged: onSelectedItemChanged,
+                  itemExtent: 64,
+                  selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
+                    background: Theme.of(context).primaryColor.withOpacity(0.2),
+                  ),
+                  children: items
+                      .map(
+                        (item) => Center(child: Text(item.name.toString())),
+                      )
+                      .toList(),
+                ),
+                Positioned(
+                  top: 20,
+                  right: 20,
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        'Готово',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      )),
+                )
+              ],
             );
           });
     }
@@ -46,7 +63,7 @@ class Picker extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
-            child: Text(title),
+            child: Text(title ?? ''),
           ),
           Container(
             padding: const EdgeInsets.all(10),

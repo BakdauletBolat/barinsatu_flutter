@@ -8,4 +8,7 @@ class PreloadEvent with _$PreloadEvent {
       _OnVideoIndexChanged;
   const factory PreloadEvent.onVideoInit(int index) = _OnVideoInit;
   const factory PreloadEvent.error() = PreloadEventError;
+  const factory PreloadEvent.commendAdd(
+      {required int story,
+      required StoryComment comment}) = CommentEventCommentAdd;
 }

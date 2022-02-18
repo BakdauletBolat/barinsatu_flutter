@@ -35,6 +35,13 @@ class _$AdEventTearOff {
       ad: ad,
     );
   }
+
+  AdEventCommentAdd commendAdd({required int ad, required String text}) {
+    return AdEventCommentAdd(
+      ad: ad,
+      text: text,
+    );
+  }
 }
 
 /// @nodoc
@@ -47,6 +54,7 @@ mixin _$AdEvent {
     required TResult Function(int offset, int adType) fetch,
     required TResult Function(List<Ad> adsUpdate) update,
     required TResult Function(int ad) likeAd,
+    required TResult Function(int ad, String text) commendAdd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -54,6 +62,7 @@ mixin _$AdEvent {
     TResult Function(int offset, int adType)? fetch,
     TResult Function(List<Ad> adsUpdate)? update,
     TResult Function(int ad)? likeAd,
+    TResult Function(int ad, String text)? commendAdd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -61,6 +70,7 @@ mixin _$AdEvent {
     TResult Function(int offset, int adType)? fetch,
     TResult Function(List<Ad> adsUpdate)? update,
     TResult Function(int ad)? likeAd,
+    TResult Function(int ad, String text)? commendAdd,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -69,6 +79,7 @@ mixin _$AdEvent {
     required TResult Function(AdEventFetch value) fetch,
     required TResult Function(AdEventUpdate value) update,
     required TResult Function(AdEventLikeAd value) likeAd,
+    required TResult Function(AdEventCommentAdd value) commendAdd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -76,6 +87,7 @@ mixin _$AdEvent {
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
     TResult Function(AdEventLikeAd value)? likeAd,
+    TResult Function(AdEventCommentAdd value)? commendAdd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -83,6 +95,7 @@ mixin _$AdEvent {
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
     TResult Function(AdEventLikeAd value)? likeAd,
+    TResult Function(AdEventCommentAdd value)? commendAdd,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -189,6 +202,7 @@ class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
     required TResult Function(int offset, int adType) fetch,
     required TResult Function(List<Ad> adsUpdate) update,
     required TResult Function(int ad) likeAd,
+    required TResult Function(int ad, String text) commendAdd,
   }) {
     return fetch(offset, adType);
   }
@@ -199,6 +213,7 @@ class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
     TResult Function(int offset, int adType)? fetch,
     TResult Function(List<Ad> adsUpdate)? update,
     TResult Function(int ad)? likeAd,
+    TResult Function(int ad, String text)? commendAdd,
   }) {
     return fetch?.call(offset, adType);
   }
@@ -209,6 +224,7 @@ class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
     TResult Function(int offset, int adType)? fetch,
     TResult Function(List<Ad> adsUpdate)? update,
     TResult Function(int ad)? likeAd,
+    TResult Function(int ad, String text)? commendAdd,
     required TResult orElse(),
   }) {
     if (fetch != null) {
@@ -223,6 +239,7 @@ class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
     required TResult Function(AdEventFetch value) fetch,
     required TResult Function(AdEventUpdate value) update,
     required TResult Function(AdEventLikeAd value) likeAd,
+    required TResult Function(AdEventCommentAdd value) commendAdd,
   }) {
     return fetch(this);
   }
@@ -233,6 +250,7 @@ class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
     TResult Function(AdEventLikeAd value)? likeAd,
+    TResult Function(AdEventCommentAdd value)? commendAdd,
   }) {
     return fetch?.call(this);
   }
@@ -243,6 +261,7 @@ class _$AdEventFetch with DiagnosticableTreeMixin implements AdEventFetch {
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
     TResult Function(AdEventLikeAd value)? likeAd,
+    TResult Function(AdEventCommentAdd value)? commendAdd,
     required TResult orElse(),
   }) {
     if (fetch != null) {
@@ -338,6 +357,7 @@ class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
     required TResult Function(int offset, int adType) fetch,
     required TResult Function(List<Ad> adsUpdate) update,
     required TResult Function(int ad) likeAd,
+    required TResult Function(int ad, String text) commendAdd,
   }) {
     return update(adsUpdate);
   }
@@ -348,6 +368,7 @@ class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
     TResult Function(int offset, int adType)? fetch,
     TResult Function(List<Ad> adsUpdate)? update,
     TResult Function(int ad)? likeAd,
+    TResult Function(int ad, String text)? commendAdd,
   }) {
     return update?.call(adsUpdate);
   }
@@ -358,6 +379,7 @@ class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
     TResult Function(int offset, int adType)? fetch,
     TResult Function(List<Ad> adsUpdate)? update,
     TResult Function(int ad)? likeAd,
+    TResult Function(int ad, String text)? commendAdd,
     required TResult orElse(),
   }) {
     if (update != null) {
@@ -372,6 +394,7 @@ class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
     required TResult Function(AdEventFetch value) fetch,
     required TResult Function(AdEventUpdate value) update,
     required TResult Function(AdEventLikeAd value) likeAd,
+    required TResult Function(AdEventCommentAdd value) commendAdd,
   }) {
     return update(this);
   }
@@ -382,6 +405,7 @@ class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
     TResult Function(AdEventLikeAd value)? likeAd,
+    TResult Function(AdEventCommentAdd value)? commendAdd,
   }) {
     return update?.call(this);
   }
@@ -392,6 +416,7 @@ class _$AdEventUpdate with DiagnosticableTreeMixin implements AdEventUpdate {
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
     TResult Function(AdEventLikeAd value)? likeAd,
+    TResult Function(AdEventCommentAdd value)? commendAdd,
     required TResult orElse(),
   }) {
     if (update != null) {
@@ -485,6 +510,7 @@ class _$AdEventLikeAd with DiagnosticableTreeMixin implements AdEventLikeAd {
     required TResult Function(int offset, int adType) fetch,
     required TResult Function(List<Ad> adsUpdate) update,
     required TResult Function(int ad) likeAd,
+    required TResult Function(int ad, String text) commendAdd,
   }) {
     return likeAd(ad);
   }
@@ -495,6 +521,7 @@ class _$AdEventLikeAd with DiagnosticableTreeMixin implements AdEventLikeAd {
     TResult Function(int offset, int adType)? fetch,
     TResult Function(List<Ad> adsUpdate)? update,
     TResult Function(int ad)? likeAd,
+    TResult Function(int ad, String text)? commendAdd,
   }) {
     return likeAd?.call(ad);
   }
@@ -505,6 +532,7 @@ class _$AdEventLikeAd with DiagnosticableTreeMixin implements AdEventLikeAd {
     TResult Function(int offset, int adType)? fetch,
     TResult Function(List<Ad> adsUpdate)? update,
     TResult Function(int ad)? likeAd,
+    TResult Function(int ad, String text)? commendAdd,
     required TResult orElse(),
   }) {
     if (likeAd != null) {
@@ -519,6 +547,7 @@ class _$AdEventLikeAd with DiagnosticableTreeMixin implements AdEventLikeAd {
     required TResult Function(AdEventFetch value) fetch,
     required TResult Function(AdEventUpdate value) update,
     required TResult Function(AdEventLikeAd value) likeAd,
+    required TResult Function(AdEventCommentAdd value) commendAdd,
   }) {
     return likeAd(this);
   }
@@ -529,6 +558,7 @@ class _$AdEventLikeAd with DiagnosticableTreeMixin implements AdEventLikeAd {
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
     TResult Function(AdEventLikeAd value)? likeAd,
+    TResult Function(AdEventCommentAdd value)? commendAdd,
   }) {
     return likeAd?.call(this);
   }
@@ -539,6 +569,7 @@ class _$AdEventLikeAd with DiagnosticableTreeMixin implements AdEventLikeAd {
     TResult Function(AdEventFetch value)? fetch,
     TResult Function(AdEventUpdate value)? update,
     TResult Function(AdEventLikeAd value)? likeAd,
+    TResult Function(AdEventCommentAdd value)? commendAdd,
     required TResult orElse(),
   }) {
     if (likeAd != null) {
@@ -554,6 +585,174 @@ abstract class AdEventLikeAd implements AdEvent {
   int get ad;
   @JsonKey(ignore: true)
   $AdEventLikeAdCopyWith<AdEventLikeAd> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AdEventCommentAddCopyWith<$Res> {
+  factory $AdEventCommentAddCopyWith(
+          AdEventCommentAdd value, $Res Function(AdEventCommentAdd) then) =
+      _$AdEventCommentAddCopyWithImpl<$Res>;
+  $Res call({int ad, String text});
+}
+
+/// @nodoc
+class _$AdEventCommentAddCopyWithImpl<$Res> extends _$AdEventCopyWithImpl<$Res>
+    implements $AdEventCommentAddCopyWith<$Res> {
+  _$AdEventCommentAddCopyWithImpl(
+      AdEventCommentAdd _value, $Res Function(AdEventCommentAdd) _then)
+      : super(_value, (v) => _then(v as AdEventCommentAdd));
+
+  @override
+  AdEventCommentAdd get _value => super._value as AdEventCommentAdd;
+
+  @override
+  $Res call({
+    Object? ad = freezed,
+    Object? text = freezed,
+  }) {
+    return _then(AdEventCommentAdd(
+      ad: ad == freezed
+          ? _value.ad
+          : ad // ignore: cast_nullable_to_non_nullable
+              as int,
+      text: text == freezed
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AdEventCommentAdd
+    with DiagnosticableTreeMixin
+    implements AdEventCommentAdd {
+  const _$AdEventCommentAdd({required this.ad, required this.text});
+
+  @override
+  final int ad;
+  @override
+  final String text;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'AdEvent.commendAdd(ad: $ad, text: $text)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'AdEvent.commendAdd'))
+      ..add(DiagnosticsProperty('ad', ad))
+      ..add(DiagnosticsProperty('text', text));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is AdEventCommentAdd &&
+            const DeepCollectionEquality().equals(other.ad, ad) &&
+            const DeepCollectionEquality().equals(other.text, text));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(ad),
+      const DeepCollectionEquality().hash(text));
+
+  @JsonKey(ignore: true)
+  @override
+  $AdEventCommentAddCopyWith<AdEventCommentAdd> get copyWith =>
+      _$AdEventCommentAddCopyWithImpl<AdEventCommentAdd>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int offset, int adType) fetch,
+    required TResult Function(List<Ad> adsUpdate) update,
+    required TResult Function(int ad) likeAd,
+    required TResult Function(int ad, String text) commendAdd,
+  }) {
+    return commendAdd(ad, text);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(int offset, int adType)? fetch,
+    TResult Function(List<Ad> adsUpdate)? update,
+    TResult Function(int ad)? likeAd,
+    TResult Function(int ad, String text)? commendAdd,
+  }) {
+    return commendAdd?.call(ad, text);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int offset, int adType)? fetch,
+    TResult Function(List<Ad> adsUpdate)? update,
+    TResult Function(int ad)? likeAd,
+    TResult Function(int ad, String text)? commendAdd,
+    required TResult orElse(),
+  }) {
+    if (commendAdd != null) {
+      return commendAdd(ad, text);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(AdEventFetch value) fetch,
+    required TResult Function(AdEventUpdate value) update,
+    required TResult Function(AdEventLikeAd value) likeAd,
+    required TResult Function(AdEventCommentAdd value) commendAdd,
+  }) {
+    return commendAdd(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(AdEventFetch value)? fetch,
+    TResult Function(AdEventUpdate value)? update,
+    TResult Function(AdEventLikeAd value)? likeAd,
+    TResult Function(AdEventCommentAdd value)? commendAdd,
+  }) {
+    return commendAdd?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(AdEventFetch value)? fetch,
+    TResult Function(AdEventUpdate value)? update,
+    TResult Function(AdEventLikeAd value)? likeAd,
+    TResult Function(AdEventCommentAdd value)? commendAdd,
+    required TResult orElse(),
+  }) {
+    if (commendAdd != null) {
+      return commendAdd(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AdEventCommentAdd implements AdEvent {
+  const factory AdEventCommentAdd({required int ad, required String text}) =
+      _$AdEventCommentAdd;
+
+  int get ad;
+  String get text;
+  @JsonKey(ignore: true)
+  $AdEventCommentAddCopyWith<AdEventCommentAdd> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

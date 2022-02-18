@@ -40,6 +40,14 @@ class _$PreloadEventTearOff {
   PreloadEventError error() {
     return const PreloadEventError();
   }
+
+  CommentEventCommentAdd commendAdd(
+      {required int story, required StoryComment comment}) {
+    return CommentEventCommentAdd(
+      story: story,
+      comment: comment,
+    );
+  }
 }
 
 /// @nodoc
@@ -54,6 +62,7 @@ mixin _$PreloadEvent {
     required TResult Function(int index) onVideoIndexChanged,
     required TResult Function(int index) onVideoInit,
     required TResult Function() error,
+    required TResult Function(int story, StoryComment comment) commendAdd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -63,6 +72,7 @@ mixin _$PreloadEvent {
     TResult Function(int index)? onVideoIndexChanged,
     TResult Function(int index)? onVideoInit,
     TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -72,6 +82,7 @@ mixin _$PreloadEvent {
     TResult Function(int index)? onVideoIndexChanged,
     TResult Function(int index)? onVideoInit,
     TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -82,6 +93,7 @@ mixin _$PreloadEvent {
     required TResult Function(_OnVideoIndexChanged value) onVideoIndexChanged,
     required TResult Function(_OnVideoInit value) onVideoInit,
     required TResult Function(PreloadEventError value) error,
+    required TResult Function(CommentEventCommentAdd value) commendAdd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -91,6 +103,7 @@ mixin _$PreloadEvent {
     TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
     TResult Function(_OnVideoInit value)? onVideoInit,
     TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -100,6 +113,7 @@ mixin _$PreloadEvent {
     TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
     TResult Function(_OnVideoInit value)? onVideoInit,
     TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -166,6 +180,7 @@ class _$_Initialize implements _Initialize {
     required TResult Function(int index) onVideoIndexChanged,
     required TResult Function(int index) onVideoInit,
     required TResult Function() error,
+    required TResult Function(int story, StoryComment comment) commendAdd,
   }) {
     return initialize();
   }
@@ -178,6 +193,7 @@ class _$_Initialize implements _Initialize {
     TResult Function(int index)? onVideoIndexChanged,
     TResult Function(int index)? onVideoInit,
     TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
   }) {
     return initialize?.call();
   }
@@ -190,6 +206,7 @@ class _$_Initialize implements _Initialize {
     TResult Function(int index)? onVideoIndexChanged,
     TResult Function(int index)? onVideoInit,
     TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
     required TResult orElse(),
   }) {
     if (initialize != null) {
@@ -206,6 +223,7 @@ class _$_Initialize implements _Initialize {
     required TResult Function(_OnVideoIndexChanged value) onVideoIndexChanged,
     required TResult Function(_OnVideoInit value) onVideoInit,
     required TResult Function(PreloadEventError value) error,
+    required TResult Function(CommentEventCommentAdd value) commendAdd,
   }) {
     return initialize(this);
   }
@@ -218,6 +236,7 @@ class _$_Initialize implements _Initialize {
     TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
     TResult Function(_OnVideoInit value)? onVideoInit,
     TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
   }) {
     return initialize?.call(this);
   }
@@ -230,6 +249,7 @@ class _$_Initialize implements _Initialize {
     TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
     TResult Function(_OnVideoInit value)? onVideoInit,
     TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
     required TResult orElse(),
   }) {
     if (initialize != null) {
@@ -289,6 +309,7 @@ class _$PreloadEventFetch implements PreloadEventFetch {
     required TResult Function(int index) onVideoIndexChanged,
     required TResult Function(int index) onVideoInit,
     required TResult Function() error,
+    required TResult Function(int story, StoryComment comment) commendAdd,
   }) {
     return fetch();
   }
@@ -301,6 +322,7 @@ class _$PreloadEventFetch implements PreloadEventFetch {
     TResult Function(int index)? onVideoIndexChanged,
     TResult Function(int index)? onVideoInit,
     TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
   }) {
     return fetch?.call();
   }
@@ -313,6 +335,7 @@ class _$PreloadEventFetch implements PreloadEventFetch {
     TResult Function(int index)? onVideoIndexChanged,
     TResult Function(int index)? onVideoInit,
     TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
     required TResult orElse(),
   }) {
     if (fetch != null) {
@@ -329,6 +352,7 @@ class _$PreloadEventFetch implements PreloadEventFetch {
     required TResult Function(_OnVideoIndexChanged value) onVideoIndexChanged,
     required TResult Function(_OnVideoInit value) onVideoInit,
     required TResult Function(PreloadEventError value) error,
+    required TResult Function(CommentEventCommentAdd value) commendAdd,
   }) {
     return fetch(this);
   }
@@ -341,6 +365,7 @@ class _$PreloadEventFetch implements PreloadEventFetch {
     TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
     TResult Function(_OnVideoInit value)? onVideoInit,
     TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
   }) {
     return fetch?.call(this);
   }
@@ -353,6 +378,7 @@ class _$PreloadEventFetch implements PreloadEventFetch {
     TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
     TResult Function(_OnVideoInit value)? onVideoInit,
     TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
     required TResult orElse(),
   }) {
     if (fetch != null) {
@@ -437,6 +463,7 @@ class _$_OnVideoIndexChanged implements _OnVideoIndexChanged {
     required TResult Function(int index) onVideoIndexChanged,
     required TResult Function(int index) onVideoInit,
     required TResult Function() error,
+    required TResult Function(int story, StoryComment comment) commendAdd,
   }) {
     return onVideoIndexChanged(index);
   }
@@ -449,6 +476,7 @@ class _$_OnVideoIndexChanged implements _OnVideoIndexChanged {
     TResult Function(int index)? onVideoIndexChanged,
     TResult Function(int index)? onVideoInit,
     TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
   }) {
     return onVideoIndexChanged?.call(index);
   }
@@ -461,6 +489,7 @@ class _$_OnVideoIndexChanged implements _OnVideoIndexChanged {
     TResult Function(int index)? onVideoIndexChanged,
     TResult Function(int index)? onVideoInit,
     TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
     required TResult orElse(),
   }) {
     if (onVideoIndexChanged != null) {
@@ -477,6 +506,7 @@ class _$_OnVideoIndexChanged implements _OnVideoIndexChanged {
     required TResult Function(_OnVideoIndexChanged value) onVideoIndexChanged,
     required TResult Function(_OnVideoInit value) onVideoInit,
     required TResult Function(PreloadEventError value) error,
+    required TResult Function(CommentEventCommentAdd value) commendAdd,
   }) {
     return onVideoIndexChanged(this);
   }
@@ -489,6 +519,7 @@ class _$_OnVideoIndexChanged implements _OnVideoIndexChanged {
     TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
     TResult Function(_OnVideoInit value)? onVideoInit,
     TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
   }) {
     return onVideoIndexChanged?.call(this);
   }
@@ -501,6 +532,7 @@ class _$_OnVideoIndexChanged implements _OnVideoIndexChanged {
     TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
     TResult Function(_OnVideoInit value)? onVideoInit,
     TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
     required TResult orElse(),
   }) {
     if (onVideoIndexChanged != null) {
@@ -588,6 +620,7 @@ class _$_OnVideoInit implements _OnVideoInit {
     required TResult Function(int index) onVideoIndexChanged,
     required TResult Function(int index) onVideoInit,
     required TResult Function() error,
+    required TResult Function(int story, StoryComment comment) commendAdd,
   }) {
     return onVideoInit(index);
   }
@@ -600,6 +633,7 @@ class _$_OnVideoInit implements _OnVideoInit {
     TResult Function(int index)? onVideoIndexChanged,
     TResult Function(int index)? onVideoInit,
     TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
   }) {
     return onVideoInit?.call(index);
   }
@@ -612,6 +646,7 @@ class _$_OnVideoInit implements _OnVideoInit {
     TResult Function(int index)? onVideoIndexChanged,
     TResult Function(int index)? onVideoInit,
     TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
     required TResult orElse(),
   }) {
     if (onVideoInit != null) {
@@ -628,6 +663,7 @@ class _$_OnVideoInit implements _OnVideoInit {
     required TResult Function(_OnVideoIndexChanged value) onVideoIndexChanged,
     required TResult Function(_OnVideoInit value) onVideoInit,
     required TResult Function(PreloadEventError value) error,
+    required TResult Function(CommentEventCommentAdd value) commendAdd,
   }) {
     return onVideoInit(this);
   }
@@ -640,6 +676,7 @@ class _$_OnVideoInit implements _OnVideoInit {
     TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
     TResult Function(_OnVideoInit value)? onVideoInit,
     TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
   }) {
     return onVideoInit?.call(this);
   }
@@ -652,6 +689,7 @@ class _$_OnVideoInit implements _OnVideoInit {
     TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
     TResult Function(_OnVideoInit value)? onVideoInit,
     TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
     required TResult orElse(),
   }) {
     if (onVideoInit != null) {
@@ -716,6 +754,7 @@ class _$PreloadEventError implements PreloadEventError {
     required TResult Function(int index) onVideoIndexChanged,
     required TResult Function(int index) onVideoInit,
     required TResult Function() error,
+    required TResult Function(int story, StoryComment comment) commendAdd,
   }) {
     return error();
   }
@@ -728,6 +767,7 @@ class _$PreloadEventError implements PreloadEventError {
     TResult Function(int index)? onVideoIndexChanged,
     TResult Function(int index)? onVideoInit,
     TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
   }) {
     return error?.call();
   }
@@ -740,6 +780,7 @@ class _$PreloadEventError implements PreloadEventError {
     TResult Function(int index)? onVideoIndexChanged,
     TResult Function(int index)? onVideoInit,
     TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -756,6 +797,7 @@ class _$PreloadEventError implements PreloadEventError {
     required TResult Function(_OnVideoIndexChanged value) onVideoIndexChanged,
     required TResult Function(_OnVideoInit value) onVideoInit,
     required TResult Function(PreloadEventError value) error,
+    required TResult Function(CommentEventCommentAdd value) commendAdd,
   }) {
     return error(this);
   }
@@ -768,6 +810,7 @@ class _$PreloadEventError implements PreloadEventError {
     TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
     TResult Function(_OnVideoInit value)? onVideoInit,
     TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
   }) {
     return error?.call(this);
   }
@@ -780,6 +823,7 @@ class _$PreloadEventError implements PreloadEventError {
     TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
     TResult Function(_OnVideoInit value)? onVideoInit,
     TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -791,6 +835,187 @@ class _$PreloadEventError implements PreloadEventError {
 
 abstract class PreloadEventError implements PreloadEvent {
   const factory PreloadEventError() = _$PreloadEventError;
+}
+
+/// @nodoc
+abstract class $CommentEventCommentAddCopyWith<$Res> {
+  factory $CommentEventCommentAddCopyWith(CommentEventCommentAdd value,
+          $Res Function(CommentEventCommentAdd) then) =
+      _$CommentEventCommentAddCopyWithImpl<$Res>;
+  $Res call({int story, StoryComment comment});
+
+  $StoryCommentCopyWith<$Res> get comment;
+}
+
+/// @nodoc
+class _$CommentEventCommentAddCopyWithImpl<$Res>
+    extends _$PreloadEventCopyWithImpl<$Res>
+    implements $CommentEventCommentAddCopyWith<$Res> {
+  _$CommentEventCommentAddCopyWithImpl(CommentEventCommentAdd _value,
+      $Res Function(CommentEventCommentAdd) _then)
+      : super(_value, (v) => _then(v as CommentEventCommentAdd));
+
+  @override
+  CommentEventCommentAdd get _value => super._value as CommentEventCommentAdd;
+
+  @override
+  $Res call({
+    Object? story = freezed,
+    Object? comment = freezed,
+  }) {
+    return _then(CommentEventCommentAdd(
+      story: story == freezed
+          ? _value.story
+          : story // ignore: cast_nullable_to_non_nullable
+              as int,
+      comment: comment == freezed
+          ? _value.comment
+          : comment // ignore: cast_nullable_to_non_nullable
+              as StoryComment,
+    ));
+  }
+
+  @override
+  $StoryCommentCopyWith<$Res> get comment {
+    return $StoryCommentCopyWith<$Res>(_value.comment, (value) {
+      return _then(_value.copyWith(comment: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CommentEventCommentAdd implements CommentEventCommentAdd {
+  const _$CommentEventCommentAdd({required this.story, required this.comment});
+
+  @override
+  final int story;
+  @override
+  final StoryComment comment;
+
+  @override
+  String toString() {
+    return 'PreloadEvent.commendAdd(story: $story, comment: $comment)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is CommentEventCommentAdd &&
+            const DeepCollectionEquality().equals(other.story, story) &&
+            const DeepCollectionEquality().equals(other.comment, comment));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(story),
+      const DeepCollectionEquality().hash(comment));
+
+  @JsonKey(ignore: true)
+  @override
+  $CommentEventCommentAddCopyWith<CommentEventCommentAdd> get copyWith =>
+      _$CommentEventCommentAddCopyWithImpl<CommentEventCommentAdd>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initialize,
+    required TResult Function() fetch,
+    required TResult Function(int index) onVideoIndexChanged,
+    required TResult Function(int index) onVideoInit,
+    required TResult Function() error,
+    required TResult Function(int story, StoryComment comment) commendAdd,
+  }) {
+    return commendAdd(story, comment);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? initialize,
+    TResult Function()? fetch,
+    TResult Function(int index)? onVideoIndexChanged,
+    TResult Function(int index)? onVideoInit,
+    TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
+  }) {
+    return commendAdd?.call(story, comment);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initialize,
+    TResult Function()? fetch,
+    TResult Function(int index)? onVideoIndexChanged,
+    TResult Function(int index)? onVideoInit,
+    TResult Function()? error,
+    TResult Function(int story, StoryComment comment)? commendAdd,
+    required TResult orElse(),
+  }) {
+    if (commendAdd != null) {
+      return commendAdd(story, comment);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initialize value) initialize,
+    required TResult Function(PreloadEventFetch value) fetch,
+    required TResult Function(_OnVideoIndexChanged value) onVideoIndexChanged,
+    required TResult Function(_OnVideoInit value) onVideoInit,
+    required TResult Function(PreloadEventError value) error,
+    required TResult Function(CommentEventCommentAdd value) commendAdd,
+  }) {
+    return commendAdd(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_Initialize value)? initialize,
+    TResult Function(PreloadEventFetch value)? fetch,
+    TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
+    TResult Function(_OnVideoInit value)? onVideoInit,
+    TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
+  }) {
+    return commendAdd?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initialize value)? initialize,
+    TResult Function(PreloadEventFetch value)? fetch,
+    TResult Function(_OnVideoIndexChanged value)? onVideoIndexChanged,
+    TResult Function(_OnVideoInit value)? onVideoInit,
+    TResult Function(PreloadEventError value)? error,
+    TResult Function(CommentEventCommentAdd value)? commendAdd,
+    required TResult orElse(),
+  }) {
+    if (commendAdd != null) {
+      return commendAdd(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CommentEventCommentAdd implements PreloadEvent {
+  const factory CommentEventCommentAdd(
+      {required int story,
+      required StoryComment comment}) = _$CommentEventCommentAdd;
+
+  int get story;
+  StoryComment get comment;
+  @JsonKey(ignore: true)
+  $CommentEventCommentAddCopyWith<CommentEventCommentAdd> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc

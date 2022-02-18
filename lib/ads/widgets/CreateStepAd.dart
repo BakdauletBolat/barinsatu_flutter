@@ -1,25 +1,27 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:async';
+
 import 'package:barinsatu/ads/models/ad.dart';
 import 'package:barinsatu/ads/models/myData.dart';
 import 'package:barinsatu/ads/repositories/ad_repo.dart';
 import 'package:barinsatu/ads/widgets/Steps/Step3.dart';
 import 'package:barinsatu/ads/widgets/Steps/Step4.dart';
 import 'package:barinsatu/ads/widgets/steps/Step1.dart';
+import 'package:barinsatu/pages/HomePage.dart';
+import 'package:barinsatu/pages/ad/DetailPage.dart';
+import 'package:barinsatu/pages/auth/ProfileView.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/file.dart';
 
 import 'Steps/Step2.dart';
 
-List<GlobalKey<FormState>> formKeys = [
-  GlobalKey<FormState>(),
-  GlobalKey<FormState>(),
-  GlobalKey<FormState>(),
-  GlobalKey<FormState>()
-];
-
 class CreateStepAd extends StatefulWidget {
-  const CreateStepAd({Key? key}) : super(key: key);
+  const CreateStepAd({Key? key, required this.formKeys}) : super(key: key);
+
+  final List<GlobalKey<FormState>> formKeys;
 
   @override
   _CreateStepAdState createState() => _CreateStepAdState();
@@ -27,7 +29,7 @@ class CreateStepAd extends StatefulWidget {
 
 class _CreateStepAdState extends State<CreateStepAd> {
   int _index = 0;
-  int _slidingType = 1;
+  int _slidingType = 2;
   int _slidingObject = 0;
 
   List<AdDetailType> adDetailTypes = [];
@@ -37,7 +39,7 @@ class _CreateStepAdState extends State<CreateStepAd> {
     AdRepo authRepo = AdRepo();
     final adTypes = await authRepo.getAdTypeDetail(5);
 
-    if (this.mounted) {
+    if (mounted) {
       setState(() {
         adDetailTypes = adTypes;
       });
@@ -67,31 +69,99 @@ class _CreateStepAdState extends State<CreateStepAd> {
 
   var dio = Dio();
 
+  bool isLoading = false;
+
   void submitForm() async {
-    if (formKeys[3].currentState != null) {
-      if (formKeys[3].currentState!.validate()) {
-        formKeys[3].currentState!.save();
+    if (widget.formKeys[3].currentState != null) {
+      if (widget.formKeys[3].currentState!.validate()) {
+        setState(() {
+          isLoading = true;
+        });
+
+        widget.formKeys[3].currentState!.save();
         var mapped = data.toMap();
-        print(data.total_area);
-        mapped.addAll(
-          {
-            'author_id': 1,
-            'images': [
-              await MultipartFile.fromFile(data.imagesPath),
-            ]
-          },
-        );
+        AdRepo adRepo = AdRepo();
 
-        var formData = FormData.fromMap(mapped);
+        for (var element in data.images) {
+          mapped['images'].add(await MultipartFile.fromFile(element.path));
+        }
+
         print(mapped);
-        // var response =
-        //     await dio.post('http://172.20.10.3:8000/api/ad/', data: formData);
 
-        // print(response.statusCode);
+        var formData = FormData.fromMap({...mapped});
+
+        try {
+          Ad ad = await adRepo.createAd(formData);
+          data.clear();
+          const snackBar = SnackBar(
+            content: Text('Поздравляем с успешной загрузкой'),
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          Future.delayed(const Duration(seconds: 3));
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DetailPage(
+                        item: ad,
+                        isComplete: true,
+                      )),
+              (route) => false);
+          setState(() {
+            isLoading = false;
+          });
+        } on DioError catch (e) {
+          setState(() {
+            isLoading = false;
+          });
+          if (e.response != null) {
+            print(e.response?.data);
+            print(e.response?.headers);
+            print(e.response?.requestOptions);
+          } else {
+            // Something happened in setting up or sending the request that triggered an Error
+            print(e.requestOptions);
+            print(e.message);
+          }
+        }
       } else {
+        setState(() {
+          isLoading = false;
+        });
         print('eror');
       }
     }
+  }
+
+  Widget buildSaveButton() {
+    if (isLoading) {
+      return ElevatedButton(
+          onPressed: () {},
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.grey)),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Text(
+                  'Ожидание',
+                  style: TextStyle(fontSize: 15),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                CupertinoActivityIndicator()
+              ],
+            ),
+          ));
+    }
+    return Expanded(
+        child: ElevatedButton(
+      onPressed: submitForm,
+      child: const Text('Опубликовать'),
+    ));
   }
 
   @override
@@ -132,12 +202,7 @@ class _CreateStepAdState extends State<CreateStepAd> {
                         const SizedBox(
                           width: 12,
                         ),
-                        if (isLastStep)
-                          Expanded(
-                              child: ElevatedButton(
-                            onPressed: submitForm,
-                            child: const Text('Сохранить'),
-                          )),
+                        if (isLastStep) buildSaveButton(),
                         if (!isLastStep)
                           Expanded(
                               child: ElevatedButton(
@@ -157,9 +222,9 @@ class _CreateStepAdState extends State<CreateStepAd> {
                   }
                 },
                 onStepContinue: () {
-                  if (formKeys[_index].currentState!.validate()) {
+                  if (widget.formKeys[_index].currentState!.validate()) {
                     if (!isLastStep) {
-                      formKeys[_index].currentState!.save();
+                      widget.formKeys[_index].currentState!.save();
                       setState(() {
                         _index += 1;
                       });
@@ -185,15 +250,12 @@ class _CreateStepAdState extends State<CreateStepAd> {
             title: const Text(''),
             content: Step1(
               data: data,
-              formKey: formKeys[0],
+              formKey: widget.formKeys[0],
               slidingType: _slidingType,
               slidingObject: _slidingObject,
               itemsObject: adDetailTypes,
-              onValueChangedObject: (newValue) => {
-                data.ad_detail_type_id = newValue,
-                setState(() {
-                  _slidingObject = newValue as int;
-                })
+              onValueChangedObject: (newValue) {
+                setAdDetailValue(newValue!);
               },
               onValueChangedType: (newValue) => {
                 data.ad_type_id = newValue,
@@ -207,7 +269,7 @@ class _CreateStepAdState extends State<CreateStepAd> {
             state: _index >= 2 ? StepState.complete : StepState.indexed,
             title: const Text(''),
             content: Step2(
-              formKey: formKeys[1],
+              formKey: widget.formKeys[1],
               data: data,
             )),
         Step(
@@ -217,14 +279,14 @@ class _CreateStepAdState extends State<CreateStepAd> {
             content: Step3(
               adType: _slidingObject,
               data: data,
-              formKey: formKeys[2],
+              formKey: widget.formKeys[2],
             )),
         Step(
             isActive: _index >= 3,
             state: _index >= 4 ? StepState.complete : StepState.indexed,
             title: const Text(''),
             content: Step4(
-              formKey: formKeys[3],
+              formKey: widget.formKeys[3],
               data: data,
             ))
       ];

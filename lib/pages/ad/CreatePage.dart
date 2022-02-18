@@ -1,7 +1,9 @@
 import 'package:barinsatu/ads/widgets/CreateStepAd.dart';
 import 'package:barinsatu/authentication/bloc/auth_bloc.dart';
+import 'package:barinsatu/pages/auth/RegisterPage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../authentication/bloc/form_bloc.dart';
+import '../../authentication/bloc/form_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 
 class CreatePage extends StatefulWidget {
@@ -11,23 +13,17 @@ class CreatePage extends StatefulWidget {
   _CreatePageState createState() => _CreatePageState();
 }
 
-class FormData {
-  String? email = '';
-  String? password = '';
-
-  void onChangeEmail(value) {
-    email = value;
-  }
-
-  void onChangePassword(value) {
-    password = value;
-  }
-}
-
 class _CreatePageState extends State<CreatePage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+
+  List<GlobalKey<FormState>> formKeys = [
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +35,7 @@ class _CreatePageState extends State<CreatePage>
                     child: Column(
                   children: [
                     const SizedBox(
-                      height: 120,
+                      height: 80,
                     ),
                     SizedBox(
                       width: 207,
@@ -87,12 +83,17 @@ class _CreatePageState extends State<CreatePage>
                                             behavior: SnackBarBehavior.floating,
                                             content: Text('Успешно вошли !')));
 
-                                    Future.delayed(const Duration(seconds: 3));
                                     context
                                         .read<AuthBloc>()
                                         .add(const AuthEvent.getUser());
                                   },
                                   onFailure: (context, state) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            elevation: 0,
+                                            behavior: SnackBarBehavior.floating,
+                                            content: Text(
+                                                'Что то пошло не так введите правильные данные!')));
                                     print('onFailure');
                                     LoadingDialog.hide(context);
                                   },
@@ -100,6 +101,8 @@ class _CreatePageState extends State<CreatePage>
                                     child: Column(
                                       children: [
                                         TextFieldBlocBuilder(
+                                          errorBuilder: (context, error) =>
+                                              'Введите почту правильно',
                                           textFieldBloc: loginFormBloc.email,
                                           keyboardType:
                                               TextInputType.emailAddress,
@@ -109,6 +112,8 @@ class _CreatePageState extends State<CreatePage>
                                           ),
                                         ),
                                         TextFieldBlocBuilder(
+                                          errorBuilder: (context, error) =>
+                                              'Введите пароль правильно',
                                           textFieldBloc: loginFormBloc.password,
                                           keyboardType:
                                               TextInputType.visiblePassword,
@@ -126,6 +131,31 @@ class _CreatePageState extends State<CreatePage>
                                                   child: const Text('Войти')),
                                             )
                                           ],
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text('Забыли пароль ?'),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    CupertinoPageRoute(
+                                                        builder: (context) =>
+                                                            const RegisterPage()));
+                                              },
+                                              child: Text(
+                                                'Создать новый аккаунт',
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColor),
+                                              ),
+                                            )
+                                          ],
                                         )
                                       ],
                                     ),
@@ -138,7 +168,7 @@ class _CreatePageState extends State<CreatePage>
                   ],
                 )),
             loaded: (userLoaded, msg) =>
-                Container(child: const CreateStepAd())));
+                Container(child: CreateStepAd(formKeys: formKeys))));
   }
 }
 
@@ -152,20 +182,17 @@ class LoadingDialog extends StatelessWidget {
 
   static void hide(BuildContext context) => Navigator.pop(context);
 
-  LoadingDialog({Key? key}) : super(key: key);
+  const LoadingDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Center(
-        child: Card(
-          child: Container(
-            width: 80,
-            height: 80,
-            padding: EdgeInsets.all(12.0),
-            child: const CircularProgressIndicator(),
-          ),
+    return Center(
+      child: Card(
+        child: Container(
+          width: 80,
+          height: 80,
+          padding: const EdgeInsets.all(12.0),
+          child: const CircularProgressIndicator(),
         ),
       ),
     );

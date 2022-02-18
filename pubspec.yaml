@@ -45,7 +45,6 @@ dependencies:
   build_runner: ^2.1.7
   json_annotation: ^4.4.0
   json_serializable: ^6.1.4
-  cached_network_image: ^3.2.0
   intl: ^0.17.0
   carousel_slider: ^4.0.0
   google_fonts: ^2.2.0
@@ -62,8 +61,16 @@ dependencies:
   video_player: ^2.2.18
   preload_page_view: ^0.1.6
   flutter_cache_manager: ^3.3.0
-  video_compress: ^3.0.0
-  images_picker: ^1.2.10
+  video_compress: ^3.1.0
+  wechat_assets_picker: ^6.3.1
+  multi_select_flutter: ^4.0.0
+  extended_image: ^6.0.1
+  currency_text_input_formatter: ^2.1.5
+  sliding_sheet: ^0.5.2
+  url_launcher: ^6.0.20
+  flutter_rating_bar: ^4.0.0
+  badges: ^2.0.2
+  google_maps_flutter_web: ^0.3.2+1
   
   
 
@@ -93,4 +100,8 @@ flutter:
 
   assets:
     - assets/logo.png
+    - assets/no-image.jpeg
+    - assets/error.png
+    - assets/marker.png
+    - assets/icons/
 

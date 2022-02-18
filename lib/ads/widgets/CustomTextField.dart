@@ -5,6 +5,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 class CustomTextField extends StatelessWidget {
   const CustomTextField(
       {Key? key,
+      this.keyBoardType,
       required this.placeHolder,
       this.controller,
       required this.onEditingComplete,
@@ -15,6 +16,7 @@ class CustomTextField extends StatelessWidget {
       : super(key: key);
 
   final void Function(String?)? onSaved;
+  final TextInputType? keyBoardType;
   final void Function()? onEditingComplete;
   final TextEditingController? controller;
   final int? maxLines;
@@ -38,6 +40,8 @@ class CustomTextField extends StatelessWidget {
         onSaved: onSaved,
         onChanged: onValueChanged,
         controller: controller,
+        keyboardType: keyBoardType ?? TextInputType.text,
+
         // maxLines: maxLines,
         onEditingComplete: onEditingComplete,
         decoration: InputDecoration(label: Text(placeHolder)),

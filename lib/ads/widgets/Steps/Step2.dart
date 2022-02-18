@@ -23,7 +23,7 @@ class Step2 extends StatefulWidget {
 
 class _State extends State<Step2> {
   List<City> cities = [];
-  int cityValue = 1;
+  int cityValue = 0;
   AdRepo adRepo = AdRepo();
   List<Geo> predictions = [];
 
@@ -48,7 +48,10 @@ class _State extends State<Step2> {
     GeoResponse response = await adRepo.getGeoCodes(value);
     if (response.predictions.isNotEmpty) {
       setState(() {
-        predictions = response.predictions;
+        predictions = [
+          Geo.fromJson({"description": value, "place_id": "1"}),
+          ...response.predictions
+        ];
       });
     } else {
       setState(() {
@@ -83,6 +86,12 @@ class _State extends State<Step2> {
   }
 
   void setPlaceAndClear(String placeId) async {
+    if (placeId == "1") {
+      setState(() {
+        predictions = [];
+      });
+      return;
+    }
     var res = await adRepo.getGeoDetail(placeId);
     widget.data.lat = res.lat;
     widget.data.lng = res.lng;
@@ -101,7 +110,7 @@ class _State extends State<Step2> {
     markerId: const MarkerId('location'),
     infoWindow: const InfoWindow(title: 'location'),
     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-    position: LatLng(42.340782, 69.596329),
+    position: const LatLng(42.340782, 69.596329),
   );
 
   late GoogleMapController _controller;
@@ -161,6 +170,8 @@ class _State extends State<Step2> {
                     mapType: MapType.normal,
                     onTap: (latLng) {
                       setState(() {
+                        widget.data.lat = latLng.latitude;
+                        widget.data.lng = latLng.longitude;
                         location = location.copyWith(
                             positionParam:
                                 LatLng(latLng.latitude, latLng.longitude));
@@ -184,8 +195,9 @@ class _State extends State<Step2> {
                   itemCount: predictions.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      leading: const CircleAvatar(
-                        child: Icon(
+                      leading: CircleAvatar(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        child: const Icon(
                           Icons.pin_drop,
                           color: Colors.white,
                         ),

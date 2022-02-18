@@ -242,8 +242,10 @@ class _$AdTearOff {
       AdDetailType? ad_detail_type,
       AdType? ad_type,
       Details? details,
+      required List<Comment> comments,
       City? city,
       User? author,
+      required DateTime created_at,
       required List<Like> likes,
       required List<Images> images}) {
     return _Ad(
@@ -257,8 +259,10 @@ class _$AdTearOff {
       ad_detail_type: ad_detail_type,
       ad_type: ad_type,
       details: details,
+      comments: comments,
       city: city,
       author: author,
+      created_at: created_at,
       likes: likes,
       images: images,
     );
@@ -284,8 +288,10 @@ mixin _$Ad {
   AdDetailType? get ad_detail_type => throw _privateConstructorUsedError;
   AdType? get ad_type => throw _privateConstructorUsedError;
   Details? get details => throw _privateConstructorUsedError;
+  List<Comment> get comments => throw _privateConstructorUsedError;
   City? get city => throw _privateConstructorUsedError;
   User? get author => throw _privateConstructorUsedError;
+  DateTime get created_at => throw _privateConstructorUsedError;
   List<Like> get likes => throw _privateConstructorUsedError;
   List<Images> get images => throw _privateConstructorUsedError;
 
@@ -309,8 +315,10 @@ abstract class $AdCopyWith<$Res> {
       AdDetailType? ad_detail_type,
       AdType? ad_type,
       Details? details,
+      List<Comment> comments,
       City? city,
       User? author,
+      DateTime created_at,
       List<Like> likes,
       List<Images> images});
 
@@ -341,8 +349,10 @@ class _$AdCopyWithImpl<$Res> implements $AdCopyWith<$Res> {
     Object? ad_detail_type = freezed,
     Object? ad_type = freezed,
     Object? details = freezed,
+    Object? comments = freezed,
     Object? city = freezed,
     Object? author = freezed,
+    Object? created_at = freezed,
     Object? likes = freezed,
     Object? images = freezed,
   }) {
@@ -387,6 +397,10 @@ class _$AdCopyWithImpl<$Res> implements $AdCopyWith<$Res> {
           ? _value.details
           : details // ignore: cast_nullable_to_non_nullable
               as Details?,
+      comments: comments == freezed
+          ? _value.comments
+          : comments // ignore: cast_nullable_to_non_nullable
+              as List<Comment>,
       city: city == freezed
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
@@ -395,6 +409,10 @@ class _$AdCopyWithImpl<$Res> implements $AdCopyWith<$Res> {
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
               as User?,
+      created_at: created_at == freezed
+          ? _value.created_at
+          : created_at // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       likes: likes == freezed
           ? _value.likes
           : likes // ignore: cast_nullable_to_non_nullable
@@ -478,8 +496,10 @@ abstract class _$AdCopyWith<$Res> implements $AdCopyWith<$Res> {
       AdDetailType? ad_detail_type,
       AdType? ad_type,
       Details? details,
+      List<Comment> comments,
       City? city,
       User? author,
+      DateTime created_at,
       List<Like> likes,
       List<Images> images});
 
@@ -516,8 +536,10 @@ class __$AdCopyWithImpl<$Res> extends _$AdCopyWithImpl<$Res>
     Object? ad_detail_type = freezed,
     Object? ad_type = freezed,
     Object? details = freezed,
+    Object? comments = freezed,
     Object? city = freezed,
     Object? author = freezed,
+    Object? created_at = freezed,
     Object? likes = freezed,
     Object? images = freezed,
   }) {
@@ -562,6 +584,10 @@ class __$AdCopyWithImpl<$Res> extends _$AdCopyWithImpl<$Res>
           ? _value.details
           : details // ignore: cast_nullable_to_non_nullable
               as Details?,
+      comments: comments == freezed
+          ? _value.comments
+          : comments // ignore: cast_nullable_to_non_nullable
+              as List<Comment>,
       city: city == freezed
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
@@ -570,6 +596,10 @@ class __$AdCopyWithImpl<$Res> extends _$AdCopyWithImpl<$Res>
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
               as User?,
+      created_at: created_at == freezed
+          ? _value.created_at
+          : created_at // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       likes: likes == freezed
           ? _value.likes
           : likes // ignore: cast_nullable_to_non_nullable
@@ -596,8 +626,10 @@ class _$_Ad implements _Ad {
       this.ad_detail_type,
       this.ad_type,
       this.details,
+      required this.comments,
       this.city,
       this.author,
+      required this.created_at,
       required this.likes,
       required this.images});
 
@@ -624,9 +656,13 @@ class _$_Ad implements _Ad {
   @override
   final Details? details;
   @override
+  final List<Comment> comments;
+  @override
   final City? city;
   @override
   final User? author;
+  @override
+  final DateTime created_at;
   @override
   final List<Like> likes;
   @override
@@ -634,7 +670,7 @@ class _$_Ad implements _Ad {
 
   @override
   String toString() {
-    return 'Ad(id: $id, title: $title, description: $description, price: $price, location_text: $location_text, lat: $lat, lng: $lng, ad_detail_type: $ad_detail_type, ad_type: $ad_type, details: $details, city: $city, author: $author, likes: $likes, images: $images)';
+    return 'Ad(id: $id, title: $title, description: $description, price: $price, location_text: $location_text, lat: $lat, lng: $lng, ad_detail_type: $ad_detail_type, ad_type: $ad_type, details: $details, comments: $comments, city: $city, author: $author, created_at: $created_at, likes: $likes, images: $images)';
   }
 
   @override
@@ -655,8 +691,11 @@ class _$_Ad implements _Ad {
                 .equals(other.ad_detail_type, ad_detail_type) &&
             const DeepCollectionEquality().equals(other.ad_type, ad_type) &&
             const DeepCollectionEquality().equals(other.details, details) &&
+            const DeepCollectionEquality().equals(other.comments, comments) &&
             const DeepCollectionEquality().equals(other.city, city) &&
             const DeepCollectionEquality().equals(other.author, author) &&
+            const DeepCollectionEquality()
+                .equals(other.created_at, created_at) &&
             const DeepCollectionEquality().equals(other.likes, likes) &&
             const DeepCollectionEquality().equals(other.images, images));
   }
@@ -674,8 +713,10 @@ class _$_Ad implements _Ad {
       const DeepCollectionEquality().hash(ad_detail_type),
       const DeepCollectionEquality().hash(ad_type),
       const DeepCollectionEquality().hash(details),
+      const DeepCollectionEquality().hash(comments),
       const DeepCollectionEquality().hash(city),
       const DeepCollectionEquality().hash(author),
+      const DeepCollectionEquality().hash(created_at),
       const DeepCollectionEquality().hash(likes),
       const DeepCollectionEquality().hash(images));
 
@@ -701,8 +742,10 @@ abstract class _Ad implements Ad {
       AdDetailType? ad_detail_type,
       AdType? ad_type,
       Details? details,
+      required List<Comment> comments,
       City? city,
       User? author,
+      required DateTime created_at,
       required List<Like> likes,
       required List<Images> images}) = _$_Ad;
 
@@ -729,9 +772,13 @@ abstract class _Ad implements Ad {
   @override
   Details? get details;
   @override
+  List<Comment> get comments;
+  @override
   City? get city;
   @override
   User? get author;
+  @override
+  DateTime get created_at;
   @override
   List<Like> get likes;
   @override
@@ -739,6 +786,300 @@ abstract class _Ad implements Ad {
   @override
   @JsonKey(ignore: true)
   _$AdCopyWith<_Ad> get copyWith => throw _privateConstructorUsedError;
+}
+
+FilterData _$FilterDataFromJson(Map<String, dynamic> json) {
+  return _FilterData.fromJson(json);
+}
+
+/// @nodoc
+class _$FilterDataTearOff {
+  const _$FilterDataTearOff();
+
+  _FilterData call(
+      {int? adType,
+      int? limit,
+      int? buildingTypeHome,
+      int? repairTypeHome,
+      String? totalAreaHome,
+      String? floorHome,
+      String? numbersRoomHome}) {
+    return _FilterData(
+      adType: adType,
+      limit: limit,
+      buildingTypeHome: buildingTypeHome,
+      repairTypeHome: repairTypeHome,
+      totalAreaHome: totalAreaHome,
+      floorHome: floorHome,
+      numbersRoomHome: numbersRoomHome,
+    );
+  }
+
+  FilterData fromJson(Map<String, Object?> json) {
+    return FilterData.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $FilterData = _$FilterDataTearOff();
+
+/// @nodoc
+mixin _$FilterData {
+  int? get adType => throw _privateConstructorUsedError;
+  int? get limit => throw _privateConstructorUsedError;
+  int? get buildingTypeHome => throw _privateConstructorUsedError;
+  int? get repairTypeHome => throw _privateConstructorUsedError;
+  String? get totalAreaHome => throw _privateConstructorUsedError;
+  String? get floorHome => throw _privateConstructorUsedError;
+  String? get numbersRoomHome => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $FilterDataCopyWith<FilterData> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $FilterDataCopyWith<$Res> {
+  factory $FilterDataCopyWith(
+          FilterData value, $Res Function(FilterData) then) =
+      _$FilterDataCopyWithImpl<$Res>;
+  $Res call(
+      {int? adType,
+      int? limit,
+      int? buildingTypeHome,
+      int? repairTypeHome,
+      String? totalAreaHome,
+      String? floorHome,
+      String? numbersRoomHome});
+}
+
+/// @nodoc
+class _$FilterDataCopyWithImpl<$Res> implements $FilterDataCopyWith<$Res> {
+  _$FilterDataCopyWithImpl(this._value, this._then);
+
+  final FilterData _value;
+  // ignore: unused_field
+  final $Res Function(FilterData) _then;
+
+  @override
+  $Res call({
+    Object? adType = freezed,
+    Object? limit = freezed,
+    Object? buildingTypeHome = freezed,
+    Object? repairTypeHome = freezed,
+    Object? totalAreaHome = freezed,
+    Object? floorHome = freezed,
+    Object? numbersRoomHome = freezed,
+  }) {
+    return _then(_value.copyWith(
+      adType: adType == freezed
+          ? _value.adType
+          : adType // ignore: cast_nullable_to_non_nullable
+              as int?,
+      limit: limit == freezed
+          ? _value.limit
+          : limit // ignore: cast_nullable_to_non_nullable
+              as int?,
+      buildingTypeHome: buildingTypeHome == freezed
+          ? _value.buildingTypeHome
+          : buildingTypeHome // ignore: cast_nullable_to_non_nullable
+              as int?,
+      repairTypeHome: repairTypeHome == freezed
+          ? _value.repairTypeHome
+          : repairTypeHome // ignore: cast_nullable_to_non_nullable
+              as int?,
+      totalAreaHome: totalAreaHome == freezed
+          ? _value.totalAreaHome
+          : totalAreaHome // ignore: cast_nullable_to_non_nullable
+              as String?,
+      floorHome: floorHome == freezed
+          ? _value.floorHome
+          : floorHome // ignore: cast_nullable_to_non_nullable
+              as String?,
+      numbersRoomHome: numbersRoomHome == freezed
+          ? _value.numbersRoomHome
+          : numbersRoomHome // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$FilterDataCopyWith<$Res> implements $FilterDataCopyWith<$Res> {
+  factory _$FilterDataCopyWith(
+          _FilterData value, $Res Function(_FilterData) then) =
+      __$FilterDataCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {int? adType,
+      int? limit,
+      int? buildingTypeHome,
+      int? repairTypeHome,
+      String? totalAreaHome,
+      String? floorHome,
+      String? numbersRoomHome});
+}
+
+/// @nodoc
+class __$FilterDataCopyWithImpl<$Res> extends _$FilterDataCopyWithImpl<$Res>
+    implements _$FilterDataCopyWith<$Res> {
+  __$FilterDataCopyWithImpl(
+      _FilterData _value, $Res Function(_FilterData) _then)
+      : super(_value, (v) => _then(v as _FilterData));
+
+  @override
+  _FilterData get _value => super._value as _FilterData;
+
+  @override
+  $Res call({
+    Object? adType = freezed,
+    Object? limit = freezed,
+    Object? buildingTypeHome = freezed,
+    Object? repairTypeHome = freezed,
+    Object? totalAreaHome = freezed,
+    Object? floorHome = freezed,
+    Object? numbersRoomHome = freezed,
+  }) {
+    return _then(_FilterData(
+      adType: adType == freezed
+          ? _value.adType
+          : adType // ignore: cast_nullable_to_non_nullable
+              as int?,
+      limit: limit == freezed
+          ? _value.limit
+          : limit // ignore: cast_nullable_to_non_nullable
+              as int?,
+      buildingTypeHome: buildingTypeHome == freezed
+          ? _value.buildingTypeHome
+          : buildingTypeHome // ignore: cast_nullable_to_non_nullable
+              as int?,
+      repairTypeHome: repairTypeHome == freezed
+          ? _value.repairTypeHome
+          : repairTypeHome // ignore: cast_nullable_to_non_nullable
+              as int?,
+      totalAreaHome: totalAreaHome == freezed
+          ? _value.totalAreaHome
+          : totalAreaHome // ignore: cast_nullable_to_non_nullable
+              as String?,
+      floorHome: floorHome == freezed
+          ? _value.floorHome
+          : floorHome // ignore: cast_nullable_to_non_nullable
+              as String?,
+      numbersRoomHome: numbersRoomHome == freezed
+          ? _value.numbersRoomHome
+          : numbersRoomHome // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_FilterData implements _FilterData {
+  const _$_FilterData(
+      {this.adType,
+      this.limit,
+      this.buildingTypeHome,
+      this.repairTypeHome,
+      this.totalAreaHome,
+      this.floorHome,
+      this.numbersRoomHome});
+
+  factory _$_FilterData.fromJson(Map<String, dynamic> json) =>
+      _$$_FilterDataFromJson(json);
+
+  @override
+  final int? adType;
+  @override
+  final int? limit;
+  @override
+  final int? buildingTypeHome;
+  @override
+  final int? repairTypeHome;
+  @override
+  final String? totalAreaHome;
+  @override
+  final String? floorHome;
+  @override
+  final String? numbersRoomHome;
+
+  @override
+  String toString() {
+    return 'FilterData(adType: $adType, limit: $limit, buildingTypeHome: $buildingTypeHome, repairTypeHome: $repairTypeHome, totalAreaHome: $totalAreaHome, floorHome: $floorHome, numbersRoomHome: $numbersRoomHome)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _FilterData &&
+            const DeepCollectionEquality().equals(other.adType, adType) &&
+            const DeepCollectionEquality().equals(other.limit, limit) &&
+            const DeepCollectionEquality()
+                .equals(other.buildingTypeHome, buildingTypeHome) &&
+            const DeepCollectionEquality()
+                .equals(other.repairTypeHome, repairTypeHome) &&
+            const DeepCollectionEquality()
+                .equals(other.totalAreaHome, totalAreaHome) &&
+            const DeepCollectionEquality().equals(other.floorHome, floorHome) &&
+            const DeepCollectionEquality()
+                .equals(other.numbersRoomHome, numbersRoomHome));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(adType),
+      const DeepCollectionEquality().hash(limit),
+      const DeepCollectionEquality().hash(buildingTypeHome),
+      const DeepCollectionEquality().hash(repairTypeHome),
+      const DeepCollectionEquality().hash(totalAreaHome),
+      const DeepCollectionEquality().hash(floorHome),
+      const DeepCollectionEquality().hash(numbersRoomHome));
+
+  @JsonKey(ignore: true)
+  @override
+  _$FilterDataCopyWith<_FilterData> get copyWith =>
+      __$FilterDataCopyWithImpl<_FilterData>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_FilterDataToJson(this);
+  }
+}
+
+abstract class _FilterData implements FilterData {
+  const factory _FilterData(
+      {int? adType,
+      int? limit,
+      int? buildingTypeHome,
+      int? repairTypeHome,
+      String? totalAreaHome,
+      String? floorHome,
+      String? numbersRoomHome}) = _$_FilterData;
+
+  factory _FilterData.fromJson(Map<String, dynamic> json) =
+      _$_FilterData.fromJson;
+
+  @override
+  int? get adType;
+  @override
+  int? get limit;
+  @override
+  int? get buildingTypeHome;
+  @override
+  int? get repairTypeHome;
+  @override
+  String? get totalAreaHome;
+  @override
+  String? get floorHome;
+  @override
+  String? get numbersRoomHome;
+  @override
+  @JsonKey(ignore: true)
+  _$FilterDataCopyWith<_FilterData> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 Communications _$CommunicationsFromJson(Map<String, dynamic> json) {
@@ -1254,21 +1595,27 @@ class _$DetailsTearOff {
   _Details call(
       {required int id,
       int? numbers_room,
-      required int total_area,
+      required double total_area,
+      required String total_area_string,
       int? year_construction,
       List<Communications>? communications,
       BuildingType? building_type,
       RepairType? repair_type,
+      bool? is_pledge,
+      bool? is_divisibility,
       int? floor,
       int? total_floor}) {
     return _Details(
       id: id,
       numbers_room: numbers_room,
       total_area: total_area,
+      total_area_string: total_area_string,
       year_construction: year_construction,
       communications: communications,
       building_type: building_type,
       repair_type: repair_type,
+      is_pledge: is_pledge,
+      is_divisibility: is_divisibility,
       floor: floor,
       total_floor: total_floor,
     );
@@ -1286,12 +1633,15 @@ const $Details = _$DetailsTearOff();
 mixin _$Details {
   int get id => throw _privateConstructorUsedError;
   int? get numbers_room => throw _privateConstructorUsedError;
-  int get total_area => throw _privateConstructorUsedError;
+  double get total_area => throw _privateConstructorUsedError;
+  String get total_area_string => throw _privateConstructorUsedError;
   int? get year_construction => throw _privateConstructorUsedError;
   List<Communications>? get communications =>
       throw _privateConstructorUsedError;
   BuildingType? get building_type => throw _privateConstructorUsedError;
   RepairType? get repair_type => throw _privateConstructorUsedError;
+  bool? get is_pledge => throw _privateConstructorUsedError;
+  bool? get is_divisibility => throw _privateConstructorUsedError;
   int? get floor => throw _privateConstructorUsedError;
   int? get total_floor => throw _privateConstructorUsedError;
 
@@ -1307,11 +1657,14 @@ abstract class $DetailsCopyWith<$Res> {
   $Res call(
       {int id,
       int? numbers_room,
-      int total_area,
+      double total_area,
+      String total_area_string,
       int? year_construction,
       List<Communications>? communications,
       BuildingType? building_type,
       RepairType? repair_type,
+      bool? is_pledge,
+      bool? is_divisibility,
       int? floor,
       int? total_floor});
 
@@ -1332,10 +1685,13 @@ class _$DetailsCopyWithImpl<$Res> implements $DetailsCopyWith<$Res> {
     Object? id = freezed,
     Object? numbers_room = freezed,
     Object? total_area = freezed,
+    Object? total_area_string = freezed,
     Object? year_construction = freezed,
     Object? communications = freezed,
     Object? building_type = freezed,
     Object? repair_type = freezed,
+    Object? is_pledge = freezed,
+    Object? is_divisibility = freezed,
     Object? floor = freezed,
     Object? total_floor = freezed,
   }) {
@@ -1351,7 +1707,11 @@ class _$DetailsCopyWithImpl<$Res> implements $DetailsCopyWith<$Res> {
       total_area: total_area == freezed
           ? _value.total_area
           : total_area // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
+      total_area_string: total_area_string == freezed
+          ? _value.total_area_string
+          : total_area_string // ignore: cast_nullable_to_non_nullable
+              as String,
       year_construction: year_construction == freezed
           ? _value.year_construction
           : year_construction // ignore: cast_nullable_to_non_nullable
@@ -1368,6 +1728,14 @@ class _$DetailsCopyWithImpl<$Res> implements $DetailsCopyWith<$Res> {
           ? _value.repair_type
           : repair_type // ignore: cast_nullable_to_non_nullable
               as RepairType?,
+      is_pledge: is_pledge == freezed
+          ? _value.is_pledge
+          : is_pledge // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      is_divisibility: is_divisibility == freezed
+          ? _value.is_divisibility
+          : is_divisibility // ignore: cast_nullable_to_non_nullable
+              as bool?,
       floor: floor == freezed
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
@@ -1410,11 +1778,14 @@ abstract class _$DetailsCopyWith<$Res> implements $DetailsCopyWith<$Res> {
   $Res call(
       {int id,
       int? numbers_room,
-      int total_area,
+      double total_area,
+      String total_area_string,
       int? year_construction,
       List<Communications>? communications,
       BuildingType? building_type,
       RepairType? repair_type,
+      bool? is_pledge,
+      bool? is_divisibility,
       int? floor,
       int? total_floor});
 
@@ -1438,10 +1809,13 @@ class __$DetailsCopyWithImpl<$Res> extends _$DetailsCopyWithImpl<$Res>
     Object? id = freezed,
     Object? numbers_room = freezed,
     Object? total_area = freezed,
+    Object? total_area_string = freezed,
     Object? year_construction = freezed,
     Object? communications = freezed,
     Object? building_type = freezed,
     Object? repair_type = freezed,
+    Object? is_pledge = freezed,
+    Object? is_divisibility = freezed,
     Object? floor = freezed,
     Object? total_floor = freezed,
   }) {
@@ -1457,7 +1831,11 @@ class __$DetailsCopyWithImpl<$Res> extends _$DetailsCopyWithImpl<$Res>
       total_area: total_area == freezed
           ? _value.total_area
           : total_area // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
+      total_area_string: total_area_string == freezed
+          ? _value.total_area_string
+          : total_area_string // ignore: cast_nullable_to_non_nullable
+              as String,
       year_construction: year_construction == freezed
           ? _value.year_construction
           : year_construction // ignore: cast_nullable_to_non_nullable
@@ -1474,6 +1852,14 @@ class __$DetailsCopyWithImpl<$Res> extends _$DetailsCopyWithImpl<$Res>
           ? _value.repair_type
           : repair_type // ignore: cast_nullable_to_non_nullable
               as RepairType?,
+      is_pledge: is_pledge == freezed
+          ? _value.is_pledge
+          : is_pledge // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      is_divisibility: is_divisibility == freezed
+          ? _value.is_divisibility
+          : is_divisibility // ignore: cast_nullable_to_non_nullable
+              as bool?,
       floor: floor == freezed
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
@@ -1493,10 +1879,13 @@ class _$_Details implements _Details {
       {required this.id,
       this.numbers_room,
       required this.total_area,
+      required this.total_area_string,
       this.year_construction,
       this.communications,
       this.building_type,
       this.repair_type,
+      this.is_pledge,
+      this.is_divisibility,
       this.floor,
       this.total_floor});
 
@@ -1508,7 +1897,9 @@ class _$_Details implements _Details {
   @override
   final int? numbers_room;
   @override
-  final int total_area;
+  final double total_area;
+  @override
+  final String total_area_string;
   @override
   final int? year_construction;
   @override
@@ -1518,13 +1909,17 @@ class _$_Details implements _Details {
   @override
   final RepairType? repair_type;
   @override
+  final bool? is_pledge;
+  @override
+  final bool? is_divisibility;
+  @override
   final int? floor;
   @override
   final int? total_floor;
 
   @override
   String toString() {
-    return 'Details(id: $id, numbers_room: $numbers_room, total_area: $total_area, year_construction: $year_construction, communications: $communications, building_type: $building_type, repair_type: $repair_type, floor: $floor, total_floor: $total_floor)';
+    return 'Details(id: $id, numbers_room: $numbers_room, total_area: $total_area, total_area_string: $total_area_string, year_construction: $year_construction, communications: $communications, building_type: $building_type, repair_type: $repair_type, is_pledge: $is_pledge, is_divisibility: $is_divisibility, floor: $floor, total_floor: $total_floor)';
   }
 
   @override
@@ -1538,6 +1933,8 @@ class _$_Details implements _Details {
             const DeepCollectionEquality()
                 .equals(other.total_area, total_area) &&
             const DeepCollectionEquality()
+                .equals(other.total_area_string, total_area_string) &&
+            const DeepCollectionEquality()
                 .equals(other.year_construction, year_construction) &&
             const DeepCollectionEquality()
                 .equals(other.communications, communications) &&
@@ -1545,6 +1942,9 @@ class _$_Details implements _Details {
                 .equals(other.building_type, building_type) &&
             const DeepCollectionEquality()
                 .equals(other.repair_type, repair_type) &&
+            const DeepCollectionEquality().equals(other.is_pledge, is_pledge) &&
+            const DeepCollectionEquality()
+                .equals(other.is_divisibility, is_divisibility) &&
             const DeepCollectionEquality().equals(other.floor, floor) &&
             const DeepCollectionEquality()
                 .equals(other.total_floor, total_floor));
@@ -1556,10 +1956,13 @@ class _$_Details implements _Details {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(numbers_room),
       const DeepCollectionEquality().hash(total_area),
+      const DeepCollectionEquality().hash(total_area_string),
       const DeepCollectionEquality().hash(year_construction),
       const DeepCollectionEquality().hash(communications),
       const DeepCollectionEquality().hash(building_type),
       const DeepCollectionEquality().hash(repair_type),
+      const DeepCollectionEquality().hash(is_pledge),
+      const DeepCollectionEquality().hash(is_divisibility),
       const DeepCollectionEquality().hash(floor),
       const DeepCollectionEquality().hash(total_floor));
 
@@ -1578,11 +1981,14 @@ abstract class _Details implements Details {
   const factory _Details(
       {required int id,
       int? numbers_room,
-      required int total_area,
+      required double total_area,
+      required String total_area_string,
       int? year_construction,
       List<Communications>? communications,
       BuildingType? building_type,
       RepairType? repair_type,
+      bool? is_pledge,
+      bool? is_divisibility,
       int? floor,
       int? total_floor}) = _$_Details;
 
@@ -1593,7 +1999,9 @@ abstract class _Details implements Details {
   @override
   int? get numbers_room;
   @override
-  int get total_area;
+  double get total_area;
+  @override
+  String get total_area_string;
   @override
   int? get year_construction;
   @override
@@ -1602,6 +2010,10 @@ abstract class _Details implements Details {
   BuildingType? get building_type;
   @override
   RepairType? get repair_type;
+  @override
+  bool? get is_pledge;
+  @override
+  bool? get is_divisibility;
   @override
   int? get floor;
   @override
@@ -2344,6 +2756,227 @@ abstract class _Like implements Like {
   @override
   @JsonKey(ignore: true)
   _$LikeCopyWith<_Like> get copyWith => throw _privateConstructorUsedError;
+}
+
+Comment _$CommentFromJson(Map<String, dynamic> json) {
+  return _Comment.fromJson(json);
+}
+
+/// @nodoc
+class _$CommentTearOff {
+  const _$CommentTearOff();
+
+  _Comment call(
+      {required String text,
+      required User author,
+      required int ad,
+      required DateTime created_at}) {
+    return _Comment(
+      text: text,
+      author: author,
+      ad: ad,
+      created_at: created_at,
+    );
+  }
+
+  Comment fromJson(Map<String, Object?> json) {
+    return Comment.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $Comment = _$CommentTearOff();
+
+/// @nodoc
+mixin _$Comment {
+  String get text => throw _privateConstructorUsedError;
+  User get author => throw _privateConstructorUsedError;
+  int get ad => throw _privateConstructorUsedError;
+  DateTime get created_at => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $CommentCopyWith<Comment> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CommentCopyWith<$Res> {
+  factory $CommentCopyWith(Comment value, $Res Function(Comment) then) =
+      _$CommentCopyWithImpl<$Res>;
+  $Res call({String text, User author, int ad, DateTime created_at});
+
+  $UserCopyWith<$Res> get author;
+}
+
+/// @nodoc
+class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
+  _$CommentCopyWithImpl(this._value, this._then);
+
+  final Comment _value;
+  // ignore: unused_field
+  final $Res Function(Comment) _then;
+
+  @override
+  $Res call({
+    Object? text = freezed,
+    Object? author = freezed,
+    Object? ad = freezed,
+    Object? created_at = freezed,
+  }) {
+    return _then(_value.copyWith(
+      text: text == freezed
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      author: author == freezed
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as User,
+      ad: ad == freezed
+          ? _value.ad
+          : ad // ignore: cast_nullable_to_non_nullable
+              as int,
+      created_at: created_at == freezed
+          ? _value.created_at
+          : created_at // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
+  }
+
+  @override
+  $UserCopyWith<$Res> get author {
+    return $UserCopyWith<$Res>(_value.author, (value) {
+      return _then(_value.copyWith(author: value));
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$CommentCopyWith<$Res> implements $CommentCopyWith<$Res> {
+  factory _$CommentCopyWith(_Comment value, $Res Function(_Comment) then) =
+      __$CommentCopyWithImpl<$Res>;
+  @override
+  $Res call({String text, User author, int ad, DateTime created_at});
+
+  @override
+  $UserCopyWith<$Res> get author;
+}
+
+/// @nodoc
+class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
+    implements _$CommentCopyWith<$Res> {
+  __$CommentCopyWithImpl(_Comment _value, $Res Function(_Comment) _then)
+      : super(_value, (v) => _then(v as _Comment));
+
+  @override
+  _Comment get _value => super._value as _Comment;
+
+  @override
+  $Res call({
+    Object? text = freezed,
+    Object? author = freezed,
+    Object? ad = freezed,
+    Object? created_at = freezed,
+  }) {
+    return _then(_Comment(
+      text: text == freezed
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      author: author == freezed
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as User,
+      ad: ad == freezed
+          ? _value.ad
+          : ad // ignore: cast_nullable_to_non_nullable
+              as int,
+      created_at: created_at == freezed
+          ? _value.created_at
+          : created_at // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_Comment implements _Comment {
+  const _$_Comment(
+      {required this.text,
+      required this.author,
+      required this.ad,
+      required this.created_at});
+
+  factory _$_Comment.fromJson(Map<String, dynamic> json) =>
+      _$$_CommentFromJson(json);
+
+  @override
+  final String text;
+  @override
+  final User author;
+  @override
+  final int ad;
+  @override
+  final DateTime created_at;
+
+  @override
+  String toString() {
+    return 'Comment(text: $text, author: $author, ad: $ad, created_at: $created_at)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _Comment &&
+            const DeepCollectionEquality().equals(other.text, text) &&
+            const DeepCollectionEquality().equals(other.author, author) &&
+            const DeepCollectionEquality().equals(other.ad, ad) &&
+            const DeepCollectionEquality()
+                .equals(other.created_at, created_at));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(text),
+      const DeepCollectionEquality().hash(author),
+      const DeepCollectionEquality().hash(ad),
+      const DeepCollectionEquality().hash(created_at));
+
+  @JsonKey(ignore: true)
+  @override
+  _$CommentCopyWith<_Comment> get copyWith =>
+      __$CommentCopyWithImpl<_Comment>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_CommentToJson(this);
+  }
+}
+
+abstract class _Comment implements Comment {
+  const factory _Comment(
+      {required String text,
+      required User author,
+      required int ad,
+      required DateTime created_at}) = _$_Comment;
+
+  factory _Comment.fromJson(Map<String, dynamic> json) = _$_Comment.fromJson;
+
+  @override
+  String get text;
+  @override
+  User get author;
+  @override
+  int get ad;
+  @override
+  DateTime get created_at;
+  @override
+  @JsonKey(ignore: true)
+  _$CommentCopyWith<_Comment> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 Images _$ImagesFromJson(Map<String, dynamic> json) {

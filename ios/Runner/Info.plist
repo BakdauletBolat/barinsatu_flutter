@@ -38,6 +38,9 @@
 	<key>NSCameraUsageDescription</key>
 	<key>NSMicrophoneUsageDescription</key>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<key>NSCameraUsageDescription</key>
+	<key>NSLocationAlwaysUsageDescription</key>
+    <string>Разрешите использовать ваше местоположение для правльной работы приложение</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Разрешите использовать ваше местоположение для правльной работы приложение один раз</string>
 </dict>
 </plist>

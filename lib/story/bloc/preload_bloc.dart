@@ -22,5 +22,22 @@ class PreloadBloc extends Bloc<PreloadEvent, PreloadState> {
     on<_OnVideoIndexChanged>((event, emit) async {
       emit(state.copyWith(focusedIndex: event.index));
     });
+
+    on<CommentEventCommentAdd>((event, emit) async {
+      List<Story> newList = [...state.stories];
+
+      Story currentAd =
+          newList.firstWhere((dropdown) => dropdown.id == event.story);
+
+      int index = newList.indexOf(currentAd);
+      Story newStory = newList[index].copyWith(
+          story_comments: [...newList[index].story_comments, event.comment]);
+
+      emit(state.copyWith(stories: [
+        ...state.stories.slice(0, index),
+        newStory,
+        ...state.stories.slice(index + 1)
+      ]));
+    });
   }
 }

@@ -6,4 +6,6 @@ class AdEvent with _$AdEvent {
       AdEventFetch;
   const factory AdEvent.update({required List<Ad> adsUpdate}) = AdEventUpdate;
   const factory AdEvent.likeAd({required int ad}) = AdEventLikeAd;
+  const factory AdEvent.commendAdd({required int ad, required String text}) =
+      AdEventCommentAdd;
 }

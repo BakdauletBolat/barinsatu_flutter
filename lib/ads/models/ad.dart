@@ -30,12 +30,29 @@ class Ad with _$Ad {
       AdDetailType? ad_detail_type,
       AdType? ad_type,
       Details? details,
+      required List<Comment> comments,
       City? city,
       User? author,
+      required DateTime created_at,
       required List<Like> likes,
       required List<Images> images}) = _Ad;
 
   factory Ad.fromJson(Map<String, dynamic> json) => _$AdFromJson(json);
+}
+
+@freezed
+class FilterData with _$FilterData {
+  const factory FilterData(
+      {int? adType,
+      int? limit,
+      int? buildingTypeHome,
+      int? repairTypeHome,
+      String? totalAreaHome,
+      String? floorHome,
+      String? numbersRoomHome}) = _FilterData;
+
+  factory FilterData.fromJson(Map<String, dynamic> json) =>
+      _$FilterDataFromJson(json);
 }
 
 @freezed
@@ -70,11 +87,14 @@ class Details with _$Details {
   const factory Details(
       {required int id,
       int? numbers_room,
-      required int total_area,
+      required double total_area,
+      required String total_area_string,
       int? year_construction,
       List<Communications>? communications,
       BuildingType? building_type,
       RepairType? repair_type,
+      bool? is_pledge,
+      bool? is_divisibility,
       int? floor,
       int? total_floor}) = _Details;
 
@@ -117,6 +137,18 @@ class Like with _$Like {
       required DateTime created_at}) = _Like;
 
   factory Like.fromJson(Map<String, dynamic> json) => _$LikeFromJson(json);
+}
+
+@freezed
+class Comment with _$Comment {
+  const factory Comment(
+      {required String text,
+      required User author,
+      required int ad,
+      required DateTime created_at}) = _Comment;
+
+  factory Comment.fromJson(Map<String, dynamic> json) =>
+      _$CommentFromJson(json);
 }
 
 @freezed
