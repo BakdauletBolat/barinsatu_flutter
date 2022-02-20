@@ -8,6 +8,7 @@ import 'package:barinsatu/pages/ad/DetailPage.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -32,6 +33,13 @@ class _AdCardState extends State<AdCard> {
   int activeIndex = 0;
 
   bool isLike = false;
+
+  static Future<void> vibrate() async {
+    await SystemChannels.platform.invokeMethod<void>(
+      'HapticFeedback.vibrate',
+      'HapticFeedbackType.mediumImpact',
+    );
+  }
 
   int count = 0;
 
@@ -62,6 +70,7 @@ class _AdCardState extends State<AdCard> {
   }
 
   void likeAd() async {
+    vibrate();
     var userState = BlocProvider.of<AuthBloc>(context).state;
     userState.maybeWhen(orElse: () {
       const snackBar = SnackBar(
@@ -111,6 +120,7 @@ class _AdCardState extends State<AdCard> {
               if (widget.item.images.isNotEmpty)
                 GestureDetector(
                   onTap: () {
+                    vibrate();
                     print('tapped');
                     Navigator.push(
                       context,
@@ -192,6 +202,7 @@ class _AdCardState extends State<AdCard> {
               else
                 GestureDetector(
                   onTap: () {
+                    vibrate();
                     print('tapped');
                     Navigator.push(
                       context,
@@ -217,6 +228,7 @@ class _AdCardState extends State<AdCard> {
                           padding: MaterialStateProperty.all<EdgeInsets>(
                               const EdgeInsets.all(0))),
                       onPressed: () {
+                        vibrate();
                         Navigator.push(
                           context,
                           CupertinoPageRoute(

@@ -221,7 +221,7 @@ class _CalculatorObjectState extends State<CalculatorObject> {
                     : priceFormat.format(monthlyPayment()) + ' т'),
             RectangleWithIcon(
                 icon: Icons.attach_money,
-                placeholder: 'К оплату',
+                placeholder: 'К возврату',
                 title: totalToReturn().isNaN
                     ? "0 т"
                     : priceFormat.format(totalToReturn()) + ' т'),

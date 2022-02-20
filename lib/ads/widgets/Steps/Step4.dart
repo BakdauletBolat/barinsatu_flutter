@@ -34,7 +34,7 @@ class _Step4State extends State<Step4> {
     List<File> imagesRaw = [];
 
     final List<XFile>? images = await _picker.pickMultiImage(
-        maxHeight: 720, maxWidth: 1280, imageQuality: 50);
+        maxHeight: 1080, maxWidth: 1920, imageQuality: 80);
 
     if (images != null && images.isNotEmpty) {
       images.map((image) {

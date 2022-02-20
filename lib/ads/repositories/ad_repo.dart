@@ -187,7 +187,8 @@ class AdRepo {
     final token = prefs.getString('userToken').toString();
 
     try {
-      var response = await http.get(Uri.parse(url + 'like/' + ad.toString()),
+      var response = await http.get(
+          Uri.parse(url + 'like/' + ad.toString() + '/'),
           headers: {'Authorization': 'Bearer ' + token});
       var utfEncode = utf8.decode(response.bodyBytes);
       var jsonRes = json.decode(utfEncode);

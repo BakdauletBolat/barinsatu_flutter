@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:barinsatu/authentication/bloc/auth_bloc.dart';
+import 'package:barinsatu/pages/auth/ProfileView.dart';
 import 'package:barinsatu/pages/story/CommentsPage.dart';
 import 'package:barinsatu/story/bloc/preload_bloc.dart';
 import 'package:barinsatu/story/models/story.dart';
@@ -347,26 +348,35 @@ class _VideoState extends State<Video> {
     return Positioned(
         left: 20,
         bottom: 20,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: buildProfilePicture()),
-                Padding(
-                  padding: const EdgeInsets.only(left: 12),
-                  child: Text(
-                    widget.story.author.email,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
-            )
-          ],
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(
+                  builder: (context) => ProfileView(user: widget.story.author)),
+            );
+          },
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: buildProfilePicture()),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Text(
+                      widget.story.author.email,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
         ));
   }
 }

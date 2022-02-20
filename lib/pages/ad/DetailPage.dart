@@ -337,7 +337,7 @@ class _DetailPageState extends State<DetailPage> {
           child: const RectangleWithIcon(
               icon: Icons.people,
               placeholder: 'Получить помощь',
-              title: 'Риелтор'),
+              title: 'Риэлтор'),
         ),
         GestureDetector(
           onTap: () async {
@@ -422,8 +422,6 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
     Widget isCompleteButton() {
       if (widget.isComplete == true) {
         var newRoute =
@@ -497,6 +495,50 @@ class _DetailPageState extends State<DetailPage> {
       return Colors.transparent;
     }
 
+    Widget showModal(List<Images> images, int index) {
+      return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          elevation: 0,
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
+        ),
+        body: Container(
+          decoration: const BoxDecoration(color: Colors.black),
+          child: Center(
+              child: PageView.builder(
+                  itemCount: images.length,
+                  controller: PageController(initialPage: index),
+                  itemBuilder: (context, index) {
+                    Images image = images[index];
+                    return ExtendedImage.network(
+                      image.image.isNotEmpty
+                          ? image.image
+                          : 'http://via.placeholder.com/350x150',
+                      width: MediaQuery.of(context).size.width,
+                      height: 100,
+                      mode: ExtendedImageMode.gesture,
+                      initGestureConfigHandler: (state) {
+                        return GestureConfig(
+                          minScale: 0.9,
+                          animationMinScale: 0.7,
+                          maxScale: 3.0,
+                          animationMaxScale: 3.5,
+                          speed: 1.0,
+                          inertialSpeed: 100.0,
+                          initialScale: 1.0,
+                          inPageView: false,
+                          initialAlignment: InitialAlignment.center,
+                        );
+                      },
+                      fit: BoxFit.contain,
+                      cache: true,
+                    );
+                  })),
+        ),
+      );
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -530,7 +572,14 @@ class _DetailPageState extends State<DetailPage> {
                             ),
                             itemBuilder: (context, index, realIndex) {
                               final Images urlImage = widget.item.images[index];
-                              return buildImage(urlImage, index);
+                              return GestureDetector(
+                                  onTap: () {
+                                    var route = CupertinoPageRoute(
+                                        builder: (context) => showModal(
+                                            widget.item.images, index));
+                                    Navigator.push(context, route);
+                                  },
+                                  child: buildImage(urlImage, index));
                             }),
                       ),
                       Positioned(

@@ -1,20 +1,38 @@
+import 'dart:async';
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:barinsatu/ads/bloc/map_ad_bloc.dart';
 import 'package:barinsatu/ads/models/ad.dart';
 import 'package:barinsatu/ads/repositories/ad_repo.dart';
 import 'package:barinsatu/pages/ad/DetailPage.dart';
+import 'package:barinsatu/pages/map/MapMarker.dart';
+import 'package:barinsatu/pages/map/map_helper.dart';
+// import 'package:barinsatu/pages/map/MapMarker.dart';
 import 'package:barinsatu/utils/DateFormatter.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:fluster/fluster.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/src/provider.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
+
+class Place with ClusterItem {
+  final String name;
+  final LatLng latLng;
+
+  Place({required this.name, required this.latLng});
+
+  @override
+  LatLng get location => latLng;
+}
 
 class Map extends StatefulWidget {
   const Map({Key? key}) : super(key: key);
@@ -24,7 +42,115 @@ class Map extends StatefulWidget {
 }
 
 class _MapState extends State<Map> {
-  late GoogleMapController _controller;
+  final Completer<GoogleMapController> _mapController = Completer();
+
+  /// Set of displayed markers and cluster markers on the map
+  final Set<Marker> _markers = Set();
+
+  /// Minimum zoom at which the markers will cluster
+  final int _minClusterZoom = 0;
+
+  /// Maximum zoom at which the markers will cluster
+  final int _maxClusterZoom = 19;
+
+  /// [Fluster] instance used to manage the clusters
+  Fluster<MapMarker>? _clusterManager;
+
+  /// Current map zoom. Initial zoom will be 15, street level
+  double currentZoom = 15;
+
+  double newZoom = 15;
+
+  /// Map loading flag
+  bool _isMapLoading = true;
+
+  /// Markers loading flag
+  bool _areMarkersLoading = true;
+
+  /// Url image used on normal markers
+  final String _markerImageUrl =
+      'https://img.icons8.com/office/80/000000/marker.png';
+
+  /// Color of the cluster circle
+  final Color _clusterColor = Colors.blue;
+
+  /// Color of the cluster text
+  final Color _clusterTextColor = Colors.white;
+
+  /// Called when the Google Map widget is created. Updates the map loading state
+  /// and inits the markers.
+  void _onMapCreated(GoogleMapController controller) {
+    _mapController.complete(controller);
+
+    setState(() {
+      _isMapLoading = false;
+    });
+
+    _initMarkers();
+  }
+
+  /// Inits [Fluster] and all the markers with network images and updates the loading state.
+  void _initMarkers() async {
+    final List<MapMarker> markers = [];
+
+    AdRepo adRepo = AdRepo();
+    List<Ad> ads = await adRepo.getMapAds();
+
+    for (Ad ad in ads) {
+      final BitmapDescriptor markerImage =
+          await MapHelper.getMarkerImageFromUrl(_markerImageUrl);
+
+      markers.add(
+        MapMarker(
+          onTap: () {
+            print('tapped');
+            showAsBottomSheet(ad);
+          },
+          id: ad.title.toString(),
+          position: LatLng(ad.lat!, ad.lng!),
+          icon: markerImage,
+        ),
+      );
+    }
+
+    _clusterManager = await MapHelper.initClusterManager(
+      markers,
+      _minClusterZoom,
+      _maxClusterZoom,
+    );
+
+    await _updateMarkers();
+  }
+
+  /// Gets the markers and clusters to be displayed on the map for the current zoom level and
+  /// updates state.
+  Future<void> _updateMarkers([double? updatedZoom]) async {
+    if (_clusterManager == null || updatedZoom == currentZoom) return;
+
+    if (updatedZoom != null) {
+      currentZoom = updatedZoom;
+    }
+
+    setState(() {
+      _areMarkersLoading = true;
+    });
+
+    final updatedMarkers = await MapHelper.getClusterMarkers(
+      _clusterManager,
+      currentZoom,
+      _clusterColor,
+      _clusterTextColor,
+      80,
+    );
+
+    _markers
+      ..clear()
+      ..addAll(updatedMarkers);
+
+    setState(() {
+      _areMarkersLoading = false;
+    });
+  }
 
   final priceFormat = NumberFormat("#,##0", "en_US");
 
@@ -39,39 +165,9 @@ class _MapState extends State<Map> {
       tilt: 59.440717697143555,
       zoom: 18);
 
-  Set<Marker> markers = {};
-
-  void getMarkers() async {
-    AdRepo adRepo = AdRepo();
-    List<Ad> ads = await adRepo.getMapAds();
-
-    for (Ad element in ads) {
-      if (element.lat != null && element.lng != null) {
-        print('added');
-        if (mounted) {
-          setState(() {
-            markers.add(Marker(
-              markerId: MarkerId(element.title.toString()),
-              position: LatLng(element.lat!, element.lng!),
-              onTap: () {
-                showAsBottomSheet(element);
-              },
-              infoWindow: InfoWindow(
-                //popup info
-                title: element.title.toString(),
-              ),
-              icon: customIcon, //Icon for Marker
-            ));
-          });
-        }
-      }
-    }
-  }
-
   @override
   void initState() {
-    getMarkers();
-    setCustomMarker();
+    // setCustomMarker();
     super.initState();
   }
 
@@ -84,7 +180,6 @@ class _MapState extends State<Map> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
@@ -213,13 +308,24 @@ class _MapState extends State<Map> {
               child: GoogleMap(
                 mapToolbarEnabled: true,
                 zoomGesturesEnabled: true,
-                scrollGesturesEnabled: true,
-                rotateGesturesEnabled: true,
-                mapType: MapType.normal,
-                initialCameraPosition: _kGooglePlex,
-                markers: markers,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller = controller;
+                myLocationButtonEnabled: true,
+                myLocationEnabled: true,
+                zoomControlsEnabled: true,
+                onCameraMove: (position) {
+                  if (position.zoom != null) {
+                    newZoom = position.zoom;
+                  }
+                },
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(41.143029, -8.611274),
+                  zoom: currentZoom,
+                ),
+                markers: _markers,
+                onMapCreated: (controller) => _onMapCreated(controller),
+                onCameraIdle: () {
+                  print('ended $newZoom');
+
+                  _updateMarkers(newZoom);
                 },
               ),
             ),

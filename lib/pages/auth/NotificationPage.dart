@@ -6,6 +6,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:barinsatu/authentication/models/user.dart' as UserModel;
+import 'package:url_launcher/url_launcher.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
@@ -138,7 +139,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width - 90,
+                    width: MediaQuery.of(context).size.width - 150,
                     child: Padding(
                         padding: const EdgeInsets.only(top: 12),
                         child: RichText(
@@ -158,7 +159,19 @@ class _NotificationPageState extends State<NotificationPage> {
                         )),
                   ),
                 ],
-              )
+              ),
+              ElevatedButton(
+                  style: ButtonStyle(
+                      elevation: MaterialStateProperty.all<double>(0),
+                      enableFeedback: true,
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.all(0))),
+                  onPressed: () {
+                    launch("tel://${notification.author.phone}");
+                  },
+                  child: const Icon(
+                    Icons.phone,
+                  ))
             ],
           )),
     );

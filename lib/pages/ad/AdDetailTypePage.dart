@@ -120,6 +120,7 @@ class _AdDetailTypePageState extends State<AdDetailTypePage> {
 
     return Scaffold(
         appBar: AppBar(
+          elevation: 0,
           title: Text(title),
         ),
         body: Container(
