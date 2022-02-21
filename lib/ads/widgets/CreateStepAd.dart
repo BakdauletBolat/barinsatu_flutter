@@ -171,7 +171,7 @@ class _CreateStepAdState extends State<CreateStepAd> {
     return Column(
       children: [
         const SizedBox(
-          height: 20,
+          height: 50,
         ),
         Container(
           margin: const EdgeInsets.only(left: 28),
@@ -231,11 +231,11 @@ class _CreateStepAdState extends State<CreateStepAd> {
                     }
                   }
                 },
-                onStepTapped: (int index) {
-                  setState(() {
-                    _index = index;
-                  });
-                },
+                // onStepTapped: (int index) {
+                //   setState(() {
+                //     _index = index;
+                //   });
+                // },
                 steps: getSteps()),
           ),
         ),
