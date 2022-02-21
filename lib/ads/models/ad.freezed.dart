@@ -223,6 +223,215 @@ abstract class _AdResponse implements AdResponse {
       throw _privateConstructorUsedError;
 }
 
+MarkerAd _$MarkerAdFromJson(Map<String, dynamic> json) {
+  return _MarkerAd.fromJson(json);
+}
+
+/// @nodoc
+class _$MarkerAdTearOff {
+  const _$MarkerAdTearOff();
+
+  _MarkerAd call(
+      {required int id,
+      required String title,
+      required double lat,
+      required double lng}) {
+    return _MarkerAd(
+      id: id,
+      title: title,
+      lat: lat,
+      lng: lng,
+    );
+  }
+
+  MarkerAd fromJson(Map<String, Object?> json) {
+    return MarkerAd.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $MarkerAd = _$MarkerAdTearOff();
+
+/// @nodoc
+mixin _$MarkerAd {
+  int get id => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  double get lat => throw _privateConstructorUsedError;
+  double get lng => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $MarkerAdCopyWith<MarkerAd> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MarkerAdCopyWith<$Res> {
+  factory $MarkerAdCopyWith(MarkerAd value, $Res Function(MarkerAd) then) =
+      _$MarkerAdCopyWithImpl<$Res>;
+  $Res call({int id, String title, double lat, double lng});
+}
+
+/// @nodoc
+class _$MarkerAdCopyWithImpl<$Res> implements $MarkerAdCopyWith<$Res> {
+  _$MarkerAdCopyWithImpl(this._value, this._then);
+
+  final MarkerAd _value;
+  // ignore: unused_field
+  final $Res Function(MarkerAd) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? lat = freezed,
+    Object? lng = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      lat: lat == freezed
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
+              as double,
+      lng: lng == freezed
+          ? _value.lng
+          : lng // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$MarkerAdCopyWith<$Res> implements $MarkerAdCopyWith<$Res> {
+  factory _$MarkerAdCopyWith(_MarkerAd value, $Res Function(_MarkerAd) then) =
+      __$MarkerAdCopyWithImpl<$Res>;
+  @override
+  $Res call({int id, String title, double lat, double lng});
+}
+
+/// @nodoc
+class __$MarkerAdCopyWithImpl<$Res> extends _$MarkerAdCopyWithImpl<$Res>
+    implements _$MarkerAdCopyWith<$Res> {
+  __$MarkerAdCopyWithImpl(_MarkerAd _value, $Res Function(_MarkerAd) _then)
+      : super(_value, (v) => _then(v as _MarkerAd));
+
+  @override
+  _MarkerAd get _value => super._value as _MarkerAd;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? lat = freezed,
+    Object? lng = freezed,
+  }) {
+    return _then(_MarkerAd(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      lat: lat == freezed
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
+              as double,
+      lng: lng == freezed
+          ? _value.lng
+          : lng // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_MarkerAd implements _MarkerAd {
+  const _$_MarkerAd(
+      {required this.id,
+      required this.title,
+      required this.lat,
+      required this.lng});
+
+  factory _$_MarkerAd.fromJson(Map<String, dynamic> json) =>
+      _$$_MarkerAdFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final String title;
+  @override
+  final double lat;
+  @override
+  final double lng;
+
+  @override
+  String toString() {
+    return 'MarkerAd(id: $id, title: $title, lat: $lat, lng: $lng)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _MarkerAd &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.lat, lat) &&
+            const DeepCollectionEquality().equals(other.lng, lng));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(lat),
+      const DeepCollectionEquality().hash(lng));
+
+  @JsonKey(ignore: true)
+  @override
+  _$MarkerAdCopyWith<_MarkerAd> get copyWith =>
+      __$MarkerAdCopyWithImpl<_MarkerAd>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_MarkerAdToJson(this);
+  }
+}
+
+abstract class _MarkerAd implements MarkerAd {
+  const factory _MarkerAd(
+      {required int id,
+      required String title,
+      required double lat,
+      required double lng}) = _$_MarkerAd;
+
+  factory _MarkerAd.fromJson(Map<String, dynamic> json) = _$_MarkerAd.fromJson;
+
+  @override
+  int get id;
+  @override
+  String get title;
+  @override
+  double get lat;
+  @override
+  double get lng;
+  @override
+  @JsonKey(ignore: true)
+  _$MarkerAdCopyWith<_MarkerAd> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 Ad _$AdFromJson(Map<String, dynamic> json) {
   return _Ad.fromJson(json);
 }

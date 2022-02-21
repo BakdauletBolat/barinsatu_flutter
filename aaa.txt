@@ -1,0 +1,125 @@
+BottomNavigationBar(
+        selectedItemColor: Theme.of(context).primaryColor,
+        iconSize: 25,
+        unselectedFontSize: 12,
+        selectedFontSize: 12,
+        showSelectedLabels: true,
+        type: BottomNavigationBarType.fixed,
+        enableFeedback: true,
+        elevation: 1,
+        showUnselectedLabels: true,
+        unselectedItemColor: const Color.fromRGBO(95, 99, 104, 1),
+        // backgroundColor: Colors.black,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.storefront),
+            label: 'Главная',
+          ),
+          if (kIsWeb == false)
+            BottomNavigationBarItem(
+              icon: Icon(Icons.slideshow),
+              label: 'История',
+            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_box),
+            label: 'Создать',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calculate),
+            label: 'Калькулятор',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Карта',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      ),
+
+
+      SizedBox(
+          height: 60,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                  onPressed: () {
+                    _onItemTapped(0);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.storefront),
+                      Text(
+                        'Главная',
+                        style: fontStyle,
+                      ),
+                    ],
+                  )),
+              if (!kIsWeb)
+                TextButton(
+                    onPressed: () {
+                      _onItemTapped(1);
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.storefront),
+                        Text(
+                          'Историй',
+                          style: fontStyle,
+                        ),
+                      ],
+                    )),
+              TextButton(
+                  onPressed: () {
+                    _onItemTapped(2);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.storefront),
+                      Text(
+                        'Создать',
+                        style: fontStyle,
+                      ),
+                    ],
+                  )),
+              TextButton(
+                  onPressed: () {
+                    _onItemTapped(3);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.storefront),
+                      Text(
+                        'Калькулятор',
+                        style: fontStyle,
+                      ),
+                    ],
+                  )),
+              TextButton(
+                  onPressed: () {
+                    _onItemTapped(4);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.storefront),
+                      Text(
+                        'Карта',
+                        style: fontStyle,
+                      ),
+                    ],
+                  )),
+            ],
+          ),
+        )

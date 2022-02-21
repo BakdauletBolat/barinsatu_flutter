@@ -28,6 +28,23 @@ class AuthRepo {
     }
   }
 
+  Future<UserModel.User> changeUserProfile(formData, int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('userToken').toString();
+    var response = await dio.patch('${url}update-delete/$id/',
+        data: formData,
+        options: Options(
+            headers: {'Authorization': 'Bearer ' + token},
+            contentType: 'multipart/form-data'));
+
+    if (response.statusCode == 200) {
+      UserModel.User data = UserModel.User.fromJson(response.data);
+      return data;
+    } else {
+      throw Exception(response.data);
+    }
+  }
+
   Future<List<UserModel.UserType>> getUserTypes() async {
     try {
       var response = await http.get(Uri.parse(url + "user-types/"));

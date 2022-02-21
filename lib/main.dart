@@ -1,13 +1,9 @@
-import 'dart:io';
-
 import 'package:barinsatu/ads/bloc/filter_ad_bloc.dart';
-import 'package:barinsatu/ads/bloc/map_ad_bloc.dart';
 import 'package:barinsatu/ads/bloc/user_ad_bloc.dart';
 import 'package:barinsatu/story/bloc/preload_bloc.dart';
 import 'package:barinsatu/story/repositories/story_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'ads/bloc/ad_bloc.dart';
 import 'ads/repositories/ad_repo.dart';
 import 'authentication/bloc/auth_bloc.dart';
@@ -32,9 +28,6 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AdBloc>(
           create: (context) => AdBloc(adRepo: adRepo),
-        ),
-        BlocProvider<MapAdBloc>(
-          create: (context) => MapAdBloc(adRepo: adRepo),
         ),
         BlocProvider<UserAdBloc>(
           create: (context) => UserAdBloc(adRepo: adRepo),

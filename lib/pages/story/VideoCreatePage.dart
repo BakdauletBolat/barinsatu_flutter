@@ -12,6 +12,7 @@ import 'package:barinsatu/story/widgets/VideoDetail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/src/provider.dart';
 import 'package:video_compress/video_compress.dart';
@@ -53,6 +54,8 @@ class _MyHomePageState extends State<VideoCreate> {
             ));
     Navigator.pushAndRemoveUntil(context, newRoute, (route) => false);
   }
+
+  final videoInfo = FlutterVideoInfo();
 
   void sendData() async {
     if (videoFile != null) {
@@ -148,10 +151,34 @@ class _MyHomePageState extends State<VideoCreate> {
           setState(() {
             controllerLoading = true;
           });
-          XFile? file =
-              await imagePicker.pickVideo(source: ImageSource.gallery);
+          XFile? file;
+          file = await imagePicker.pickVideo(source: ImageSource.gallery);
 
           if (file != null) {
+            var info = await videoInfo.getVideoInfo(file.path);
+            print(info!.duration!);
+            if (info.duration! > 30000) {
+              print('aa');
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        actions: [
+                          TextButton(
+                              onPressed: () async {
+                                Navigator.pop(context);
+                                file = await imagePicker.pickVideo(
+                                    source: ImageSource.gallery);
+
+                                await compressVideo(file!.path);
+                              },
+                              child: const Text('Выбрать другое видео'))
+                        ],
+                        title: const Text(
+                            'Ограничение продолжительности видео 30 секунд'),
+                      ));
+
+              return;
+            }
             showDialog(
                 context: context,
                 builder: (context) => const Dialog(

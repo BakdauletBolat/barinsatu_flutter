@@ -13,7 +13,7 @@ class StoryRepo {
 
   Future<StoryResponse> getStories() async {
     try {
-      var response = await http.get(Uri.parse(url));
+      var response = await http.get(Uri.parse(url + '?ordering=-id'));
       var utfEncode = utf8.decode(response.bodyBytes);
       var jsonRes = json.decode(utfEncode);
       print(jsonRes);

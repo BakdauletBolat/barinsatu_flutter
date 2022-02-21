@@ -43,19 +43,32 @@ class AdRepo {
     }
   }
 
-  Future<List<Ad>> getMapAds() async {
+  Future<List<MarkerAd>> getMapAds() async {
     try {
       Uri urlParsed;
-      urlParsed = Uri.parse(url + 'map/');
-      print(urlParsed);
+      urlParsed = Uri.parse(url + 'markers/?ordering=-id');
       var response = await http.get(urlParsed);
       var utfEncode = utf8.decode(response.bodyBytes);
       var jsonRes = json.decode(utfEncode);
-      List<Ad> ads = jsonRes.map<Ad>((json) => Ad.fromJson(json)).toList();
+      List<MarkerAd> ads = jsonRes['results']
+          .map<MarkerAd>((json) => MarkerAd.fromJson(json))
+          .toList();
       return ads;
     } catch (e) {
-      print('e');
-      print(e);
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<Ad> getSingleAd(int id) async {
+    try {
+      Uri urlParsed;
+      urlParsed = Uri.parse(url + id.toString() + '/');
+      var response = await http.get(urlParsed);
+      var utfEncode = utf8.decode(response.bodyBytes);
+      var jsonRes = json.decode(utfEncode);
+      Ad ad = Ad.fromJson(jsonRes);
+      return ad;
+    } catch (e) {
       throw Exception(e.toString());
     }
   }

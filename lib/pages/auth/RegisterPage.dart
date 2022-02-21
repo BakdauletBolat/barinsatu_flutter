@@ -8,6 +8,7 @@ import 'package:barinsatu/pages/HomePage.dart';
 import 'package:barinsatu/pages/auth/ProfileView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/src/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,6 +26,7 @@ class FormData {
   String? surname = '';
   String? about = '';
   int? user_type_id = 1;
+  String? phone = '';
 
   toMap() {
     return {
@@ -33,7 +35,8 @@ class FormData {
       'name': name,
       'surname': surname,
       'about': about,
-      'user_type': user_type_id
+      'phone': phone,
+      'user_type_id': user_type_id
     };
   }
 }
@@ -42,6 +45,10 @@ class _RegisterPageState extends State<RegisterPage> {
   FormData formData = FormData();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  var maskFormatter = MaskTextInputFormatter(
+      mask: '+| (###) ###-##-##',
+      filter: {"#": RegExp(r'[0-9]'), "|": RegExp(r'[7]')},
+      type: MaskAutoCompletionType.lazy);
   List<UserType> _items = [];
 
   int selectedType = 0;
@@ -102,6 +109,9 @@ class _RegisterPageState extends State<RegisterPage> {
         });
         navigateReplace(userR.user);
       } catch (e) {
+        setState(() {
+          isLoading = false;
+        });
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             elevation: 0,
             behavior: SnackBarBehavior.floating,
@@ -112,15 +122,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-            elevation: 0,
-            title: const Text('Регистрация'),
-            foregroundColor: Theme.of(context).primaryColor,
-            backgroundColor: Colors.transparent),
-        body: Container(
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+          elevation: 0,
+          title: const Text('Регистрация'),
+          foregroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Colors.white),
+      body: SafeArea(
+        child: Container(
           decoration: const BoxDecoration(color: Colors.white),
           child: SingleChildScrollView(
               child: Form(
@@ -129,6 +139,24 @@ class _RegisterPageState extends State<RegisterPage> {
               padding: const EdgeInsets.all(28),
               child: Column(
                 children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Номер телефона обязательно';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      formData.phone = maskFormatter.getMaskedText();
+                    },
+                    decoration: const InputDecoration(
+                        labelText: 'Номер телефона',
+                        hintText: '+ 7 (777) 994-77-64'),
+                    inputFormatters: [maskFormatter],
+                  ),
                   CustomTextField(
                     placeHolder: 'Имя',
                     onEditingComplete: () {

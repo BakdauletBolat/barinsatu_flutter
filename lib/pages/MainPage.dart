@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:developer';
 
 import 'package:badges/badges.dart';
@@ -12,6 +14,7 @@ import 'package:barinsatu/pages/ad/AdDetailTypePage.dart';
 import 'package:barinsatu/pages/ad/FilterPage.dart';
 import 'package:barinsatu/pages/auth/NotificationPage.dart';
 import 'package:barinsatu/pages/auth/ProfileView.dart';
+import 'package:barinsatu/pages/auth/RegisterPage.dart';
 import 'package:barinsatu/pages/auth/UsersPage.dart';
 import 'package:barinsatu/pages/story/VideoCreatePage.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,7 +45,6 @@ class _MainPageState extends State<MainPage>
     try {
       List<UserModel.Notification> noticationsRaw =
           await authRepo.getNotifications();
-      print(noticationsRaw);
       setState(() {
         notications = noticationsRaw;
       });
@@ -116,7 +118,8 @@ class _MainPageState extends State<MainPage>
             onTap: () {
               Navigator.push(
                 context,
-                CupertinoPageRoute(builder: (context) => const VideoCreate()),
+                CupertinoPageRoute(
+                    builder: (context) => ProfileView(user: user)),
               );
             },
             child: Image.asset('assets/no-image.jpeg', fit: BoxFit.cover));
@@ -125,7 +128,7 @@ class _MainPageState extends State<MainPage>
         onTap: () {
           Navigator.push(
             context,
-            CupertinoPageRoute(builder: (context) => const VideoCreate()),
+            CupertinoPageRoute(builder: (context) => ProfileView(user: user)),
           );
         },
         child: Image.network(user.avatar.toString(), fit: BoxFit.cover),
@@ -224,9 +227,17 @@ class _MainPageState extends State<MainPage>
                     ),
                   ),
                 ),
-                orElse: () => const Icon(
-                  Icons.notification_add,
-                  size: 36,
+                orElse: () => GestureDetector(
+                  onTap: () {
+                    var route = CupertinoPageRoute(
+                        builder: (context) => const RegisterPage());
+                    Navigator.push(context, route);
+                  },
+                  child: Icon(
+                    Icons.login,
+                    color: Theme.of(context).primaryColor,
+                    size: 36,
+                  ),
                 ),
               ),
             ],
@@ -236,7 +247,7 @@ class _MainPageState extends State<MainPage>
     return SmartRefresher(
       controller: _refreshController,
       enablePullUp: true,
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       onRefresh: _onRefresh,
       onLoading: _onLoading,
       footer: CustomFooter(

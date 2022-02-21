@@ -1,27 +1,17 @@
 import 'dart:async';
-import 'dart:developer';
-import 'dart:ui';
-
-import 'package:barinsatu/ads/bloc/map_ad_bloc.dart';
 import 'package:barinsatu/ads/models/ad.dart';
 import 'package:barinsatu/ads/repositories/ad_repo.dart';
 import 'package:barinsatu/pages/ad/DetailPage.dart';
 import 'package:barinsatu/pages/map/MapMarker.dart';
 import 'package:barinsatu/pages/map/map_helper.dart';
-// import 'package:barinsatu/pages/map/MapMarker.dart';
 import 'package:barinsatu/utils/DateFormatter.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:fluster/fluster.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/src/provider.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 class Place with ClusterItem {
@@ -45,7 +35,7 @@ class _MapState extends State<Map> {
   final Completer<GoogleMapController> _mapController = Completer();
 
   /// Set of displayed markers and cluster markers on the map
-  final Set<Marker> _markers = Set();
+  final Set<Marker> _markers = {};
 
   /// Minimum zoom at which the markers will cluster
   final int _minClusterZoom = 0;
@@ -60,12 +50,6 @@ class _MapState extends State<Map> {
   double currentZoom = 15;
 
   double newZoom = 15;
-
-  /// Map loading flag
-  bool _isMapLoading = true;
-
-  /// Markers loading flag
-  bool _areMarkersLoading = true;
 
   /// Url image used on normal markers
   final String _markerImageUrl =
@@ -82,9 +66,7 @@ class _MapState extends State<Map> {
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
 
-    setState(() {
-      _isMapLoading = false;
-    });
+    setState(() {});
 
     _initMarkers();
   }
@@ -94,20 +76,19 @@ class _MapState extends State<Map> {
     final List<MapMarker> markers = [];
 
     AdRepo adRepo = AdRepo();
-    List<Ad> ads = await adRepo.getMapAds();
+    List<MarkerAd> ads = await adRepo.getMapAds();
 
-    for (Ad ad in ads) {
+    for (MarkerAd ad in ads) {
       final BitmapDescriptor markerImage =
           await MapHelper.getMarkerImageFromUrl(_markerImageUrl);
 
       markers.add(
         MapMarker(
           onTap: () {
-            print('tapped');
-            showAsBottomSheet(ad);
+            showAsBottomSheet(ad.id);
           },
           id: ad.title.toString(),
-          position: LatLng(ad.lat!, ad.lng!),
+          position: LatLng(ad.lat, ad.lng),
           icon: markerImage,
         ),
       );
@@ -131,9 +112,7 @@ class _MapState extends State<Map> {
       currentZoom = updatedZoom;
     }
 
-    setState(() {
-      _areMarkersLoading = true;
-    });
+    setState(() {});
 
     final updatedMarkers = await MapHelper.getClusterMarkers(
       _clusterManager,
@@ -147,9 +126,7 @@ class _MapState extends State<Map> {
       ..clear()
       ..addAll(updatedMarkers);
 
-    setState(() {
-      _areMarkersLoading = false;
-    });
+    setState(() {});
   }
 
   final priceFormat = NumberFormat("#,##0", "en_US");
@@ -158,12 +135,6 @@ class _MapState extends State<Map> {
     target: LatLng(42.340782, 69.596329),
     zoom: 14.4746,
   );
-
-  final CameraPosition _kLake = const CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(42.340782, 69.596329),
-      tilt: 59.440717697143555,
-      zoom: 18);
 
   @override
   void initState() {
@@ -204,8 +175,19 @@ class _MapState extends State<Map> {
     );
   }
 
+  Ad? currentAd;
+  bool isLoading = false;
+
   DateFormatter dataFormatter = DateFormatter();
-  void showAsBottomSheet(Ad ad) async {
+  void showAsBottomSheet(int id) async {
+    setState(() {
+      isLoading = true;
+    });
+    AdRepo adRepo = AdRepo();
+    Ad ad = await adRepo.getSingleAd(id);
+    setState(() {
+      isLoading = false;
+    });
     final result = await showSlidingBottomSheet(context, builder: (context) {
       return SlidingSheetDialog(
         elevation: 3,
@@ -217,6 +199,14 @@ class _MapState extends State<Map> {
           positioning: SnapPositioning.relativeToAvailableSpace,
         ),
         builder: (context, state) {
+          if (isLoading) {
+            return Container(
+              padding: const EdgeInsets.all(18),
+              color: Colors.white,
+              height: MediaQuery.of(context).size.height,
+              child: const Center(child: CupertinoActivityIndicator()),
+            );
+          }
           return Container(
               padding: const EdgeInsets.all(18),
               color: Colors.white,
@@ -316,10 +306,7 @@ class _MapState extends State<Map> {
                     newZoom = position.zoom;
                   }
                 },
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(41.143029, -8.611274),
-                  zoom: currentZoom,
-                ),
+                initialCameraPosition: _kGooglePlex,
                 markers: _markers,
                 onMapCreated: (controller) => _onMapCreated(controller),
                 onCameraIdle: () {

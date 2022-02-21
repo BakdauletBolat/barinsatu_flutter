@@ -1,20 +1,19 @@
 import 'dart:developer';
-
-import 'package:barinsatu/ads/bloc/ad_bloc.dart';
 import 'package:barinsatu/ads/bloc/user_ad_bloc.dart';
 import 'package:barinsatu/ads/models/ad.dart';
 import 'package:barinsatu/ads/repositories/ad_repo.dart';
-import 'package:barinsatu/ads/widgets/AdCard.dart';
 import 'package:barinsatu/authentication/bloc/auth_bloc.dart';
 import 'package:barinsatu/authentication/models/user.dart';
 import 'package:barinsatu/authentication/repositories/auth_repo.dart';
 import 'package:barinsatu/pages/HomePage.dart';
 import 'package:barinsatu/pages/ad/DetailPage.dart';
 import 'package:barinsatu/utils/DateFormatter.dart';
+import 'package:dio/dio.dart' as Dio;
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/src/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -33,25 +32,125 @@ class _ProfileViewState extends State<ProfileView> {
   double rating = 3;
   TextEditingController ratingTextController = TextEditingController();
 
+  String? userImageUrl;
+
+  changeProfilePicture() async {
+    var _picker = ImagePicker();
+
+    XFile? file = await _picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 80,
+        maxHeight: 720,
+        maxWidth: 1280);
+
+    if (file == null) {
+      return;
+    }
+
+    Dio.FormData formData = Dio.FormData.fromMap(
+        {'avatar': await Dio.MultipartFile.fromFile(file.path)});
+
+    try {
+      AuthRepo authRepo = AuthRepo();
+      User user = await authRepo.changeUserProfile(formData, widget.user.id);
+
+      setState(() {
+        userImageUrl = user.avatar;
+      });
+
+      context.read<AuthBloc>().add(const AuthEvent.getUser());
+
+      const SnackBar snackBar =
+          SnackBar(content: Text('Фотография успешно обновлена'));
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } catch (e) {
+      print(e);
+      const SnackBar snackBar =
+          SnackBar(content: Text('Что то пошло не так, попробуйте заново!'));
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Widget buildEditImage() {
+    Widget icon = Container();
+    final primaryColor = Theme.of(context).primaryColor;
+    AuthState state = context.watch<AuthBloc>().state;
+    state.maybeWhen(loaded: (userLoaded, msg) {
+      if (userLoaded.user.id == widget.user.id) {
+        icon = Positioned(
+          bottom: 0,
+          right: 0,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+                color: primaryColor, borderRadius: BorderRadius.circular(150)),
+            child: IconButton(
+                onPressed: changeProfilePicture,
+                icon: const Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                  size: 24,
+                )),
+          ),
+        );
+      } else {
+        icon = Positioned(
+          top: 0,
+          left: 0,
+          child: Container(),
+        );
+      }
+    }, orElse: () {
+      icon = Positioned(
+        top: 0,
+        left: 0,
+        child: Container(),
+      );
+    });
+
+    return icon;
+  }
+
   Widget buildImage() {
-    if (widget.user.avatar != null) {
-      return ExtendedImage.network(
-        widget.user.avatar!,
-        width: 150,
-        height: 150,
-        fit: BoxFit.cover,
-        cache: true,
+    if (userImageUrl != null) {
+      return Stack(
+        fit: StackFit.loose,
+        clipBehavior: Clip.none,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(150),
+            child: ExtendedImage.network(
+              userImageUrl!,
+              width: 150,
+              height: 150,
+              fit: BoxFit.cover,
+              cache: true,
+            ),
+          ),
+          buildEditImage()
+        ],
       );
     } else {
-      return SizedBox(
-        width: 150,
-        height: 150,
-        child: Image.asset(
-          'assets/no-image.jpeg',
-          width: 150,
-          height: 150,
-          fit: BoxFit.cover,
-        ),
+      return Stack(
+        fit: StackFit.loose,
+        clipBehavior: Clip.none,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(150),
+            child: SizedBox(
+              width: 150,
+              height: 150,
+              child: Image.asset(
+                'assets/no-image.jpeg',
+                width: 150,
+                height: 150,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          buildEditImage()
+        ],
       );
     }
   }
@@ -59,10 +158,35 @@ class _ProfileViewState extends State<ProfileView> {
   Widget buildUserType() {
     if (widget.user.user_type != null) {
       return Text(widget.user.user_type!.name!,
-          style: const TextStyle(fontSize: 12));
+          style: const TextStyle(fontSize: 14));
     } else {
-      return const Text('Нет данных', style: TextStyle(fontSize: 12));
+      return const Text('Нет данных', style: TextStyle(fontSize: 14));
     }
+  }
+
+  double? ratingtoValue;
+
+  getRatings() async {
+    AuthRepo authRepo = AuthRepo();
+    List<Rating> ratingsRow = await authRepo.getRatings(widget.user.id);
+    num ball = 0;
+    for (Rating rating in ratingsRow) {
+      if (rating.ball != null) {
+        ball += rating.ball!;
+      }
+    }
+
+    setState(() {
+      ratingtoValue = ball / ratingsRow.length;
+    });
+  }
+
+  Widget buildPhone() {
+    if (widget.user.phone != null) {
+      return Text(widget.user.phone!);
+    }
+
+    return Container();
   }
 
   Widget buildTop() {
@@ -72,10 +196,7 @@ class _ProfileViewState extends State<ProfileView> {
         mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(150),
-            child: buildImage(),
-          ),
+          buildImage(),
           Padding(
             padding: const EdgeInsets.only(top: 12),
             child: Text(
@@ -87,6 +208,37 @@ class _ProfileViewState extends State<ProfileView> {
           Padding(
             padding: const EdgeInsets.only(top: 7),
             child: buildUserType(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 7),
+            child: buildPhone(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 7),
+            child: Column(children: [
+              Text('${widget.user.ratings_count} отзывов'),
+              const SizedBox(
+                height: 7,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('(${ratingtoValue}) '),
+                  RatingBarIndicator(
+                    rating: ratingtoValue != null && !ratingtoValue!.isNaN
+                        ? ratingtoValue!
+                        : 0,
+                    itemBuilder: (context, index) => const Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    itemCount: 5,
+                    itemSize: 15.0,
+                    direction: Axis.horizontal,
+                  ),
+                ],
+              )
+            ]),
           )
         ],
       ),
@@ -334,24 +486,36 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   @override
+  void initState() {
+    getRatings();
+    if (widget.user.avatar != null) {
+      setState(() {
+        userImageUrl = widget.user.avatar!;
+      });
+    }
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
-    return SafeArea(
-      child: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          floatingActionButton: buildRateButton(),
-          appBar: AppBar(
-            elevation: 0,
-            title: const Text('Кабинет'),
-            foregroundColor: primaryColor,
-            backgroundColor: Colors.white,
-            actions: [
-              buildActionButtonOptions(),
-              buildActionButtonExit(),
-            ],
-          ),
-          body: Container(
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        floatingActionButton: buildRateButton(),
+        appBar: AppBar(
+          elevation: 0,
+          title: const Text('Кабинет'),
+          foregroundColor: primaryColor,
+          backgroundColor: Colors.white,
+          actions: [
+            buildActionButtonOptions(),
+            buildActionButtonExit(),
+          ],
+        ),
+        body: SafeArea(
+          child: Container(
               decoration: const BoxDecoration(color: Colors.white),
               width: MediaQuery.of(context).size.width,
               child: NestedScrollView(
@@ -360,8 +524,8 @@ class _ProfileViewState extends State<ProfileView> {
                   return [
                     SliverAppBar(
                       backgroundColor: Colors.white,
-                      expandedHeight: 250,
-                      collapsedHeight: 250,
+                      expandedHeight: 300,
+                      collapsedHeight: 300,
                       flexibleSpace: Column(
                         key: _widgetKey,
                         children: [
