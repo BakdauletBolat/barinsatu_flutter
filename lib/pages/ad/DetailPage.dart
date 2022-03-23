@@ -1,13 +1,17 @@
 import 'package:barinsatu/ads/models/ad.dart';
+import 'package:barinsatu/ads/repositories/ad_repo.dart';
+import 'package:barinsatu/authentication/bloc/auth_bloc.dart';
 import 'package:barinsatu/authentication/models/user.dart';
 import 'package:barinsatu/authentication/repositories/auth_repo.dart';
 import 'package:barinsatu/pages/Calculator.dart';
 import 'package:barinsatu/pages/HomePage.dart';
 import 'package:barinsatu/pages/auth/ProfileView.dart';
+import 'package:barinsatu/utils/DateFormatter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -23,11 +27,12 @@ class UserView extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget buildImageProfile() {
       if (user.avatar != null) {
-        return Image.network(
+        return ExtendedImage.network(
           user.avatar.toString(),
-          height: 62,
           width: 62,
+          height: 62,
           fit: BoxFit.cover,
+          cache: true,
         );
       }
       return Image.asset(
@@ -167,6 +172,44 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   final priceFormat = NumberFormat("#,##0", "en_US");
   int activeIndex = 0;
+  int count = 0;
+
+  DateFormatter dataFormatter = DateFormatter();
+
+  Future<void> _showRemoveDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Вы точно хотите удалить публикацию ?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Нет'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Да'),
+              onPressed: () async {
+                AdRepo adRepo = AdRepo();
+                try {
+                  var res = await adRepo.deleteAd(widget.item.id);
+                  var newRoute = CupertinoPageRoute(
+                      builder: (context) => const HomePage());
+                  Navigator.pushAndRemoveUntil(
+                      context, newRoute, (route) => false);
+                } catch (e) {
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Widget buildDetails() {
     if (widget.item.ad_detail_type!.title == 'homedetail') {
@@ -415,9 +458,78 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
+  view() async {
+    AdRepo adRepo = AdRepo();
+    await adRepo.viewAd(widget.item.id);
+  }
+
+  late ScrollController _scrollController;
+  Color _appColor = Colors.transparent;
+
+  bool isLike = false;
+
   @override
   void initState() {
+    view();
+    context.read<AuthBloc>().state.mapOrNull(
+      loaded: (value) {
+        var contain = widget.item.likes
+            .where((element) => element.user == value.userLoaded.user.id);
+
+        if (contain.isEmpty) {
+          setState(() {
+            isLike = false;
+          });
+        } else {
+          setState(() {
+            isLike = true;
+          });
+        }
+      },
+    );
+
+    setState(() {
+      count = widget.item.likes.length;
+    });
     super.initState();
+    _scrollController = ScrollController()
+      ..addListener(() {
+        if (_scrollController.position.pixels < 100) {
+          _appColor = Colors.transparent;
+          setState(() {});
+        } else {
+          _appColor = Theme.of(context).primaryColor;
+          setState(() {});
+        }
+      });
+  }
+
+  void likeAd() async {
+    var userState = BlocProvider.of<AuthBloc>(context).state;
+    userState.maybeWhen(orElse: () {
+      const snackBar = SnackBar(
+        content: Text('Не зарегестрированный человек не можеть лайкнуть'),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }, loaded: (user, msg) async {
+      int id = widget.item.id;
+      AdRepo adRepo = AdRepo();
+
+      Like like = await adRepo.likeAd(id);
+
+      if (like.isLiked) {
+        setState(() {
+          isLike = true;
+          count += 1;
+        });
+      } else {
+        setState(() {
+          isLike = false;
+          count -= 1;
+        });
+      }
+    });
   }
 
   @override
@@ -539,16 +651,59 @@ class _DetailPageState extends State<DetailPage> {
       );
     }
 
+    Widget buildRemoveAction() {
+      var state = context.watch<AuthBloc>().state;
+      Widget container = const SizedBox.shrink();
+      state.whenOrNull(
+          loaded: (userLoaded, msg) => {
+                if (userLoaded.user.id == widget.item.author!.id)
+                  {
+                    container = IconButton(
+                        onPressed: _showRemoveDialog,
+                        icon: const Icon(Icons.delete))
+                  }
+              });
+
+      return container;
+    }
+
+    Widget buildViewIcon() {
+      return Row(
+        children: [
+          const Icon(Icons.remove_red_eye_sharp),
+          const SizedBox(
+            width: 5,
+          ),
+          Text(widget.item.views.toString()),
+          const SizedBox(
+            width: 10,
+          )
+        ],
+      );
+    }
+
+    Widget buildLikeButton() {
+      return Row(
+        children: [
+          IconButton(onPressed: likeAd, icon: const Icon(Icons.favorite)),
+          Text(count.toString()),
+          const SizedBox(
+            width: 20,
+          )
+        ],
+      );
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        // leadingWidth: 100,
-        elevation: 0,
-
-        leading: isCompleteButton(),
-        backgroundColor: Colors.transparent,
-      ),
+          // leadingWidth: 100,
+          elevation: 0,
+          actions: [buildLikeButton(), buildViewIcon(), buildRemoveAction()],
+          leading: isCompleteButton(),
+          backgroundColor: _appColor),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Container(
             decoration: const BoxDecoration(color: CupertinoColors.white),
             child: Column(
@@ -611,8 +766,9 @@ class _DetailPageState extends State<DetailPage> {
                       const SizedBox(
                         height: 35,
                       ),
-                      Container(
-                          child: Row(
+                      Text(dataFormatter.getVerboseDateTimeRepresentation(
+                          widget.item.created_at)),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -626,7 +782,7 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                           const FaIcon(FontAwesomeIcons.tenge),
                         ],
-                      )),
+                      ),
                       Text(widget.item.title.toString(),
                           style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold)),

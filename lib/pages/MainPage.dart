@@ -12,11 +12,13 @@ import 'package:barinsatu/authentication/models/user.dart' as UserModel;
 import 'package:barinsatu/authentication/repositories/auth_repo.dart';
 import 'package:barinsatu/pages/ad/AdDetailTypePage.dart';
 import 'package:barinsatu/pages/ad/FilterPage.dart';
+import 'package:barinsatu/pages/auth/FavoritesPage.dart';
 import 'package:barinsatu/pages/auth/NotificationPage.dart';
 import 'package:barinsatu/pages/auth/ProfileView.dart';
 import 'package:barinsatu/pages/auth/RegisterPage.dart';
 import 'package:barinsatu/pages/auth/UsersPage.dart';
 import 'package:barinsatu/pages/story/VideoCreatePage.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -103,7 +105,6 @@ class _MainPageState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
-    // final state = context.watch<AdBloc>().state;
     final userState = context.watch<AuthBloc>().state;
 
     String now = DateFormat("dd MMMM, yyyy", "Ru").format(DateTime.now());
@@ -131,7 +132,8 @@ class _MainPageState extends State<MainPage>
             CupertinoPageRoute(builder: (context) => ProfileView(user: user)),
           );
         },
-        child: Image.network(user.avatar.toString(), fit: BoxFit.cover),
+        child: ExtendedImage.network(user.avatar.toString(),
+            fit: BoxFit.cover, cache: true),
       );
     }
 
@@ -206,26 +208,41 @@ class _MainPageState extends State<MainPage>
                 ],
               ),
               userState.maybeWhen(
-                loaded: (userLoaded, msg) => Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: GestureDetector(
-                    onTap: () {
-                      var route = CupertinoPageRoute(
-                          builder: (context) => const NotificationPage());
-                      Navigator.push(context, route);
-                    },
-                    child: Badge(
-                      badgeContent: Text(
-                        filterNotify(notications).toString(),
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      child: const Icon(
-                        Icons.notifications,
-                        color: Colors.grey,
-                        size: 36,
-                      ),
-                    ),
-                  ),
+                loaded: (userLoaded, msg) => Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          var route = CupertinoPageRoute(
+                              builder: (context) =>
+                                  FavoritesPage(id: userLoaded.user.id));
+                          Navigator.push(context, route);
+                        },
+                        icon: const Icon(
+                          Icons.favorite,
+                          size: 36,
+                          color: Colors.red,
+                        )),
+                    Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: IconButton(
+                          onPressed: () {
+                            var route = CupertinoPageRoute(
+                                builder: (context) => const NotificationPage());
+                            Navigator.push(context, route);
+                          },
+                          icon: Badge(
+                            badgeContent: Text(
+                              filterNotify(notications).toString(),
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            child: Icon(
+                              Icons.notifications,
+                              color: Theme.of(context).primaryColor,
+                              size: 36,
+                            ),
+                          ),
+                        )),
+                  ],
                 ),
                 orElse: () => GestureDetector(
                   onTap: () {

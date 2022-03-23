@@ -57,6 +57,7 @@ _$_Ad _$$_AdFromJson(Map<String, dynamic> json) => _$_Ad(
       details: json['details'] == null
           ? null
           : Details.fromJson(json['details'] as Map<String, dynamic>),
+      views: json['views'] as int,
       comments: (json['comments'] as List<dynamic>)
           .map((e) => Comment.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -86,6 +87,7 @@ Map<String, dynamic> _$$_AdToJson(_$_Ad instance) => <String, dynamic>{
       'ad_detail_type': instance.ad_detail_type,
       'ad_type': instance.ad_type,
       'details': instance.details,
+      'views': instance.views,
       'comments': instance.comments,
       'city': instance.city,
       'author': instance.author,

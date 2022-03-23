@@ -5,6 +5,7 @@ import 'package:barinsatu/authentication/bloc/auth_bloc.dart';
 import 'package:barinsatu/authentication/models/user.dart';
 import 'package:barinsatu/pages/ad/CommentsPage.dart';
 import 'package:barinsatu/pages/ad/DetailPage.dart';
+import 'package:barinsatu/utils/DateFormatter.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/src/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
 // Import package
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -34,6 +36,8 @@ class _AdCardState extends State<AdCard> {
 
   bool isLike = false;
 
+  DateFormatter dateFormatter = DateFormatter();
+
   static Future<void> vibrate() async {
     await SystemChannels.platform.invokeMethod<void>(
       'HapticFeedback.vibrate',
@@ -52,9 +56,6 @@ class _AdCardState extends State<AdCard> {
         var contain = widget.item.likes
             .where((element) => element.user == value.userLoaded.user.id);
 
-        setState(() {
-          count = widget.item.likes.length;
-        });
         if (contain.isEmpty) {
           setState(() {
             isLike = false;
@@ -66,6 +67,10 @@ class _AdCardState extends State<AdCard> {
         }
       },
     );
+
+    setState(() {
+      count = widget.item.likes.length;
+    });
     super.initState();
   }
 
@@ -121,7 +126,6 @@ class _AdCardState extends State<AdCard> {
                 GestureDetector(
                   onTap: () {
                     vibrate();
-                    print('tapped');
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
@@ -195,7 +199,23 @@ class _AdCardState extends State<AdCard> {
                                             ])),
                                   )
                                 ],
-                              )))
+                              ))),
+                      // Positioned(
+                      //     top: 20,
+                      //     left: 20,
+                      //     child: Row(
+                      //       children: [
+                      //         const Icon(
+                      //           Icons.remove_red_eye,
+                      //           size: 30,
+                      //           color: Color.fromARGB(255, 255, 255, 255),
+                      //         ),
+                      //         Padding(
+                      //           padding: const EdgeInsets.only(left: 5),
+                      //           child:
+                      //         )
+                      //       ],
+                      //     ))
                     ],
                   ),
                 )

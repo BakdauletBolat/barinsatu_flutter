@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // 192.168.0.100
 class AdRepo {
   var dio = Dio();
-  final url = 'http://87.249.53.253/api/ad/';
+  final url = 'http://barinsatu.kz/api/ad/';
 
   final key = 'AIzaSyCgNxK-GoiGov61CFM-f9DoF4giqtDsA08';
 
@@ -70,6 +70,24 @@ class AdRepo {
       return ad;
     } catch (e) {
       throw Exception(e.toString());
+    }
+  }
+
+  deleteAd(int id) async {
+    try {
+      var res = await http.get(Uri.parse(url + 'archive/$id/'));
+      print(res.body);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  viewAd(int id) async {
+    try {
+      var res = await http.get(Uri.parse(url + 'view/$id/'));
+      print(res.body);
+    } catch (e) {
+      print(e);
     }
   }
 

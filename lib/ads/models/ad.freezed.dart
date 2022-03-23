@@ -451,6 +451,7 @@ class _$AdTearOff {
       AdDetailType? ad_detail_type,
       AdType? ad_type,
       Details? details,
+      required int views,
       required List<Comment> comments,
       City? city,
       User? author,
@@ -468,6 +469,7 @@ class _$AdTearOff {
       ad_detail_type: ad_detail_type,
       ad_type: ad_type,
       details: details,
+      views: views,
       comments: comments,
       city: city,
       author: author,
@@ -497,6 +499,7 @@ mixin _$Ad {
   AdDetailType? get ad_detail_type => throw _privateConstructorUsedError;
   AdType? get ad_type => throw _privateConstructorUsedError;
   Details? get details => throw _privateConstructorUsedError;
+  int get views => throw _privateConstructorUsedError;
   List<Comment> get comments => throw _privateConstructorUsedError;
   City? get city => throw _privateConstructorUsedError;
   User? get author => throw _privateConstructorUsedError;
@@ -524,6 +527,7 @@ abstract class $AdCopyWith<$Res> {
       AdDetailType? ad_detail_type,
       AdType? ad_type,
       Details? details,
+      int views,
       List<Comment> comments,
       City? city,
       User? author,
@@ -558,6 +562,7 @@ class _$AdCopyWithImpl<$Res> implements $AdCopyWith<$Res> {
     Object? ad_detail_type = freezed,
     Object? ad_type = freezed,
     Object? details = freezed,
+    Object? views = freezed,
     Object? comments = freezed,
     Object? city = freezed,
     Object? author = freezed,
@@ -606,6 +611,10 @@ class _$AdCopyWithImpl<$Res> implements $AdCopyWith<$Res> {
           ? _value.details
           : details // ignore: cast_nullable_to_non_nullable
               as Details?,
+      views: views == freezed
+          ? _value.views
+          : views // ignore: cast_nullable_to_non_nullable
+              as int,
       comments: comments == freezed
           ? _value.comments
           : comments // ignore: cast_nullable_to_non_nullable
@@ -705,6 +714,7 @@ abstract class _$AdCopyWith<$Res> implements $AdCopyWith<$Res> {
       AdDetailType? ad_detail_type,
       AdType? ad_type,
       Details? details,
+      int views,
       List<Comment> comments,
       City? city,
       User? author,
@@ -745,6 +755,7 @@ class __$AdCopyWithImpl<$Res> extends _$AdCopyWithImpl<$Res>
     Object? ad_detail_type = freezed,
     Object? ad_type = freezed,
     Object? details = freezed,
+    Object? views = freezed,
     Object? comments = freezed,
     Object? city = freezed,
     Object? author = freezed,
@@ -793,6 +804,10 @@ class __$AdCopyWithImpl<$Res> extends _$AdCopyWithImpl<$Res>
           ? _value.details
           : details // ignore: cast_nullable_to_non_nullable
               as Details?,
+      views: views == freezed
+          ? _value.views
+          : views // ignore: cast_nullable_to_non_nullable
+              as int,
       comments: comments == freezed
           ? _value.comments
           : comments // ignore: cast_nullable_to_non_nullable
@@ -835,6 +850,7 @@ class _$_Ad implements _Ad {
       this.ad_detail_type,
       this.ad_type,
       this.details,
+      required this.views,
       required this.comments,
       this.city,
       this.author,
@@ -865,6 +881,8 @@ class _$_Ad implements _Ad {
   @override
   final Details? details;
   @override
+  final int views;
+  @override
   final List<Comment> comments;
   @override
   final City? city;
@@ -879,7 +897,7 @@ class _$_Ad implements _Ad {
 
   @override
   String toString() {
-    return 'Ad(id: $id, title: $title, description: $description, price: $price, location_text: $location_text, lat: $lat, lng: $lng, ad_detail_type: $ad_detail_type, ad_type: $ad_type, details: $details, comments: $comments, city: $city, author: $author, created_at: $created_at, likes: $likes, images: $images)';
+    return 'Ad(id: $id, title: $title, description: $description, price: $price, location_text: $location_text, lat: $lat, lng: $lng, ad_detail_type: $ad_detail_type, ad_type: $ad_type, details: $details, views: $views, comments: $comments, city: $city, author: $author, created_at: $created_at, likes: $likes, images: $images)';
   }
 
   @override
@@ -900,6 +918,7 @@ class _$_Ad implements _Ad {
                 .equals(other.ad_detail_type, ad_detail_type) &&
             const DeepCollectionEquality().equals(other.ad_type, ad_type) &&
             const DeepCollectionEquality().equals(other.details, details) &&
+            const DeepCollectionEquality().equals(other.views, views) &&
             const DeepCollectionEquality().equals(other.comments, comments) &&
             const DeepCollectionEquality().equals(other.city, city) &&
             const DeepCollectionEquality().equals(other.author, author) &&
@@ -922,6 +941,7 @@ class _$_Ad implements _Ad {
       const DeepCollectionEquality().hash(ad_detail_type),
       const DeepCollectionEquality().hash(ad_type),
       const DeepCollectionEquality().hash(details),
+      const DeepCollectionEquality().hash(views),
       const DeepCollectionEquality().hash(comments),
       const DeepCollectionEquality().hash(city),
       const DeepCollectionEquality().hash(author),
@@ -951,6 +971,7 @@ abstract class _Ad implements Ad {
       AdDetailType? ad_detail_type,
       AdType? ad_type,
       Details? details,
+      required int views,
       required List<Comment> comments,
       City? city,
       User? author,
@@ -980,6 +1001,8 @@ abstract class _Ad implements Ad {
   AdType? get ad_type;
   @override
   Details? get details;
+  @override
+  int get views;
   @override
   List<Comment> get comments;
   @override

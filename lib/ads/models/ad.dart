@@ -42,6 +42,7 @@ class Ad with _$Ad {
       AdDetailType? ad_detail_type,
       AdType? ad_type,
       Details? details,
+      required int views,
       required List<Comment> comments,
       City? city,
       User? author,

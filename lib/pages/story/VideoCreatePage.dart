@@ -157,7 +157,7 @@ class _MyHomePageState extends State<VideoCreate> {
           if (file != null) {
             var info = await videoInfo.getVideoInfo(file.path);
             print(info!.duration!);
-            if (info.duration! > 30000) {
+            if (info.duration! > 20000) {
               print('aa');
               showDialog(
                   context: context,
@@ -216,91 +216,87 @@ class _MyHomePageState extends State<VideoCreate> {
       return const LoginPage();
     }, loaded: (userLoaded, msg) {
       return Scaffold(
-        body: Center(
-            child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: const BoxDecoration(color: Colors.black),
-          alignment: AlignmentDirectional.center,
-          child: Stack(
-            fit: StackFit.expand,
+        body: SafeArea(
+          child: Center(
+              child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(color: Colors.black),
             alignment: AlignmentDirectional.center,
-            children: [
-              if (controllerLoading)
-                const Center(
-                  child: CupertinoActivityIndicator(),
-                )
-              else if (videoFile != null && _controller!.value.isInitialized)
-                FittedBox(
-                  fit: BoxFit.contain,
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    width: _controller!.value.size.width,
-                    height: _controller!.value.size.height,
-                    child: GestureDetector(
-                        onTap: () {
-                          if (_controller!.value.isPlaying) {
-                            _controller!.pause();
-                            setState(() {
-                              isPlaying = false;
-                            });
-                          } else {
-                            _controller!.play();
-                            setState(() {
-                              isPlaying = true;
-                            });
-                          }
-                        },
-                        child: VideoPlayer(_controller!)),
+            child: Stack(
+              fit: StackFit.expand,
+              alignment: AlignmentDirectional.center,
+              children: [
+                if (controllerLoading)
+                  const Center(
+                    child: CupertinoActivityIndicator(),
+                  )
+                else if (videoFile != null && _controller!.value.isInitialized)
+                  FittedBox(
+                    fit: BoxFit.contain,
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      width: _controller!.value.size.width,
+                      height: _controller!.value.size.height,
+                      child: GestureDetector(
+                          onTap: () {
+                            if (_controller!.value.isPlaying) {
+                              _controller!.pause();
+                              setState(() {
+                                isPlaying = false;
+                              });
+                            } else {
+                              _controller!.play();
+                              setState(() {
+                                isPlaying = true;
+                              });
+                            }
+                          },
+                          child: VideoPlayer(_controller!)),
+                    ),
+                  )
+                else
+                  const Center(
+                    child: Text('Выберите видео'),
                   ),
-                )
-              else
-                const Center(
-                  child: Text('Выберите видео'),
-                ),
-              Positioned(
-                top: 10,
-                left: 10,
-                child: SizedBox(
-                  width: 320,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        Text('Size ' + videoSize.toString(),
-                            style: const TextStyle(
-                                fontSize: 15,
-                                color: Colors.white,
-                                shadows: [
-                                  Shadow(
-                                    offset: Offset(10.0, 10.0),
-                                    blurRadius: 3.0,
-                                    color: Color.fromARGB(255, 0, 0, 0),
-                                  )
-                                ])),
-                        const Text(
-                            'Вы загружаете видео-историю в Barinsatu чисто для ознакомителных целях',
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.white,
-                                shadows: [Shadow()])),
-                      ],
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: SizedBox(
+                    width: 320,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: const [
+                          // Text('Size ' + videoSize.toString(),
+                          //     style: const TextStyle(
+                          //         fontSize: 15,
+                          //         color: Colors.white,
+                          //         shadows: [
+                          //           Shadow(
+                          //             offset: Offset(10.0, 10.0),
+                          //             blurRadius: 3.0,
+                          //             color: Color.fromARGB(255, 0, 0, 0),
+                          //           )
+                          //         ])),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              if (!isPlaying)
-                Center(
-                  child: Icon(
-                    Icons.play_arrow,
-                    color: Colors.white.withOpacity(0.8),
-                    size: 40,
+                if (!isPlaying)
+                  Center(
+                    child: Icon(
+                      Icons.play_arrow,
+                      color: Colors.white.withOpacity(0.8),
+                      size: 40,
+                    ),
                   ),
-                ),
-              Positioned(bottom: 28, right: 15, child: buildSendButton())
-            ],
-          ),
-        )),
+                Positioned(bottom: 28, right: 15, child: buildSendButton())
+              ],
+            ),
+          )),
+        ),
       );
     });
   }

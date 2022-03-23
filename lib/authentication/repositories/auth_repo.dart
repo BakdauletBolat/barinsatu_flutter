@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:barinsatu/ads/models/ad.dart';
 import 'package:barinsatu/authentication/models/user.dart' as UserModel;
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
@@ -10,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // 192.168.0.100
 // 172.20.10.3
 class AuthRepo {
-  final url = 'http://87.249.53.253/api/auth/';
+  final url = 'http://barinsatu.kz/api/auth/';
 
   var dio = Dio();
 
@@ -53,6 +54,18 @@ class AuthRepo {
       return jsonRes
           .map<UserModel.UserType>((json) => UserModel.UserType.fromJson(json))
           .toList();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<List<Ad>> getFavorites(int id) async {
+    try {
+      var response =
+          await http.get(Uri.parse(url + "favorites/" + id.toString() + '/'));
+      var utfEncode = utf8.decode(response.bodyBytes);
+      var jsonRes = json.decode(utfEncode);
+      return jsonRes.map<Ad>((json) => Ad.fromJson(json)).toList();
     } catch (e) {
       throw Exception(e);
     }

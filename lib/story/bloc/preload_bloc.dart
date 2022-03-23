@@ -16,8 +16,8 @@ class PreloadBloc extends Bloc<PreloadEvent, PreloadState> {
 
   PreloadBloc({required this.storyRepo}) : super(PreloadState.initial()) {
     on<PreloadEventFetch>((event, emit) async {
-      StoryResponse response = await storyRepo.getStories();
-      emit(state.copyWith(stories: response.data, loaded: true));
+      List<Story> response = await storyRepo.getStories();
+      emit(state.copyWith(stories: response, loaded: true));
     });
     on<_OnVideoIndexChanged>((event, emit) async {
       emit(state.copyWith(focusedIndex: event.index));

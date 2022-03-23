@@ -2,12 +2,16 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:barinsatu/pages/HomePage.dart';
 import 'package:barinsatu/story/models/story.dart';
+import 'package:barinsatu/story/repositories/story_repo.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'dart:io' show Platform;
 import 'package:video_player/video_player.dart';
+
+import '../../authentication/bloc/auth_bloc.dart';
 
 class VideoDetail extends StatefulWidget {
   const VideoDetail({Key? key, required this.story}) : super(key: key);
@@ -90,16 +94,83 @@ class _VideoState extends State<VideoDetail> {
         child: const Text('Готово'));
   }
 
+  Future<void> _showRemoveDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Вы точно хотите удалить историю ?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Нет'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Да'),
+              onPressed: () async {
+                StoryRepo storyRepo = StoryRepo();
+                try {
+                  var res = await storyRepo.deleteStory(widget.story.id);
+                  var newRoute = CupertinoPageRoute(
+                      builder: (context) => const HomePage());
+                  Navigator.pushAndRemoveUntil(
+                      context, newRoute, (route) => false);
+                } catch (e) {
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget buildRemoveAction() {
+    var state = context.watch<AuthBloc>().state;
+    Widget container = const SizedBox.shrink();
+    state.whenOrNull(
+        loaded: (userLoaded, msg) => {
+              if (userLoaded.user.id == widget.story.author.id)
+                {
+                  container = IconButton(
+                      onPressed: _showRemoveDialog,
+                      icon: const Icon(Icons.delete))
+                }
+            });
+
+    return container;
+  }
+
+  Widget buildViewIcon() {
+    return Row(
+      children: [
+        const Icon(Icons.remove_red_eye_sharp),
+        const SizedBox(
+          width: 5,
+        ),
+        Text(widget.story.views.toString()),
+        const SizedBox(
+          width: 10,
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_controller != null) {
       if (isLoaded) {
         return Scaffold(
+          extendBodyBehindAppBar: true,
           appBar: AppBar(
             backgroundColor: Colors.white,
             title: const Text('История'),
             foregroundColor: Theme.of(context).primaryColor,
-            actions: [isDoneButton()],
+            actions: [isDoneButton(), buildRemoveAction(), buildViewIcon()],
           ),
           body: SafeArea(
             child: Container(
@@ -203,11 +274,12 @@ class _VideoState extends State<VideoDetail> {
 
   Widget buildProfilePicture() {
     if (widget.story.author.avatar != null) {
-      return Image.network(
+      return ExtendedImage.network(
         widget.story.author.avatar!,
         width: 45,
         height: 45,
         fit: BoxFit.cover,
+        cache: true,
       );
     }
     return Image.asset(

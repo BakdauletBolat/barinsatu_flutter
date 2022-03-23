@@ -20,6 +20,7 @@ class Story with _$Story {
     required DateTime created_at,
     required DateTime updated_at,
     required String video,
+    required int views,
     required List<StoryLike> story_likes,
     required List<StoryComment> story_comments,
     String? thumb,

@@ -191,7 +191,7 @@ class _$StoryStateTearOff {
     return const StoryStateLoading();
   }
 
-  StoryStateLoaded loaded({required StoryResponse storyResponse}) {
+  StoryStateLoaded loaded({required List<Story> storyResponse}) {
     return StoryStateLoaded(
       storyResponse: storyResponse,
     );
@@ -210,21 +210,21 @@ mixin _$StoryState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(StoryResponse storyResponse) loaded,
+    required TResult Function(List<Story> storyResponse) loaded,
     required TResult Function() error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(StoryResponse storyResponse)? loaded,
+    TResult Function(List<Story> storyResponse)? loaded,
     TResult Function()? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(StoryResponse storyResponse)? loaded,
+    TResult Function(List<Story> storyResponse)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) =>
@@ -319,7 +319,7 @@ class _$StoryStateLoading
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(StoryResponse storyResponse) loaded,
+    required TResult Function(List<Story> storyResponse) loaded,
     required TResult Function() error,
   }) {
     return loading();
@@ -329,7 +329,7 @@ class _$StoryStateLoading
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(StoryResponse storyResponse)? loaded,
+    TResult Function(List<Story> storyResponse)? loaded,
     TResult Function()? error,
   }) {
     return loading?.call();
@@ -339,7 +339,7 @@ class _$StoryStateLoading
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(StoryResponse storyResponse)? loaded,
+    TResult Function(List<Story> storyResponse)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -393,9 +393,7 @@ abstract class $StoryStateLoadedCopyWith<$Res> {
   factory $StoryStateLoadedCopyWith(
           StoryStateLoaded value, $Res Function(StoryStateLoaded) then) =
       _$StoryStateLoadedCopyWithImpl<$Res>;
-  $Res call({StoryResponse storyResponse});
-
-  $StoryResponseCopyWith<$Res> get storyResponse;
+  $Res call({List<Story> storyResponse});
 }
 
 /// @nodoc
@@ -417,15 +415,8 @@ class _$StoryStateLoadedCopyWithImpl<$Res>
       storyResponse: storyResponse == freezed
           ? _value.storyResponse
           : storyResponse // ignore: cast_nullable_to_non_nullable
-              as StoryResponse,
+              as List<Story>,
     ));
-  }
-
-  @override
-  $StoryResponseCopyWith<$Res> get storyResponse {
-    return $StoryResponseCopyWith<$Res>(_value.storyResponse, (value) {
-      return _then(_value.copyWith(storyResponse: value));
-    });
   }
 }
 
@@ -437,7 +428,7 @@ class _$StoryStateLoaded
   const _$StoryStateLoaded({required this.storyResponse});
 
   @override
-  final StoryResponse storyResponse;
+  final List<Story> storyResponse;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -474,7 +465,7 @@ class _$StoryStateLoaded
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(StoryResponse storyResponse) loaded,
+    required TResult Function(List<Story> storyResponse) loaded,
     required TResult Function() error,
   }) {
     return loaded(storyResponse);
@@ -484,7 +475,7 @@ class _$StoryStateLoaded
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(StoryResponse storyResponse)? loaded,
+    TResult Function(List<Story> storyResponse)? loaded,
     TResult Function()? error,
   }) {
     return loaded?.call(storyResponse);
@@ -494,7 +485,7 @@ class _$StoryStateLoaded
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(StoryResponse storyResponse)? loaded,
+    TResult Function(List<Story> storyResponse)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -540,10 +531,10 @@ class _$StoryStateLoaded
 }
 
 abstract class StoryStateLoaded implements StoryState {
-  const factory StoryStateLoaded({required StoryResponse storyResponse}) =
+  const factory StoryStateLoaded({required List<Story> storyResponse}) =
       _$StoryStateLoaded;
 
-  StoryResponse get storyResponse;
+  List<Story> get storyResponse;
   @JsonKey(ignore: true)
   $StoryStateLoadedCopyWith<StoryStateLoaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -598,7 +589,7 @@ class _$StoryStateError
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(StoryResponse storyResponse) loaded,
+    required TResult Function(List<Story> storyResponse) loaded,
     required TResult Function() error,
   }) {
     return error();
@@ -608,7 +599,7 @@ class _$StoryStateError
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(StoryResponse storyResponse)? loaded,
+    TResult Function(List<Story> storyResponse)? loaded,
     TResult Function()? error,
   }) {
     return error?.call();
@@ -618,7 +609,7 @@ class _$StoryStateError
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(StoryResponse storyResponse)? loaded,
+    TResult Function(List<Story> storyResponse)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {

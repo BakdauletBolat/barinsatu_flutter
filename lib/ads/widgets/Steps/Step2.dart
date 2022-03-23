@@ -2,6 +2,8 @@ import 'package:barinsatu/ads/models/ad.dart';
 import 'package:barinsatu/ads/models/geo.dart';
 import 'package:barinsatu/ads/repositories/ad_repo.dart';
 import 'package:barinsatu/ads/widgets/CustomTextField.dart';
+import 'package:barinsatu/ads/widgets/MapFullScreen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,7 @@ class _State extends State<Step2> {
   int cityValue = 0;
   AdRepo adRepo = AdRepo();
   List<Geo> predictions = [];
+  late FocusNode myFocusNode;
 
   TextEditingController textEditingController = TextEditingController();
 
@@ -49,7 +52,9 @@ class _State extends State<Step2> {
       });
     } else {
       setState(() {
-        predictions = [];
+        predictions = [
+          Geo.fromJson({"description": value, "place_id": "1"}),
+        ];
       });
     }
   }
@@ -64,6 +69,7 @@ class _State extends State<Step2> {
   @override
   void initState() {
     getCities();
+    myFocusNode = FocusNode();
     super.initState();
   }
 
@@ -71,6 +77,7 @@ class _State extends State<Step2> {
   void dispose() {
     textEditingController.dispose();
     _controller.dispose();
+    myFocusNode.dispose();
     super.dispose();
   }
 
@@ -137,7 +144,8 @@ class _State extends State<Step2> {
                 ),
               ),
             TextFormField(
-                style: TextStyle(color: Colors.white10),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                style: const TextStyle(color: Colors.white10),
                 controller: locationTextController,
                 decoration: const InputDecoration(
                   constraints: BoxConstraints(maxHeight: 30),
@@ -154,44 +162,58 @@ class _State extends State<Step2> {
               height: 60,
             ),
             Container(
-              margin: const EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 60),
               child: SizedBox(
                 height: 300,
                 child: GoogleMap(
-                    gestureRecognizers: Set()
-                      ..add(Factory<EagerGestureRecognizer>(
-                          () => EagerGestureRecognizer())),
-                    mapToolbarEnabled: true,
-                    myLocationEnabled: true,
-                    zoomGesturesEnabled: true,
-                    scrollGesturesEnabled: true,
-                    rotateGesturesEnabled: true,
-                    myLocationButtonEnabled: true,
+                    mapToolbarEnabled: false,
+                    myLocationEnabled: false,
+                    zoomGesturesEnabled: false,
+                    scrollGesturesEnabled: false,
+                    rotateGesturesEnabled: false,
+                    myLocationButtonEnabled: false,
                     mapType: MapType.normal,
-                    onTap: (latLng) {
-                      setState(() {
-                        widget.data.lat = latLng.latitude;
-                        widget.data.lng = latLng.longitude;
-                        if (location != null) {
-                          location = location!.copyWith(
-                              positionParam:
-                                  LatLng(latLng.latitude, latLng.longitude));
-                        } else {
-                          locationTextController.text =
-                              latLng.latitude.toString();
-                          location = Marker(
-                            markerId: const MarkerId('location'),
-                            infoWindow: const InfoWindow(title: 'location'),
-                            icon: BitmapDescriptor.defaultMarkerWithHue(
-                                BitmapDescriptor.hueBlue),
-                            position: LatLng(latLng.latitude, latLng.longitude),
-                          );
-                        }
-                      });
-                    },
                     initialCameraPosition: _kGooglePlex,
                     onMapCreated: (GoogleMapController controller) {
                       _controller = controller;
+                    },
+                    onTap: (lat) {
+                      Function? onTap(latLng) {
+                        setState(() {
+                          widget.data.lat = latLng.latitude;
+                          widget.data.lng = latLng.longitude;
+
+                          _controller.animateCamera(
+                              CameraUpdate.newCameraPosition(CameraPosition(
+                                  zoom: 18,
+                                  target: LatLng(
+                                      latLng.latitude, latLng.longitude))));
+                          if (location != null) {
+                            location = location!.copyWith(
+                                positionParam:
+                                    LatLng(latLng.latitude, latLng.longitude));
+                          } else {
+                            locationTextController.text =
+                                latLng.latitude.toString();
+                            location = Marker(
+                              markerId: const MarkerId('location'),
+                              infoWindow: const InfoWindow(title: 'location'),
+                              icon: BitmapDescriptor.defaultMarkerWithHue(
+                                  BitmapDescriptor.hueBlue),
+                              position:
+                                  LatLng(latLng.latitude, latLng.longitude),
+                            );
+                          }
+                        });
+                      }
+
+                      var route = CupertinoPageRoute(
+                          builder: (context) => GoogleMapFullScreen(
+                                onTap: onTap,
+                                kGooglePlex: _kGooglePlex,
+                                location: location,
+                              ));
+                      Navigator.push(context, route);
                     },
                     markers: {
                       if (location != null) location!,
@@ -200,24 +222,37 @@ class _State extends State<Step2> {
             )
           ]),
           Positioned(
-            height: 50,
             top: topInt,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width - 45,
             child: Focus(
+              focusNode: myFocusNode,
               onFocusChange: (hasFocus) {
                 if (hasFocus) {
                   setState(() {
                     topInt = 0;
                   });
                 } else {
+                  widget.formKey.currentState!.save();
                   setState(() {
                     topInt = 120;
+                    predictions = [];
                   });
                 }
               },
               child: CustomTextField(
+                suffixIcon: TextButton(
+                  onPressed: () {
+                    myFocusNode.unfocus();
+                    widget.formKey.currentState!.save();
+                    setState(() {
+                      predictions = [];
+                    });
+                  },
+                  child: const Text('Готово'),
+                ),
                 whiteColor: true,
                 padding: 0,
+                onEditingComplete: () {},
                 onSaved: (value) {
                   widget.data.location_text = value;
                 },
@@ -233,8 +268,6 @@ class _State extends State<Step2> {
                     }
                   }
                 },
-                onEditingComplete: () =>
-                    widget.formKey.currentState!.validate(),
                 validation: true,
                 controller: textEditingController,
                 placeHolder: 'Выберите адрес',

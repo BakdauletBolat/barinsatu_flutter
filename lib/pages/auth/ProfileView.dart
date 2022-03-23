@@ -7,6 +7,11 @@ import 'package:barinsatu/authentication/models/user.dart';
 import 'package:barinsatu/authentication/repositories/auth_repo.dart';
 import 'package:barinsatu/pages/HomePage.dart';
 import 'package:barinsatu/pages/ad/DetailPage.dart';
+import 'package:barinsatu/story/models/story.dart';
+import 'package:barinsatu/story/repositories/story_repo.dart';
+import 'package:barinsatu/story/widgets/Video.dart';
+import 'package:barinsatu/story/widgets/VideoDetail.dart';
+import 'package:barinsatu/story/widgets/VideoOneSingle.dart';
 import 'package:barinsatu/utils/DateFormatter.dart';
 import 'package:dio/dio.dart' as Dio;
 import 'package:extended_image/extended_image.dart';
@@ -445,7 +450,6 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget buildRateButton() {
-    final primaryColor = Theme.of(context).primaryColor;
     AuthState state = context.watch<AuthBloc>().state;
     Widget icon = Container();
     state.maybeWhen(loaded: (userLoaded, msg) {
@@ -524,8 +528,8 @@ class _ProfileViewState extends State<ProfileView> {
                   return [
                     SliverAppBar(
                       backgroundColor: Colors.white,
-                      expandedHeight: 300,
-                      collapsedHeight: 300,
+                      expandedHeight: 330,
+                      collapsedHeight: 330,
                       flexibleSpace: Column(
                         key: _widgetKey,
                         children: [
@@ -551,12 +555,10 @@ class _ProfileViewState extends State<ProfileView> {
                             'Посты',
                             style: TextStyle(color: Colors.black),
                           ),
+                          Text('Историй',
+                              style: TextStyle(color: Colors.black)),
                           Text(
                             'Рейтинги',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          Text(
-                            'О себе',
                             style: TextStyle(color: Colors.black),
                           ),
                         ],
@@ -569,11 +571,14 @@ class _ProfileViewState extends State<ProfileView> {
                           AdMiniView(
                             user: widget.user,
                           ),
-                          RatingsView(userId: widget.user.id),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20),
-                            child: Center(child: buildAbout()),
-                          )
+                          StoryMiniView(authorId: widget.user.id),
+                          RatingsView(
+                            userId: widget.user.id,
+                            aboutWidget: Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: Center(child: buildAbout()),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -587,8 +592,10 @@ class _ProfileViewState extends State<ProfileView> {
 }
 
 class RatingsView extends StatefulWidget {
-  const RatingsView({Key? key, required this.userId}) : super(key: key);
+  const RatingsView({Key? key, required this.userId, required this.aboutWidget})
+      : super(key: key);
   final int userId;
+  final Widget aboutWidget;
   @override
   _RatingsViewState createState() => _RatingsViewState();
 }
@@ -650,11 +657,12 @@ class _RatingsViewState extends State<RatingsView> {
                   rating.author.avatar != null
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(25),
-                          child: Image.network(
+                          child: ExtendedImage.network(
                             rating.author.avatar!,
                             fit: BoxFit.cover,
                             height: 25,
                             width: 25,
+                            cache: true,
                           ),
                         )
                       : ClipRRect(
@@ -689,13 +697,102 @@ class _RatingsViewState extends State<RatingsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(color: Colors.white),
-      padding: const EdgeInsets.all(20),
-      child: ListView.builder(
-          itemCount: ratings.length,
-          itemBuilder: (context, index) => buildRatings(ratings[index])),
+    return Column(children: [
+      widget.aboutWidget,
+      Expanded(
+        child: Container(
+            decoration: const BoxDecoration(color: Colors.white),
+            padding: const EdgeInsets.all(20),
+            child: ListView.builder(
+                itemCount: ratings.length,
+                itemBuilder: (context, index) => buildRatings(ratings[index]))),
+      ),
+    ]);
+  }
+}
+
+class StoryMiniView extends StatefulWidget {
+  const StoryMiniView({Key? key, required this.authorId}) : super(key: key);
+
+  final int authorId;
+
+  @override
+  State<StoryMiniView> createState() => _StoryMiniViewState();
+}
+
+class _StoryMiniViewState extends State<StoryMiniView> {
+  List<Story> stories = [];
+
+  getStories() async {
+    StoryRepo storyRepo = StoryRepo();
+    List<Story> raw = await storyRepo.getStories(authorId: widget.authorId);
+    setState(() {
+      stories = raw;
+    });
+  }
+
+  @override
+  void initState() {
+    getStories();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(0),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 3.0,
+        mainAxisSpacing: 3.0,
+      ),
+      physics: const NeverScrollableScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemBuilder: (BuildContext context, int index) {
+        Story item = stories[index];
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(
+                  builder: (context) => VideoOneSingle(
+                        story: item,
+                        position: 0,
+                        isSingle: 1,
+                      )),
+            );
+          },
+          child: MiniAdStory(story: item),
+        );
+      },
+      itemCount: stories.length,
     );
+  }
+}
+
+class MiniAdStory extends StatelessWidget {
+  const MiniAdStory({Key? key, required this.story}) : super(key: key);
+
+  final Story story;
+
+  Widget buildImage() {
+    if (story.thumb == null) {
+      return Image.asset('assets/no-image.jpeg');
+    }
+
+    return ExtendedImage.network(
+      story.thumb!,
+      width: 150,
+      height: 150,
+      fit: BoxFit.cover,
+      cache: true,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return buildImage();
   }
 }
 

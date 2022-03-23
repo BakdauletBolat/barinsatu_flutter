@@ -52,8 +52,7 @@ class _MapState extends State<Map> {
   double newZoom = 15;
 
   /// Url image used on normal markers
-  final String _markerImageUrl =
-      'https://img.icons8.com/office/80/000000/marker.png';
+  final String _markerImageUrl = 'http://87.249.53.253/static/images/home.png';
 
   /// Color of the cluster circle
   final Color _clusterColor = Colors.blue;
@@ -106,27 +105,29 @@ class _MapState extends State<Map> {
   /// Gets the markers and clusters to be displayed on the map for the current zoom level and
   /// updates state.
   Future<void> _updateMarkers([double? updatedZoom]) async {
-    if (_clusterManager == null || updatedZoom == currentZoom) return;
+    if (mounted) {
+      if (_clusterManager == null || updatedZoom == currentZoom) return;
 
-    if (updatedZoom != null) {
-      currentZoom = updatedZoom;
+      if (updatedZoom != null) {
+        currentZoom = updatedZoom;
+      }
+
+      setState(() {});
+
+      final updatedMarkers = await MapHelper.getClusterMarkers(
+        _clusterManager,
+        currentZoom,
+        _clusterColor,
+        _clusterTextColor,
+        80,
+      );
+
+      _markers
+        ..clear()
+        ..addAll(updatedMarkers);
+
+      setState(() {});
     }
-
-    setState(() {});
-
-    final updatedMarkers = await MapHelper.getClusterMarkers(
-      _clusterManager,
-      currentZoom,
-      _clusterColor,
-      _clusterTextColor,
-      80,
-    );
-
-    _markers
-      ..clear()
-      ..addAll(updatedMarkers);
-
-    setState(() {});
   }
 
   final priceFormat = NumberFormat("#,##0", "en_US");
@@ -310,8 +311,6 @@ class _MapState extends State<Map> {
                 markers: _markers,
                 onMapCreated: (controller) => _onMapCreated(controller),
                 onCameraIdle: () {
-                  print('ended $newZoom');
-
                   _updateMarkers(newZoom);
                 },
               ),

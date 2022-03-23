@@ -19,7 +19,7 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
     on<StoryEventFetch>((event, emit) async {
       emit(const StoryState.loading());
       try {
-        StoryResponse storyResponse = await storyRepo.getStories();
+        List<Story> storyResponse = await storyRepo.getStories();
 
         emit(StoryState.loaded(storyResponse: storyResponse));
       } catch (e) {

@@ -156,6 +156,9 @@ class _Step3State extends State<Step3> {
             items: buildingTypes,
             onSelectedItemChanged: setBuildingValue,
           ),
+        ),
+        const SizedBox(
+          height: 300,
         )
       ],
     );
@@ -254,6 +257,9 @@ class _Step3State extends State<Step3> {
             items: buildingTypes,
             onSelectedItemChanged: setBuildingValue,
           ),
+        ),
+        const SizedBox(
+          height: 300,
         )
       ],
     );
@@ -357,6 +363,9 @@ class _Step3State extends State<Step3> {
           onConfirm: (c) {
             widget.data.communications = c.map((e) => e!.id).toList();
           },
+        ),
+        const SizedBox(
+          height: 300,
         )
       ],
     );

@@ -24,6 +24,7 @@ _$_Story _$$_StoryFromJson(Map<String, dynamic> json) => _$_Story(
       created_at: DateTime.parse(json['created_at'] as String),
       updated_at: DateTime.parse(json['updated_at'] as String),
       video: json['video'] as String,
+      views: json['views'] as int,
       story_likes: (json['story_likes'] as List<dynamic>)
           .map((e) => StoryLike.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -39,6 +40,7 @@ Map<String, dynamic> _$$_StoryToJson(_$_Story instance) => <String, dynamic>{
       'created_at': instance.created_at.toIso8601String(),
       'updated_at': instance.updated_at.toIso8601String(),
       'video': instance.video,
+      'views': instance.views,
       'story_likes': instance.story_likes,
       'story_comments': instance.story_comments,
       'thumb': instance.thumb,

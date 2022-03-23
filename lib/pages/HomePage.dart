@@ -105,34 +105,35 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(
                             height: 20,
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              var route = CupertinoPageRoute(
-                                  builder: (context) => const VideoCreate());
-                              Navigator.push(context, route);
-                            },
-                            child: Row(
-                              children: [
-                                DecoratedBox(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      color: Theme.of(context).primaryColor),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Icon(
-                                      Icons.slideshow,
-                                      size: 30,
-                                      color: Colors.white,
+                          if (kIsWeb == false)
+                            GestureDetector(
+                              onTap: () {
+                                var route = CupertinoPageRoute(
+                                    builder: (context) => const VideoCreate());
+                                Navigator.push(context, route);
+                              },
+                              child: Row(
+                                children: [
+                                  DecoratedBox(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        color: Theme.of(context).primaryColor),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Icon(
+                                        Icons.slideshow,
+                                        size: 30,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                const Text('Создать историю')
-                              ],
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  const Text('Создать историю')
+                                ],
+                              ),
                             ),
-                          ),
                           const SizedBox(
                             height: 10,
                           ),
@@ -191,28 +192,28 @@ class _HomePageState extends State<HomePage> {
       {"title": 'Калькулятор', "icon": Icons.calculate, "isTapable": true},
       {"title": 'Карта', "icon": Icons.map, "isTapable": true}
     ];
-    return Scaffold(
-        body: SafeArea(
-          child: PageView(
+    return SafeArea(
+      child: Scaffold(
+          body: PageView(
             pageSnapping: true,
             physics: const NeverScrollableScrollPhysics(),
             controller: pageController,
             onPageChanged: onPageChanged,
             children: pages,
           ),
-        ),
-        bottomNavigationBar: SizedBox(
-          height: 60,
-          child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: pagesBody.asMap().entries.map((entry) {
-                int index = entry.key;
-                var val = entry.value;
-                print(entry);
-                return buildItem(
-                    index, val['title'], val['icon'], val['isTapable']);
-              }).toList()),
-        ));
+          bottomNavigationBar: SizedBox(
+            height: 60,
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: pagesBody.asMap().entries.map((entry) {
+                  int index = entry.key;
+                  var val = entry.value;
+                  print(entry);
+                  return buildItem(
+                      index, val['title'], val['icon'], val['isTapable']);
+                }).toList()),
+          )),
+    );
   }
 }

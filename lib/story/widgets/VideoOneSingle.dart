@@ -20,8 +20,8 @@ import 'package:provider/src/provider.dart';
 import 'dart:io' show Platform;
 import 'package:video_player/video_player.dart';
 
-class Video extends StatefulWidget {
-  const Video(
+class VideoOneSingle extends StatefulWidget {
+  const VideoOneSingle(
       {Key? key, required this.story, required this.position, this.isSingle})
       : super(key: key);
 
@@ -33,7 +33,7 @@ class Video extends StatefulWidget {
   _VideoState createState() => _VideoState();
 }
 
-class _VideoState extends State<Video> {
+class _VideoState extends State<VideoOneSingle> {
   VideoPlayerController? _controller;
   final BaseCacheManager _cacheManager = DefaultCacheManager();
 
@@ -110,57 +110,6 @@ class _VideoState extends State<Video> {
     });
   }
 
-  @override
-  void initState() {
-    final focusedIndex =
-        BlocProvider.of<PreloadBloc>(context).state.focusedIndex;
-
-    StoryRepo storyRepo = StoryRepo();
-    storyRepo.viewStory(widget.story.id);
-
-    if (Platform.isIOS || kIsWeb) {
-      _controller = VideoPlayerController.network(widget.story.video);
-      _controller!.initialize().then((value) {
-        if (focusedIndex == widget.position) {
-          _controller!.play();
-        }
-        log(' initialized kz 🚀🚀🚀' + widget.position.toString());
-        setState(() {
-          isLoaded = true;
-        });
-      });
-    } else {
-      getControllerForVideo(widget.story.video).then((value) {
-        _controller = value;
-        _controller!.initialize().then((value) {
-          if (focusedIndex == widget.position) {
-            _controller!.play();
-          }
-          log(' initialized kz 🚀🚀🚀' + widget.position.toString());
-          setState(() {
-            isLoaded = true;
-          });
-        });
-      });
-
-      initLike();
-    }
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    if (_controller != null) {
-      _controller!.dispose();
-    }
-
-    log('disposed');
-    super.dispose();
-  }
-
-  bool? isPlaying;
-
   Future<void> _showRemoveDialog() async {
     return showDialog<void>(
       context: context,
@@ -228,34 +177,56 @@ class _VideoState extends State<Video> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     final focusedIndex =
         BlocProvider.of<PreloadBloc>(context).state.focusedIndex;
 
-    log('current Pos ' +
-        widget.position.toString() +
-        ' focusedIndex ' +
-        focusedIndex.toString());
+    StoryRepo storyRepo = StoryRepo();
+    storyRepo.viewStory(widget.story.id);
 
-    if (_controller != null) {
-      if (_controller!.value.isInitialized && _controller != null) {
-        if (widget.position == focusedIndex && isPlaying == null) {
-          isPlaying = true;
+    if (Platform.isIOS || kIsWeb) {
+      _controller = VideoPlayerController.network(widget.story.video);
+      _controller!.initialize().then((value) {
+        _controller!.play();
+        setState(() {
+          isLoaded = true;
+        });
+      });
+    } else {
+      getControllerForVideo(widget.story.video).then((value) {
+        _controller = value;
+        _controller!.initialize().then((value) {
           _controller!.play();
+          setState(() {
+            isLoaded = true;
+          });
+        });
+      });
 
-          log('played ' + widget.position.toString());
-        } else if (widget.position != focusedIndex) {
-          log('paused ' + widget.position.toString());
-          _controller!.pause();
-          isPlaying = null;
-          _controller!.seekTo(const Duration());
-        }
-        _controller!.setLooping(true);
-      }
+      initLike();
     }
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (_controller != null) {
+      _controller!.dispose();
+    }
+
+    log('disposed');
+    super.dispose();
+  }
+
+  bool? isPlaying;
+
+  @override
+  Widget build(BuildContext context) {
     if (_controller != null) {
       if (isLoaded) {
         return Scaffold(
+          backgroundColor: Colors.white,
           extendBodyBehindAppBar: true,
           appBar: AppBar(
               elevation: 0,

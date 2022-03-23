@@ -176,6 +176,7 @@ class _$StoryTearOff {
       required DateTime created_at,
       required DateTime updated_at,
       required String video,
+      required int views,
       required List<StoryLike> story_likes,
       required List<StoryComment> story_comments,
       String? thumb}) {
@@ -185,6 +186,7 @@ class _$StoryTearOff {
       created_at: created_at,
       updated_at: updated_at,
       video: video,
+      views: views,
       story_likes: story_likes,
       story_comments: story_comments,
       thumb: thumb,
@@ -206,6 +208,7 @@ mixin _$Story {
   DateTime get created_at => throw _privateConstructorUsedError;
   DateTime get updated_at => throw _privateConstructorUsedError;
   String get video => throw _privateConstructorUsedError;
+  int get views => throw _privateConstructorUsedError;
   List<StoryLike> get story_likes => throw _privateConstructorUsedError;
   List<StoryComment> get story_comments => throw _privateConstructorUsedError;
   String? get thumb => throw _privateConstructorUsedError;
@@ -225,6 +228,7 @@ abstract class $StoryCopyWith<$Res> {
       DateTime created_at,
       DateTime updated_at,
       String video,
+      int views,
       List<StoryLike> story_likes,
       List<StoryComment> story_comments,
       String? thumb});
@@ -247,6 +251,7 @@ class _$StoryCopyWithImpl<$Res> implements $StoryCopyWith<$Res> {
     Object? created_at = freezed,
     Object? updated_at = freezed,
     Object? video = freezed,
+    Object? views = freezed,
     Object? story_likes = freezed,
     Object? story_comments = freezed,
     Object? thumb = freezed,
@@ -272,6 +277,10 @@ class _$StoryCopyWithImpl<$Res> implements $StoryCopyWith<$Res> {
           ? _value.video
           : video // ignore: cast_nullable_to_non_nullable
               as String,
+      views: views == freezed
+          ? _value.views
+          : views // ignore: cast_nullable_to_non_nullable
+              as int,
       story_likes: story_likes == freezed
           ? _value.story_likes
           : story_likes // ignore: cast_nullable_to_non_nullable
@@ -306,6 +315,7 @@ abstract class _$StoryCopyWith<$Res> implements $StoryCopyWith<$Res> {
       DateTime created_at,
       DateTime updated_at,
       String video,
+      int views,
       List<StoryLike> story_likes,
       List<StoryComment> story_comments,
       String? thumb});
@@ -330,6 +340,7 @@ class __$StoryCopyWithImpl<$Res> extends _$StoryCopyWithImpl<$Res>
     Object? created_at = freezed,
     Object? updated_at = freezed,
     Object? video = freezed,
+    Object? views = freezed,
     Object? story_likes = freezed,
     Object? story_comments = freezed,
     Object? thumb = freezed,
@@ -355,6 +366,10 @@ class __$StoryCopyWithImpl<$Res> extends _$StoryCopyWithImpl<$Res>
           ? _value.video
           : video // ignore: cast_nullable_to_non_nullable
               as String,
+      views: views == freezed
+          ? _value.views
+          : views // ignore: cast_nullable_to_non_nullable
+              as int,
       story_likes: story_likes == freezed
           ? _value.story_likes
           : story_likes // ignore: cast_nullable_to_non_nullable
@@ -380,6 +395,7 @@ class _$_Story implements _Story {
       required this.created_at,
       required this.updated_at,
       required this.video,
+      required this.views,
       required this.story_likes,
       required this.story_comments,
       this.thumb});
@@ -398,6 +414,8 @@ class _$_Story implements _Story {
   @override
   final String video;
   @override
+  final int views;
+  @override
   final List<StoryLike> story_likes;
   @override
   final List<StoryComment> story_comments;
@@ -406,7 +424,7 @@ class _$_Story implements _Story {
 
   @override
   String toString() {
-    return 'Story(id: $id, author: $author, created_at: $created_at, updated_at: $updated_at, video: $video, story_likes: $story_likes, story_comments: $story_comments, thumb: $thumb)';
+    return 'Story(id: $id, author: $author, created_at: $created_at, updated_at: $updated_at, video: $video, views: $views, story_likes: $story_likes, story_comments: $story_comments, thumb: $thumb)';
   }
 
   @override
@@ -421,6 +439,7 @@ class _$_Story implements _Story {
             const DeepCollectionEquality()
                 .equals(other.updated_at, updated_at) &&
             const DeepCollectionEquality().equals(other.video, video) &&
+            const DeepCollectionEquality().equals(other.views, views) &&
             const DeepCollectionEquality()
                 .equals(other.story_likes, story_likes) &&
             const DeepCollectionEquality()
@@ -436,6 +455,7 @@ class _$_Story implements _Story {
       const DeepCollectionEquality().hash(created_at),
       const DeepCollectionEquality().hash(updated_at),
       const DeepCollectionEquality().hash(video),
+      const DeepCollectionEquality().hash(views),
       const DeepCollectionEquality().hash(story_likes),
       const DeepCollectionEquality().hash(story_comments),
       const DeepCollectionEquality().hash(thumb));
@@ -458,6 +478,7 @@ abstract class _Story implements Story {
       required DateTime created_at,
       required DateTime updated_at,
       required String video,
+      required int views,
       required List<StoryLike> story_likes,
       required List<StoryComment> story_comments,
       String? thumb}) = _$_Story;
@@ -474,6 +495,8 @@ abstract class _Story implements Story {
   DateTime get updated_at;
   @override
   String get video;
+  @override
+  int get views;
   @override
   List<StoryLike> get story_likes;
   @override

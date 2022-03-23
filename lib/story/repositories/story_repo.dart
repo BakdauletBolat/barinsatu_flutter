@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:barinsatu/story/models/story.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
@@ -6,20 +8,34 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StoryRepo {
-  String url = 'http://87.249.53.253/api/stories/';
+  String url = 'http://barinsatu.kz/api/stories/';
   // String url = 'http://www.barinsatu.kz/web-api/stories/';
 
   final dio = Dio();
 
-  Future<StoryResponse> getStories() async {
+  Future<List<Story>> getStories({int? authorId}) async {
+    String authorStr = authorId != null ? '&author=' + authorId.toString() : '';
+
+    Uri uri = Uri.parse(url + '?ordering=-id' + authorStr);
     try {
-      var response = await http.get(Uri.parse(url + '?ordering=-id'));
+      var response = await http.get(uri);
       var utfEncode = utf8.decode(response.bodyBytes);
       var jsonRes = json.decode(utfEncode);
-      print(jsonRes);
-      StoryResponse ads = StoryResponse.fromJson(jsonRes);
+      List<Story> ads =
+          jsonRes.map<Story>((json) => Story.fromJson(json)).toList();
       return ads;
     } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  deleteStory(int? authorId) async {
+    Uri uri = Uri.parse(url + 'archive/' + authorId.toString() + '/');
+    try {
+      var response = await http.get(uri);
+      print(response.body);
+    } catch (e) {
+      log(e.toString());
       throw Exception(e.toString());
     }
   }
@@ -38,6 +54,14 @@ class StoryRepo {
       return data;
     } else {
       throw Exception(response.data);
+    }
+  }
+
+  viewStory(int id) async {
+    try {
+      await http.get(Uri.parse(url + 'view/$id/'));
+    } catch (e) {
+      print(e);
     }
   }
 

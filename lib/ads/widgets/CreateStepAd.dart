@@ -8,6 +8,7 @@ import 'package:barinsatu/ads/repositories/ad_repo.dart';
 import 'package:barinsatu/ads/widgets/Steps/Step3.dart';
 import 'package:barinsatu/ads/widgets/Steps/Step4.dart';
 import 'package:barinsatu/ads/widgets/steps/Step1.dart';
+import 'package:barinsatu/pages/DoneScreen.dart';
 import 'package:barinsatu/pages/HomePage.dart';
 import 'package:barinsatu/pages/ad/DetailPage.dart';
 import 'package:barinsatu/pages/auth/ProfileView.dart';
@@ -101,10 +102,10 @@ class _CreateStepAdState extends State<CreateStepAd> {
           Future.delayed(const Duration(seconds: 3));
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(
-                  builder: (context) => DetailPage(
-                        item: ad,
-                        isComplete: true,
+              CupertinoPageRoute(
+                  builder: (context) => DoneScreen(
+                        ad: ad,
+                        // isComplete: true,
                       )),
               (route) => false);
           setState(() {
@@ -164,6 +165,15 @@ class _CreateStepAdState extends State<CreateStepAd> {
     ));
   }
 
+  VoidCallback? _onStepContinue;
+  VoidCallback? _onStepCancel;
+
+  Widget _createEventControlBuilder(context, btns) {
+    _onStepContinue = btns.onStepContinue;
+    _onStepCancel = btns.onStepCancel;
+    return const SizedBox.shrink();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool? isLastStep = _index == getSteps().length - 1;
@@ -183,60 +193,67 @@ class _CreateStepAdState extends State<CreateStepAd> {
           ),
         ),
         Expanded(
-          child: Form(
-            key: _formKey,
-            child: Stepper(
-                elevation: 0,
-                type: StepperType.horizontal,
-                controlsBuilder: (context, btns) {
-                  return Container(
-                    margin: const EdgeInsets.only(top: 50),
-                    child: Row(
-                      children: [
-                        if (_index != 0)
-                          Expanded(
-                              child: TextButton(
-                            onPressed: btns.onStepCancel,
-                            child: const Text('НАЗАД'),
-                          )),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        if (isLastStep) buildSaveButton(),
-                        if (!isLastStep)
-                          Expanded(
-                              child: ElevatedButton(
-                            onPressed: btns.onStepContinue,
-                            child: const Text('ДАЛЬШЕ'),
-                          )),
-                      ],
-                    ),
-                  );
-                },
-                currentStep: _index,
-                onStepCancel: () {
-                  if (_index > 0) {
-                    setState(() {
-                      _index -= 1;
-                    });
-                  }
-                },
-                onStepContinue: () {
-                  if (widget.formKeys[_index].currentState!.validate()) {
-                    if (!isLastStep) {
-                      widget.formKeys[_index].currentState!.save();
-                      setState(() {
-                        _index += 1;
-                      });
-                    }
-                  }
-                },
-                // onStepTapped: (int index) {
-                //   setState(() {
-                //     _index = index;
-                //   });
-                // },
-                steps: getSteps()),
+          child: Stack(
+            children: [
+              Form(
+                key: _formKey,
+                child: Stepper(
+                    elevation: 0,
+                    type: StepperType.horizontal,
+                    controlsBuilder: _createEventControlBuilder,
+                    currentStep: _index,
+                    onStepCancel: () {
+                      if (_index > 0) {
+                        setState(() {
+                          _index -= 1;
+                        });
+                      }
+                    },
+                    onStepContinue: () {
+                      if (widget.formKeys[_index].currentState!.validate()) {
+                        if (!isLastStep) {
+                          widget.formKeys[_index].currentState!.save();
+                          setState(() {
+                            _index += 1;
+                          });
+                        }
+                      }
+                    },
+                    // onStepTapped: (int index) {
+                    //   setState(() {
+                    //     _index = index;
+                    //   });
+                    // },
+                    steps: getSteps()),
+              ),
+              Positioned(
+                bottom: 0,
+                height: 80,
+                width: MediaQuery.of(context).size.width,
+                left: 0,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  color: Colors.white,
+                  child: Row(
+                    children: [
+                      if (_index != 0)
+                        Expanded(
+                            child: TextButton(
+                          onPressed: _onStepCancel,
+                          child: const Text('НАЗАД'),
+                        )),
+                      if (isLastStep) buildSaveButton(),
+                      if (!isLastStep)
+                        Expanded(
+                            child: ElevatedButton(
+                          onPressed: _onStepContinue,
+                          child: const Text('ДАЛЬШЕ'),
+                        )),
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ],

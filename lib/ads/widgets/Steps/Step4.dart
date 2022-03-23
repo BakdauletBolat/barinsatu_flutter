@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:barinsatu/ads/widgets/PriceTextField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../CustomTextField.dart';
 import 'package:barinsatu/ads/models/myData.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 
 class Step4 extends StatefulWidget {
@@ -24,6 +27,7 @@ class _Step4State extends State<Step4> {
   final CurrencyTextInputFormatter _formatter =
       CurrencyTextInputFormatter(locale: 'Ru', decimalDigits: 0, symbol: 'т ');
   List<File> imagesList = [];
+  List<Uint8List> imageMemory = [];
   @override
   void initState() {
     super.initState();
@@ -32,19 +36,27 @@ class _Step4State extends State<Step4> {
   void pickImage() async {
     final ImagePicker _picker = ImagePicker();
     List<File> imagesRaw = [];
+    List<Uint8List> webImagesRaw = [];
 
     final List<XFile>? images = await _picker.pickMultiImage(
         maxHeight: 1080, maxWidth: 1920, imageQuality: 80);
 
     if (images != null && images.isNotEmpty) {
-      images.map((image) {
-        imagesRaw.add(File(image.path));
+      images.map((image) async {
+        print(image);
+        if (kIsWeb) {
+          webImagesRaw.add(await image.readAsBytes());
+          imagesRaw.add(File(image.path));
+          widget.data.images = imagesRaw;
+        } else {
+          imagesRaw.add(File(image.path));
+          widget.data.images = imagesRaw;
+        }
       }).toList();
     }
 
-    widget.data.images = imagesRaw;
-
     setState(() {
+      imageMemory = webImagesRaw;
       imagesList = imagesRaw;
     });
   }
@@ -90,7 +102,7 @@ class _Step4State extends State<Step4> {
                   onPressed: pickImage,
                   child: Container(
                     child: Column(
-                      children: [
+                      children: const [
                         Icon(Icons.add_a_photo),
                         Text('Выбрать фотографий')
                       ],
@@ -144,17 +156,26 @@ class _Step4State extends State<Step4> {
             if (imagesList.isNotEmpty)
               GridView.builder(
                   padding: const EdgeInsets.all(0),
+                  physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 5.0,
                     mainAxisSpacing: 5,
                   ),
-                  itemCount: imagesList.length,
+                  itemCount: kIsWeb ? imageMemory.length : imagesList.length,
                   shrinkWrap: true,
-                  itemBuilder: (context, index) => Image.file(
-                        imagesList[index],
-                        fit: BoxFit.cover,
-                      ))
+                  itemBuilder: (context, index) => kIsWeb
+                      ? Image.memory(
+                          imageMemory[index],
+                          fit: BoxFit.cover,
+                        )
+                      : Image.file(
+                          imagesList[index],
+                          fit: BoxFit.cover,
+                        )),
+            const SizedBox(
+              height: 300,
+            )
           ],
         ),
       ),

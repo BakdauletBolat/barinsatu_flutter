@@ -1,6 +1,7 @@
 import 'package:barinsatu/ads/models/ad.dart';
 import 'package:barinsatu/ads/repositories/ad_repo.dart';
 import 'package:barinsatu/utils/DateFormatter.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 class CommentsPage extends StatefulWidget {
@@ -41,9 +42,10 @@ class _CommentsPageState extends State<CommentsPage> {
 
             Widget buildImage() {
               if (comment.author.avatar != null) {
-                return Image.network(
+                return ExtendedImage.network(
                   comment.author.avatar!,
                   fit: BoxFit.cover,
+                  cache: true,
                 );
               }
               return Image.asset(
