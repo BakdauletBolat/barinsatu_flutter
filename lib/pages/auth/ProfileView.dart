@@ -758,8 +758,6 @@ class _StoryMiniViewState extends State<StoryMiniView> {
               CupertinoPageRoute(
                   builder: (context) => VideoOneSingle(
                         story: item,
-                        position: 0,
-                        isSingle: 1,
                       )),
             );
           },

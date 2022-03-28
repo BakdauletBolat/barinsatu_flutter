@@ -18,11 +18,21 @@ class AdResponse with _$AdResponse {
 }
 
 @freezed
+class ImageAd with _$ImageAd {
+  const factory ImageAd({required int id, required String image}) = _ImageAd;
+
+  factory ImageAd.fromJson(Map<String, dynamic> json) =>
+      _$ImageAdFromJson(json);
+}
+
+@freezed
 class MarkerAd with _$MarkerAd {
   const factory MarkerAd(
       {required int id,
       required String title,
       required double lat,
+      required double price,
+      ImageAd? image,
       required double lng}) = _MarkerAd;
 
   factory MarkerAd.fromJson(Map<String, dynamic> json) =>

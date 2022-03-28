@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'ad.dart';
@@ -223,6 +224,166 @@ abstract class _AdResponse implements AdResponse {
       throw _privateConstructorUsedError;
 }
 
+ImageAd _$ImageAdFromJson(Map<String, dynamic> json) {
+  return _ImageAd.fromJson(json);
+}
+
+/// @nodoc
+class _$ImageAdTearOff {
+  const _$ImageAdTearOff();
+
+  _ImageAd call({required int id, required String image}) {
+    return _ImageAd(
+      id: id,
+      image: image,
+    );
+  }
+
+  ImageAd fromJson(Map<String, Object?> json) {
+    return ImageAd.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $ImageAd = _$ImageAdTearOff();
+
+/// @nodoc
+mixin _$ImageAd {
+  int get id => throw _privateConstructorUsedError;
+  String get image => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ImageAdCopyWith<ImageAd> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ImageAdCopyWith<$Res> {
+  factory $ImageAdCopyWith(ImageAd value, $Res Function(ImageAd) then) =
+      _$ImageAdCopyWithImpl<$Res>;
+  $Res call({int id, String image});
+}
+
+/// @nodoc
+class _$ImageAdCopyWithImpl<$Res> implements $ImageAdCopyWith<$Res> {
+  _$ImageAdCopyWithImpl(this._value, this._then);
+
+  final ImageAd _value;
+  // ignore: unused_field
+  final $Res Function(ImageAd) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? image = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$ImageAdCopyWith<$Res> implements $ImageAdCopyWith<$Res> {
+  factory _$ImageAdCopyWith(_ImageAd value, $Res Function(_ImageAd) then) =
+      __$ImageAdCopyWithImpl<$Res>;
+  @override
+  $Res call({int id, String image});
+}
+
+/// @nodoc
+class __$ImageAdCopyWithImpl<$Res> extends _$ImageAdCopyWithImpl<$Res>
+    implements _$ImageAdCopyWith<$Res> {
+  __$ImageAdCopyWithImpl(_ImageAd _value, $Res Function(_ImageAd) _then)
+      : super(_value, (v) => _then(v as _ImageAd));
+
+  @override
+  _ImageAd get _value => super._value as _ImageAd;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? image = freezed,
+  }) {
+    return _then(_ImageAd(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_ImageAd implements _ImageAd {
+  const _$_ImageAd({required this.id, required this.image});
+
+  factory _$_ImageAd.fromJson(Map<String, dynamic> json) =>
+      _$$_ImageAdFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final String image;
+
+  @override
+  String toString() {
+    return 'ImageAd(id: $id, image: $image)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _ImageAd &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.image, image));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(image));
+
+  @JsonKey(ignore: true)
+  @override
+  _$ImageAdCopyWith<_ImageAd> get copyWith =>
+      __$ImageAdCopyWithImpl<_ImageAd>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_ImageAdToJson(this);
+  }
+}
+
+abstract class _ImageAd implements ImageAd {
+  const factory _ImageAd({required int id, required String image}) = _$_ImageAd;
+
+  factory _ImageAd.fromJson(Map<String, dynamic> json) = _$_ImageAd.fromJson;
+
+  @override
+  int get id;
+  @override
+  String get image;
+  @override
+  @JsonKey(ignore: true)
+  _$ImageAdCopyWith<_ImageAd> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 MarkerAd _$MarkerAdFromJson(Map<String, dynamic> json) {
   return _MarkerAd.fromJson(json);
 }
@@ -235,11 +396,15 @@ class _$MarkerAdTearOff {
       {required int id,
       required String title,
       required double lat,
+      required double price,
+      ImageAd? image,
       required double lng}) {
     return _MarkerAd(
       id: id,
       title: title,
       lat: lat,
+      price: price,
+      image: image,
       lng: lng,
     );
   }
@@ -257,6 +422,8 @@ mixin _$MarkerAd {
   int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   double get lat => throw _privateConstructorUsedError;
+  double get price => throw _privateConstructorUsedError;
+  ImageAd? get image => throw _privateConstructorUsedError;
   double get lng => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -269,7 +436,15 @@ mixin _$MarkerAd {
 abstract class $MarkerAdCopyWith<$Res> {
   factory $MarkerAdCopyWith(MarkerAd value, $Res Function(MarkerAd) then) =
       _$MarkerAdCopyWithImpl<$Res>;
-  $Res call({int id, String title, double lat, double lng});
+  $Res call(
+      {int id,
+      String title,
+      double lat,
+      double price,
+      ImageAd? image,
+      double lng});
+
+  $ImageAdCopyWith<$Res>? get image;
 }
 
 /// @nodoc
@@ -285,6 +460,8 @@ class _$MarkerAdCopyWithImpl<$Res> implements $MarkerAdCopyWith<$Res> {
     Object? id = freezed,
     Object? title = freezed,
     Object? lat = freezed,
+    Object? price = freezed,
+    Object? image = freezed,
     Object? lng = freezed,
   }) {
     return _then(_value.copyWith(
@@ -300,11 +477,30 @@ class _$MarkerAdCopyWithImpl<$Res> implements $MarkerAdCopyWith<$Res> {
           ? _value.lat
           : lat // ignore: cast_nullable_to_non_nullable
               as double,
+      price: price == freezed
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as double,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as ImageAd?,
       lng: lng == freezed
           ? _value.lng
           : lng // ignore: cast_nullable_to_non_nullable
               as double,
     ));
+  }
+
+  @override
+  $ImageAdCopyWith<$Res>? get image {
+    if (_value.image == null) {
+      return null;
+    }
+
+    return $ImageAdCopyWith<$Res>(_value.image!, (value) {
+      return _then(_value.copyWith(image: value));
+    });
   }
 }
 
@@ -313,7 +509,16 @@ abstract class _$MarkerAdCopyWith<$Res> implements $MarkerAdCopyWith<$Res> {
   factory _$MarkerAdCopyWith(_MarkerAd value, $Res Function(_MarkerAd) then) =
       __$MarkerAdCopyWithImpl<$Res>;
   @override
-  $Res call({int id, String title, double lat, double lng});
+  $Res call(
+      {int id,
+      String title,
+      double lat,
+      double price,
+      ImageAd? image,
+      double lng});
+
+  @override
+  $ImageAdCopyWith<$Res>? get image;
 }
 
 /// @nodoc
@@ -330,6 +535,8 @@ class __$MarkerAdCopyWithImpl<$Res> extends _$MarkerAdCopyWithImpl<$Res>
     Object? id = freezed,
     Object? title = freezed,
     Object? lat = freezed,
+    Object? price = freezed,
+    Object? image = freezed,
     Object? lng = freezed,
   }) {
     return _then(_MarkerAd(
@@ -345,6 +552,14 @@ class __$MarkerAdCopyWithImpl<$Res> extends _$MarkerAdCopyWithImpl<$Res>
           ? _value.lat
           : lat // ignore: cast_nullable_to_non_nullable
               as double,
+      price: price == freezed
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as double,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as ImageAd?,
       lng: lng == freezed
           ? _value.lng
           : lng // ignore: cast_nullable_to_non_nullable
@@ -360,6 +575,8 @@ class _$_MarkerAd implements _MarkerAd {
       {required this.id,
       required this.title,
       required this.lat,
+      required this.price,
+      this.image,
       required this.lng});
 
   factory _$_MarkerAd.fromJson(Map<String, dynamic> json) =>
@@ -372,11 +589,15 @@ class _$_MarkerAd implements _MarkerAd {
   @override
   final double lat;
   @override
+  final double price;
+  @override
+  final ImageAd? image;
+  @override
   final double lng;
 
   @override
   String toString() {
-    return 'MarkerAd(id: $id, title: $title, lat: $lat, lng: $lng)';
+    return 'MarkerAd(id: $id, title: $title, lat: $lat, price: $price, image: $image, lng: $lng)';
   }
 
   @override
@@ -387,6 +608,8 @@ class _$_MarkerAd implements _MarkerAd {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.lat, lat) &&
+            const DeepCollectionEquality().equals(other.price, price) &&
+            const DeepCollectionEquality().equals(other.image, image) &&
             const DeepCollectionEquality().equals(other.lng, lng));
   }
 
@@ -396,6 +619,8 @@ class _$_MarkerAd implements _MarkerAd {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(lat),
+      const DeepCollectionEquality().hash(price),
+      const DeepCollectionEquality().hash(image),
       const DeepCollectionEquality().hash(lng));
 
   @JsonKey(ignore: true)
@@ -414,6 +639,8 @@ abstract class _MarkerAd implements MarkerAd {
       {required int id,
       required String title,
       required double lat,
+      required double price,
+      ImageAd? image,
       required double lng}) = _$_MarkerAd;
 
   factory _MarkerAd.fromJson(Map<String, dynamic> json) = _$_MarkerAd.fromJson;
@@ -424,6 +651,10 @@ abstract class _MarkerAd implements MarkerAd {
   String get title;
   @override
   double get lat;
+  @override
+  double get price;
+  @override
+  ImageAd? get image;
   @override
   double get lng;
   @override

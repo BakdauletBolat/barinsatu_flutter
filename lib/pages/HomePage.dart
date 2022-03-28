@@ -4,7 +4,7 @@ import 'package:barinsatu/authentication/bloc/auth_bloc.dart';
 import 'package:barinsatu/authentication/repositories/auth_repo.dart';
 import 'package:barinsatu/pages/Calculator.dart';
 import 'package:barinsatu/pages/MainPage.dart';
-import 'package:barinsatu/pages/Map.dart';
+import 'package:barinsatu/pages/map/Map.dart';
 import 'package:barinsatu/pages/story/VideoCreatePage.dart';
 import 'package:barinsatu/pages/story/VideoPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     Color primaryColor = Theme.of(context).primaryColor;
-    Color grey = Colors.grey;
+    Color grey = Color.fromARGB(255, 88, 88, 88);
 
     Widget buildItem(int index, String title, IconData icon, bool isTapable) {
       return TextButton(
@@ -201,7 +201,8 @@ class _HomePageState extends State<HomePage> {
             onPageChanged: onPageChanged,
             children: pages,
           ),
-          bottomNavigationBar: SizedBox(
+          bottomNavigationBar: Container(
+            color: Colors.white,
             height: 60,
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -209,7 +210,6 @@ class _HomePageState extends State<HomePage> {
                 children: pagesBody.asMap().entries.map((entry) {
                   int index = entry.key;
                   var val = entry.value;
-                  print(entry);
                   return buildItem(
                       index, val['title'], val['icon'], val['isTapable']);
                 }).toList()),

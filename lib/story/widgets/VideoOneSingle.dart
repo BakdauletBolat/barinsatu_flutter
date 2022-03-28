@@ -21,13 +21,9 @@ import 'dart:io' show Platform;
 import 'package:video_player/video_player.dart';
 
 class VideoOneSingle extends StatefulWidget {
-  const VideoOneSingle(
-      {Key? key, required this.story, required this.position, this.isSingle})
-      : super(key: key);
+  const VideoOneSingle({Key? key, required this.story}) : super(key: key);
 
   final Story story;
-  final int position;
-  final int? isSingle;
 
   @override
   _VideoState createState() => _VideoState();

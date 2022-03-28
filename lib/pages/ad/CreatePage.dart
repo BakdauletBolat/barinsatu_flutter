@@ -26,6 +26,7 @@ class _CreatePageState extends State<CreatePage>
   ];
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     final userState = context.watch<AuthBloc>().state;
 

@@ -49,47 +49,60 @@ class UserView extends StatelessWidget {
             CupertinoPageRoute(builder: (context) => ProfileView(user: user));
         Navigator.push(context, route);
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(62),
-                  child: buildImageProfile()),
-              const SizedBox(
-                width: 15,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Row(
                 children: [
-                  Text(
-                    user.name.toString() + " " + user.surname.toString(),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 21),
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(62),
+                      child: buildImageProfile()),
+                  const SizedBox(
+                    width: 15,
                   ),
-                  Text(user.email)
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          user.name.toString() +
+                              " " +
+                              user.surname
+                                  .toString()
+                                  .substring(1, 2)
+                                  .toUpperCase() +
+                              '.',
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 21),
+                        ),
+                        Text(user.email)
+                      ],
+                    ),
+                  )
                 ],
-              )
-            ],
-          ),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  print('tap');
-                  launch("tel://${user.phone}");
-                },
-                icon: Icon(
-                  Icons.call,
-                  color: Theme.of(context).primaryColor,
-                  size: 30,
-                ),
-              )
-            ],
-          )
-        ],
+              ),
+            ),
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    launch("tel://${user.phone}");
+                  },
+                  icon: Icon(
+                    Icons.call,
+                    color: Theme.of(context).primaryColor,
+                    size: 30,
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

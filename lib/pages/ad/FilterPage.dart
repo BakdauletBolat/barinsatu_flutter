@@ -26,6 +26,7 @@ class FilterData {
   String? numbersRoomHome;
   String? price_ot;
   String? price_do;
+  int? city = 1;
 
   int? buildingTypeAperment = 1;
   int? repairTypeAperment = 1;
@@ -54,6 +55,7 @@ class FilterData {
       'totalAreaAperment': totalAreaAperment,
       'floorAperment': floorAperment,
       'numbersRoomAperment': numbersRoomAperment,
+      'city': city
     };
   }
 }
@@ -64,24 +66,28 @@ class _FilterPageState extends State<FilterPage> {
   List<AdDetailType> adDetailTypes = [];
   List<BuildingType> buildingTypes = [];
   List<RepairType> repairTypes = [];
+  List<City> cities = [];
 
   int adDetailTypePicker = 0;
   int adTypePicker = 1;
   int buildingValue = 0;
   int repairValue = 0;
+  int cityValue = 0;
 
   void getNetWorkData() async {
-    AdRepo authRepo = AdRepo();
+    AdRepo adRepo = AdRepo();
 
-    final buildingTypesRaw = await authRepo.getBuildingTypes();
-    final repairTypesRaw = await authRepo.getRepairTypes();
-    final adTypes = await authRepo.getAdTypeDetail(5);
+    final buildingTypesRaw = await adRepo.getBuildingTypes();
+    final repairTypesRaw = await adRepo.getRepairTypes();
+    final adTypes = await adRepo.getAdTypeDetail(5);
+    final cityRow = await adRepo.getCity(0);
 
     if (mounted) {
       setState(() {
         buildingTypes = buildingTypesRaw;
         repairTypes = repairTypesRaw;
         adDetailTypes = adTypes;
+        cities = cityRow;
       });
     }
   }
@@ -90,6 +96,13 @@ class _FilterPageState extends State<FilterPage> {
     data.adDetailType = adDetailTypes[value].id;
     setState(() {
       adDetailTypePicker = value;
+    });
+  }
+
+  void setCityValue(int value) {
+    data.city = cities[value].id;
+    setState(() {
+      cityValue = value;
     });
   }
 
@@ -192,6 +205,14 @@ class _FilterPageState extends State<FilterPage> {
                         ),
                       ),
                     ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 25),
+                    child: Picker(
+                        onSelectedItemChanged: setCityValue,
+                        items: cities,
+                        title: 'Город',
+                        selectedValue: cityValue),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 25),

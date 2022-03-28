@@ -24,10 +24,25 @@ Map<String, dynamic> _$$_AdResponseToJson(_$_AdResponse instance) =>
       'results': instance.results,
     };
 
+_$_ImageAd _$$_ImageAdFromJson(Map<String, dynamic> json) => _$_ImageAd(
+      id: json['id'] as int,
+      image: json['image'] as String,
+    );
+
+Map<String, dynamic> _$$_ImageAdToJson(_$_ImageAd instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'image': instance.image,
+    };
+
 _$_MarkerAd _$$_MarkerAdFromJson(Map<String, dynamic> json) => _$_MarkerAd(
       id: json['id'] as int,
       title: json['title'] as String,
       lat: (json['lat'] as num).toDouble(),
+      price: (json['price'] as num).toDouble(),
+      image: json['image'] == null
+          ? null
+          : ImageAd.fromJson(json['image'] as Map<String, dynamic>),
       lng: (json['lng'] as num).toDouble(),
     );
 
@@ -36,6 +51,8 @@ Map<String, dynamic> _$$_MarkerAdToJson(_$_MarkerAd instance) =>
       'id': instance.id,
       'title': instance.title,
       'lat': instance.lat,
+      'price': instance.price,
+      'image': instance.image,
       'lng': instance.lng,
     };
 

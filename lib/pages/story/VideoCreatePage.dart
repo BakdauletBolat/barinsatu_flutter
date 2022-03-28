@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:barinsatu/ads/repositories/ad_repo.dart';
 import 'package:barinsatu/authentication/bloc/auth_bloc.dart';
+import 'package:barinsatu/pages/DoneScreenStory.dart';
 import 'package:barinsatu/pages/ad/CreatePage.dart';
 import 'package:barinsatu/pages/auth/LoginPage.dart';
 import 'package:barinsatu/story/models/story.dart';
@@ -48,11 +49,9 @@ class _MyHomePageState extends State<VideoCreate> {
   var formData = FormData.fromMap({'a': 'a'});
 
   void navigateReplace(Story story) {
-    var newRoute = CupertinoPageRoute(
-        builder: (context) => VideoDetail(
-              story: story,
-            ));
-    Navigator.pushAndRemoveUntil(context, newRoute, (route) => false);
+    var newRoute =
+        CupertinoPageRoute(builder: (context) => DoneScreenStory(story: story));
+    Navigator.push(context, newRoute);
   }
 
   final videoInfo = FlutterVideoInfo();

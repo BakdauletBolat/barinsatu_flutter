@@ -43,10 +43,10 @@ class AdRepo {
     }
   }
 
-  Future<List<MarkerAd>> getMapAds() async {
+  Future<List<MarkerAd>> getMapAds({int ad_type = 2}) async {
     try {
       Uri urlParsed;
-      urlParsed = Uri.parse(url + 'markers/?ordering=-id');
+      urlParsed = Uri.parse(url + 'markers/?ad_type=$ad_type&ordering=-id');
       var response = await http.get(urlParsed);
       var utfEncode = utf8.decode(response.bodyBytes);
       var jsonRes = json.decode(utfEncode);
@@ -96,6 +96,7 @@ class AdRepo {
       Uri urlParsed;
       String limitStr = data!.limit != null ? 'limit=${data.limit}' : 'limit=5';
       String adTypeStr = data.adType != null ? '&ad_type=${data.adType}' : '';
+      String cityStr = data.city != null ? '&city=${data.city}' : '';
       String priceStr = data.price_ot != null && data.price_do != null
           ? '&price__range=${data.price_ot},${data.price_do}'
           : '';
@@ -178,7 +179,7 @@ class AdRepo {
       }
 
       urlParsed = Uri.parse(
-          '$url?$limitStr&offset=$offset$adTypeStr$finalUrl$priceStr&ordering=-id');
+          '$url?$limitStr&offset=$offset$adTypeStr$finalUrl$priceStr$cityStr&ordering=-id');
       print(urlParsed);
 
       var response = await http.get(urlParsed);

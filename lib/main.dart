@@ -49,8 +49,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             primaryColor: const Color.fromRGBO(76, 136, 138, 1),
             textTheme: GoogleFonts.openSansTextTheme(
-              Theme.of(context)
-                  .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+              Theme.of(context).textTheme,
             ),
             elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
