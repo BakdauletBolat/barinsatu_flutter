@@ -200,22 +200,6 @@ class _AdCardState extends State<AdCard> {
                                   )
                                 ],
                               ))),
-                      // Positioned(
-                      //     top: 20,
-                      //     left: 20,
-                      //     child: Row(
-                      //       children: [
-                      //         const Icon(
-                      //           Icons.remove_red_eye,
-                      //           size: 30,
-                      //           color: Color.fromARGB(255, 255, 255, 255),
-                      //         ),
-                      //         Padding(
-                      //           padding: const EdgeInsets.only(left: 5),
-                      //           child:
-                      //         )
-                      //       ],
-                      //     ))
                     ],
                   ),
                 )
@@ -230,10 +214,55 @@ class _AdCardState extends State<AdCard> {
                           builder: (context) => DetailPage(item: widget.item)),
                     );
                   },
-                  child: SizedBox(
-                    height: 236,
-                    width: width,
-                    child: const Text('No Image'),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox(
+                        height: 236,
+                        width: width,
+                        child: SizedBox(
+                          height: 236,
+                          width: width,
+                          child: Image.asset('assets/no-image.jpeg',
+                              fit: BoxFit.cover),
+                        ),
+                      ),
+                      Positioned(
+                          top: 15,
+                          right: 15,
+                          child: TextButton(
+                              onPressed: likeAd,
+                              child: Row(
+                                children: [
+                                  if (isLike == false)
+                                    const Icon(
+                                      Icons.favorite_outline,
+                                      size: 30,
+                                      color: Colors.red,
+                                    )
+                                  else
+                                    const Icon(
+                                      Icons.favorite,
+                                      size: 30,
+                                      color: Colors.red,
+                                    ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 5),
+                                    child: Text(count.toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            shadows: [
+                                              Shadow(
+                                                offset: Offset(1, 2),
+                                                blurRadius: 3.0,
+                                                color: Color.fromARGB(
+                                                    255, 0, 0, 0),
+                                              )
+                                            ])),
+                                  )
+                                ],
+                              ))),
+                    ],
                   ),
                 ),
               Padding(

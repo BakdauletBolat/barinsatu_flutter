@@ -232,6 +232,9 @@ class _FilterPageState extends State<FilterPage> {
                                 },
                                 validation: false),
                           ),
+                          const SizedBox(
+                            width: 20,
+                          ),
                           Expanded(
                             child: CustomTextField(
                                 placeHolder: 'До ',

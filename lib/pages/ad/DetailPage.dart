@@ -15,13 +15,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'dart:developer';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:io' show Platform;
 
 class UserView extends StatelessWidget {
   const UserView({Key? key, required this.user}) : super(key: key);
 
   final User user;
+
+  Future<void> contactDial(String number) async {
+    await _launchCaller(number);
+  }
+
+  _launchCaller(String number) async {
+    String substrNumber = number.replaceAll(' ', '');
+    String url = Platform.isIOS ? 'tel://$substrNumber' : 'tel://$substrNumber';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print('нет номера');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +107,8 @@ class UserView extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    launch("tel://${user.phone}");
+                    log('tapped');
+                    contactDial(user.phone.toString());
                   },
                   icon: Icon(
                     Icons.call,
@@ -477,13 +494,21 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   late ScrollController _scrollController;
+
   Color _appColor = Colors.transparent;
+
+  void checkAppBarColor() {
+    if (widget.item.images.isEmpty) {
+      _appColor = const Color.fromRGBO(76, 136, 138, 1);
+    }
+  }
 
   bool isLike = false;
 
   @override
   void initState() {
     view();
+
     context.read<AuthBloc>().state.mapOrNull(
       loaded: (value) {
         var contain = widget.item.likes
@@ -505,6 +530,7 @@ class _DetailPageState extends State<DetailPage> {
       count = widget.item.likes.length;
     });
     super.initState();
+    checkAppBarColor();
     _scrollController = ScrollController()
       ..addListener(() {
         if (_scrollController.position.pixels < 100) {
@@ -515,6 +541,12 @@ class _DetailPageState extends State<DetailPage> {
           setState(() {});
         }
       });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void likeAd() async {
