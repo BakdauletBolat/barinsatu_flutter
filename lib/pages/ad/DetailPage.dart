@@ -17,8 +17,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'dart:developer';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'dart:io' show Platform;
+import 'package:url_launcher/url_launcher.dart' as launcher;
+// import 'dart:io' show Platform ;
 
 class UserView extends StatelessWidget {
   const UserView({Key? key, required this.user}) : super(key: key);
@@ -31,9 +31,9 @@ class UserView extends StatelessWidget {
 
   _launchCaller(String number) async {
     String substrNumber = number.replaceAll(' ', '');
-    String url = Platform.isIOS ? 'tel://$substrNumber' : 'tel://$substrNumber';
-    if (await canLaunch(url)) {
-      await launch(url);
+    String url = 'tel://$substrNumber';
+    if (await launcher.canLaunch(url)) {
+      await launcher.launch(url);
     } else {
       print('нет номера');
     }
