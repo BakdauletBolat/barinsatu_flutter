@@ -192,28 +192,28 @@ class _HomePageState extends State<HomePage> {
       {"title": 'Калькулятор', "icon": Icons.calculate, "isTapable": true},
       {"title": 'Карта', "icon": Icons.map, "isTapable": true}
     ];
-    return SafeArea(
-      child: Scaffold(
-          body: PageView(
+    return Scaffold(
+        body: SafeArea(
+          child: PageView(
             pageSnapping: true,
             physics: const NeverScrollableScrollPhysics(),
             controller: pageController,
             onPageChanged: onPageChanged,
             children: pages,
           ),
-          bottomNavigationBar: Container(
-            color: Colors.white,
-            height: 60,
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: pagesBody.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  var val = entry.value;
-                  return buildItem(
-                      index, val['title'], val['icon'], val['isTapable']);
-                }).toList()),
-          )),
-    );
+        ),
+        bottomNavigationBar: Container(
+          color: Colors.white,
+          height: 60,
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: pagesBody.asMap().entries.map((entry) {
+                int index = entry.key;
+                var val = entry.value;
+                return buildItem(
+                    index, val['title'], val['icon'], val['isTapable']);
+              }).toList()),
+        ));
   }
 }
