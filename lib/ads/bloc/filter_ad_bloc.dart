@@ -1,5 +1,6 @@
 import 'package:barinsatu/ads/models/ad.dart';
 import 'package:barinsatu/ads/repositories/ad_repo.dart';
+// ignore: library_prefixes
 import 'package:barinsatu/pages/ad/FilterPage.dart' as F;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';

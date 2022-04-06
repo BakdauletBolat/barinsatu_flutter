@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:intl/intl.dart';
 
 class DateFormatter {
@@ -20,7 +22,7 @@ class DateFormatter {
       return roughTimeString;
     }
 
-    DateTime yesterday = now.subtract(Duration(days: 1));
+    DateTime yesterday = now.subtract(const Duration(days: 1));
 
     if (localDateTime.day == yesterday.day &&
         localDateTime.month == now.month &&

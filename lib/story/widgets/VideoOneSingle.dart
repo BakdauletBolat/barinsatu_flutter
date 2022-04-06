@@ -5,10 +5,8 @@ import 'package:barinsatu/authentication/bloc/auth_bloc.dart';
 import 'package:barinsatu/pages/HomePage.dart';
 import 'package:barinsatu/pages/auth/ProfileView.dart';
 import 'package:barinsatu/pages/story/CommentsPage.dart';
-import 'package:barinsatu/story/bloc/preload_bloc.dart';
 import 'package:barinsatu/story/models/story.dart';
 import 'package:barinsatu/story/repositories/story_repo.dart';
-import 'package:barinsatu/utils/DateFormatter.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -49,7 +47,7 @@ class _VideoState extends State<VideoOneSingle> {
       return VideoPlayerController.network(url);
     } else {
       log('[VideoControllerService]: Loading video from cache');
-      print(fileInfo);
+
       return VideoPlayerController.file(fileInfo.file);
     }
   }
@@ -125,7 +123,7 @@ class _VideoState extends State<VideoOneSingle> {
               onPressed: () async {
                 StoryRepo storyRepo = StoryRepo();
                 try {
-                  var res = await storyRepo.deleteStory(widget.story.id);
+                  await storyRepo.deleteStory(widget.story.id);
                   var newRoute = CupertinoPageRoute(
                       builder: (context) => const HomePage());
                   Navigator.pushAndRemoveUntil(
@@ -174,9 +172,6 @@ class _VideoState extends State<VideoOneSingle> {
 
   @override
   void initState() {
-    final focusedIndex =
-        BlocProvider.of<PreloadBloc>(context).state.focusedIndex;
-
     StoryRepo storyRepo = StoryRepo();
     storyRepo.viewStory(widget.story.id);
 

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:barinsatu/ads/models/ad.dart';
 import 'package:barinsatu/ads/repositories/ad_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,8 +82,6 @@ class AdBloc extends Bloc<AdEvent, AdState> {
             }
 
             newAdloaded.results[index] = currentAd;
-            print(newAdloaded);
-
             emit(AdState.loaded(adLoaded: newAdloaded));
           },
           error: () {},

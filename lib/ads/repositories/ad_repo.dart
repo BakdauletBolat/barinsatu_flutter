@@ -1,7 +1,8 @@
-import 'dart:developer';
+// ignore_for_file: empty_catches, non_constant_identifier_names
 
 import 'package:barinsatu/ads/models/ad.dart';
 import 'package:barinsatu/ads/models/geo.dart';
+// ignore: library_prefixes
 import 'package:barinsatu/pages/ad/FilterPage.dart' as F;
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
@@ -29,7 +30,6 @@ class AdRepo {
 
       urlParsed = Uri.parse(
           '$url?$limitStr&offset=$offset$adDetailTypeStr$userIdStr$adTypeStr&ordering=-id');
-      print(urlParsed);
 
       var response = await http.get(urlParsed);
       var utfEncode = utf8.decode(response.bodyBytes);
@@ -37,8 +37,6 @@ class AdRepo {
       AdResponse ads = AdResponse.fromJson(jsonRes);
       return ads;
     } catch (e) {
-      print('e');
-      print(e);
       throw Exception(e.toString());
     }
   }
@@ -75,20 +73,14 @@ class AdRepo {
 
   deleteAd(int id) async {
     try {
-      var res = await http.get(Uri.parse(url + 'archive/$id/'));
-      print(res.body);
-    } catch (e) {
-      print(e);
-    }
+      await http.get(Uri.parse(url + 'archive/$id/'));
+    } catch (e) {}
   }
 
   viewAd(int id) async {
     try {
-      var res = await http.get(Uri.parse(url + 'view/$id/'));
-      print(res.body);
-    } catch (e) {
-      print(e);
-    }
+      await http.get(Uri.parse(url + 'view/$id/'));
+    } catch (e) {}
   }
 
   Future<AdResponse> getFilteredAds({int? offset, F.FilterData? data}) async {
@@ -180,7 +172,6 @@ class AdRepo {
 
       urlParsed = Uri.parse(
           '$url?$limitStr&offset=$offset$adTypeStr$finalUrl$priceStr$cityStr&ordering=-id');
-      print(urlParsed);
 
       var response = await http.get(urlParsed);
       var utfEncode = utf8.decode(response.bodyBytes);
@@ -190,12 +181,9 @@ class AdRepo {
         AdResponse ads = AdResponse.fromJson(jsonRes);
         return ads;
       } else {
-        print(response.body);
         throw Exception('ошибка сети');
       }
     } catch (e) {
-      print('e');
-      print(e);
       throw Exception(e.toString());
     }
   }
@@ -317,7 +305,6 @@ class AdRepo {
 
   Future<GeoResponse> getGeoCodes(String input) async {
     try {
-      print(input);
       var response = await http.get(
           Uri.parse(
               'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&language=ru&types=address&key=$key'),
@@ -328,11 +315,10 @@ class AdRepo {
           });
       var utfEncode = utf8.decode(response.bodyBytes);
       var jsonRes = json.decode(utfEncode);
-      print(jsonRes);
+
       GeoResponse georesponse = GeoResponse.fromJson(jsonRes);
       return georesponse;
     } catch (e) {
-      print(e.toString());
       throw Exception(e.toString());
     }
   }
@@ -380,7 +366,6 @@ class AdRepo {
       Comment data = Comment.fromJson(response.data);
       return data;
     } else {
-      print(response.data);
       throw Exception(response.data);
     }
   }

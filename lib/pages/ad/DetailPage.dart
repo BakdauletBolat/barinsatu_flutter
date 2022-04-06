@@ -59,6 +59,23 @@ class UserView extends StatelessWidget {
       );
     }
 
+    Widget buildUserName() {
+      var name = '';
+      var surname = '';
+      if (user.name!.isNotEmpty) {
+        name = user.name!;
+      }
+      if (user.surname!.isNotEmpty) {
+        surname = user.surname.toString().substring(0, 1).toUpperCase();
+      }
+
+      return Text(
+        "$name $surname .",
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
+      );
+    }
+
     return GestureDetector(
       onTap: () {
         var route =
@@ -83,21 +100,7 @@ class UserView extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          user.name.toString() +
-                              " " +
-                              user.surname
-                                  .toString()
-                                  .substring(1, 2)
-                                  .toUpperCase() +
-                              '.',
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 21),
-                        ),
-                        Text(user.email)
-                      ],
+                      children: [buildUserName(), Text(user.email)],
                     ),
                   )
                 ],

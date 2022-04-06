@@ -1,4 +1,5 @@
-import 'package:barinsatu/authentication/models/user.dart';
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'geo.freezed.dart';
 part 'geo.g.dart';
